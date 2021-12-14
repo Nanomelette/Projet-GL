@@ -1,3 +1,2 @@
-# gl20
-
-Projet GL équipe gl20
+# Projet Génie Logiciel, Ensimag.
+@AUTHOR@, @DATE@.
