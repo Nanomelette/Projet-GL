@@ -101,6 +101,8 @@ list_inst returns[ListInst tree]
     $tree = new ListInst();
 }
     : (inst {
+        assert($inst.tree != null);
+        $tree.add($inst.tree);
         }
       )*
     ;
