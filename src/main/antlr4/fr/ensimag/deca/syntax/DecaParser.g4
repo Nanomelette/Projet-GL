@@ -80,6 +80,7 @@ list_decl_var[ListDeclVar l, AbstractIdentifier t]
     : dv1=decl_var[$t] {
         $l.add($dv1.tree);
         } (COMMA dv2=decl_var[$t] {
+            assert($dv2.tree!=NULL);
         }
       )*
     ;
@@ -92,6 +93,7 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
       (EQUALS e=expr {
         }
       )? {
+           $tree = DeclVar(/*type*/,$i.tree,/*initializer*/);
         }
     ;
 
@@ -111,6 +113,7 @@ inst returns[AbstractInst tree]
         }
     | PRINT OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
+
         }
     | PRINTLN OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
@@ -127,9 +130,11 @@ inst returns[AbstractInst tree]
     | WHILE OPARENT condition=expr CPARENT OBRACE body=list_inst CBRACE {
             assert($condition.tree != null);
             assert($body.tree != null);
+            $tree = new
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
+            $tree = $expr.tree;
         }
     ;
 
@@ -148,6 +153,7 @@ if_then_else returns[IfThenElse tree]
 
 list_expr returns[ListExpr tree]
 @init   {
+    $tree = new ListExpr();
         }
     : (e1=expr {
         }
@@ -159,6 +165,7 @@ list_expr returns[ListExpr tree]
 expr returns[AbstractExpr tree]
     : assign_expr {
             assert($assign_expr.tree != null);
+            $tree = $assign_expr.tree;
         }
     ;
 
@@ -216,19 +223,19 @@ eq_neq_expr returns[AbstractExpr tree]
     | e1=eq_neq_expr NEQ e2=inequality_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
-            $tree = new NotEquals($e1.tree, $e2.tree);
+            $tree = new Plus($e1.tree, $e2.tree);
         }
     ;
 
 inequality_expr returns[AbstractExpr tree]
     : e=sum_expr {
             assert($e.tree != null);
-            $tree = $e.tree;
+            $tree = $e.tree
         }
     | e1=inequality_expr LEQ e2=sum_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
-            $tree = new LowerOrEqual($e1.tree, $e2.tree);
+            $tree = new LowerOrEqual($e1.tree, $e2.tree);          
         }
     | e1=inequality_expr GEQ e2=sum_expr {
             assert($e1.tree != null);
@@ -239,15 +246,19 @@ inequality_expr returns[AbstractExpr tree]
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Greater($e1.tree, $e2.tree);
+
         }
     | e1=inequality_expr LT e2=sum_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Lower($e1.tree, $e2.tree);
+
         }
     | e1=inequality_expr INSTANCEOF type {
             assert($e1.tree != null);
             assert($type.tree != null);
+            $tree = new InstanceOf($e1.tree, $type.tree);
+
         }
     ;
 
@@ -298,7 +309,7 @@ unary_expr returns[AbstractExpr tree]
         }
     | op=EXCLAM e=unary_expr {
             assert($e.tree != null);
-            $tree = new Not($e.tree);
+            $tree = new NOT($e.tree);
         }
     | select_expr {
             assert($select_expr.tree != null);
@@ -308,10 +319,12 @@ unary_expr returns[AbstractExpr tree]
 select_expr returns[AbstractExpr tree]
     : e=primary_expr {
             assert($e.tree != null);
+            $tree = $e.tree;
         }
     | e1=select_expr DOT i=ident {
             assert($e1.tree != null);
             assert($i.tree != null);
+
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
@@ -326,6 +339,7 @@ select_expr returns[AbstractExpr tree]
 primary_expr returns[AbstractExpr tree]
     : ident {
             assert($ident.tree != null);
+            $tree = $ident.tree;
         }
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
@@ -333,49 +347,98 @@ primary_expr returns[AbstractExpr tree]
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
+            $tree = $expr.tree;
         }
     | READINT OPARENT CPARENT {
+        $tree = new ReadInt();
         }
     | READFLOAT OPARENT CPARENT {
+        $tree = new ReadFloat();
         }
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
+            $tree = new New($ident.tree);
         }
     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
             assert($type.tree != null);
             assert($expr.tree != null);
+            $tree = new Cast($expr.tree, $type.tree);
         }
     | literal {
             assert($literal.tree != null);
+            $tree = $literal.tree;
         }
     ;
 
 type returns[AbstractIdentifier tree]
     : ident {
             assert($ident.tree != null);
+            $tree = $ident.tree;
         }
     ;
 
 literal returns[AbstractExpr tree]
     : INT {
-        }
+            try{
+                $tree = new IntLiteral(Integer.parseInt($INT.text));
+            } catch (NumberFormatException e){
+                $tree = null;
+            }
+        } {$tree != null}?
     | fd=FLOAT {
-        }
-    | STRING {
-        }
+            try{
+                $tree = new FloatLiteral(Float.parseFloat($fd.text));
+            } catch (NumberFormatException e){
+                $tree = null;
+            }
+        } {$tree != null}?
+    | s=STRING {
+            try{
+                String str = new String();
+                str = $s.text.substring(1, $s.text.length()-1)
+                $tree = new StringLiteral(str);
+            } catch (NumberFormatException e){
+                $tree = null;
+            }
+        } {$tree != null}?
     | TRUE {
-        }
+        try{
+                $tree = new BooleanLiteral(true);
+            } catch (NumberFormatException e){
+                $tree = null;
+            }
+        } {$tree != null}?
     | FALSE {
-        }
+            try{
+                $tree = new BooleanLiteral(false);
+            } catch (NumberFormatException e){
+                $tree = null;
+            }
+        } {$tree != null}?
     | THIS {
-        }
+            try{
+                $tree = new This(false);
+            } catch (NumberFormatException e){
+                $tree = null;
+            }
+        } {$tree != null}?
     | NULL {
-        }
+            try{
+                $tree = new Null();
+            } catch (NumberFormatException e){
+                $tree = null;
+            }
+        } {$tree != null}?
     ;
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
-        }
+            try{
+                $tree = new Identifier(symb_tab.create($IDENT.text));
+            } catch (NumberFormatException e){
+                $tree = null;
+            }
+        } {$tree != null}?
     ;
 
 /****     Class related rules     ****/
