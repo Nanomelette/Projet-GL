@@ -1,6 +1,9 @@
 #!/bin/sh
 
-for i in ../../deca/syntax/valid/*.deca
+SOURCE=$0
+SOURCE="${SOURCE%/*}/../../deca/syntax/valid/*.deca" 
+
+for i in $SOURCE
 do
     echo "$i"
     # Remplacer <executable> par test_synt ou test_lex
