@@ -129,7 +129,7 @@ inst returns[AbstractInst tree]
             assert($list_expr.tree != null);
             $tree = new Println($list_expr.tree);
         }
-    | if_then_else {
+    | if_then_else { 
             assert($if_then_else.tree != null);
             $tree = $if_then_else.tree;
         }
@@ -229,7 +229,7 @@ eq_neq_expr returns[AbstractExpr tree]
     | e1=eq_neq_expr NEQ e2=inequality_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
-            $tree = new Plus($e1.tree, $e2.tree);
+            $tree = new NotEquals($e1.tree, $e2.tree);
         }
     ;
 
