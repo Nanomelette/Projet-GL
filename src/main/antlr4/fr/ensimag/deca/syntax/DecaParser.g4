@@ -163,8 +163,12 @@ list_expr returns[ListExpr tree]
     $tree = new ListExpr();
         }
     : (e1=expr {
+        assert($e1.tree != null);
+        $tree.add($e1.tree);
         }
        (COMMA e2=expr {
+           assert($e2.tree != null);
+           $tree.add($e2.tree);
         }
        )* )?
     ;
