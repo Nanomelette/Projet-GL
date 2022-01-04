@@ -1,0 +1,22 @@
+#include "file"
+{
+    protected ExampleClass extends AbstractClass{
+        protected att = 0xA.Ap-1f;
+        if (att < -1 && instanceof(att)==Integer) {
+            print("Print!");
+            println("Println!");
+            printlnx("Printlnx!");
+            printx("Printx!");
+        } else {
+            a = new readInt();
+            b = readFloat();
+            n = null;
+            c = "apzoihihaziph
+            dapzodj"
+            while (a > b || b >= n) {
+                o = E-10;
+            }
+        }
+        return 1000;
+    }
+}
