@@ -228,7 +228,7 @@ POSITIVE_DIGIT :
 ;
 
 INT :
-   '0' POSITIVE_DIGIT*
+   '0' | POSITIVE_DIGIT DIGIT*
 ;
 
 
@@ -260,7 +260,7 @@ fragment DIGITHEX :
    '0' .. '9' | 'A' .. 'F' | 'a' .. 'f'
 ;
 
-NUMHEX :
+fragment NUMHEX :
    DIGITHEX+
 ;
 
@@ -292,7 +292,7 @@ CLASSIC_COMMENT :
 ;
 
 MONO_LINE_COMMENT :
-   '//' .*? (EOL | EPS) // On a fait le choix de mettre EPS ?
+   ('//' .*? EOL)
    { skip(); }
 ;
 
@@ -309,7 +309,7 @@ FILENAME :
    (LETTER | DIGIT | '.' | MINUS | '_')+
 ;
 
-INCULDE :
+INCLUDE :
    '#include' (SPACE)* '"' FILENAME '"'
 ;
 
