@@ -218,7 +218,7 @@ OR :
 
 // Identifiers : reserved words are not identifiers that's why they are before in the file
 IDENT :
-   (LETTER | '$' | '_')(LETTER DIGIT | '$' | '_')*
+   (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*
 ;
 
 
