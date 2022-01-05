@@ -408,7 +408,6 @@ literal returns[AbstractExpr tree]
     | s=STRING {
             try{
                 String str = new String();
-                str = $s.text.substring(1, $s.text.length()-1);
                 $tree = new StringLiteral(str);
             } catch (NumberFormatException e){
                 $tree = null;
@@ -436,6 +435,7 @@ literal returns[AbstractExpr tree]
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
+        $tree = new Identifier(SymbolTable.create($IDENT.text));
             
         } 
     ;
