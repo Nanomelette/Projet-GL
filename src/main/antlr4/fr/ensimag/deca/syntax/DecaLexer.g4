@@ -232,6 +232,7 @@ INT :
 ;
 
 
+
 // Float litterals
 NUM :
    DIGIT+
@@ -305,12 +306,16 @@ WS :
 ;
 
 // File inclusion
-FILENAME : 
+fragment FILENAME : 
    (LETTER | DIGIT | '.' | MINUS | '_')+
 ;
 
 INCLUDE :
    '#include' (SPACE)* '"' FILENAME '"'
+   {
+       doInclude(getText());
+       skip();
+    }
 ;
 
 DEFAULT:
