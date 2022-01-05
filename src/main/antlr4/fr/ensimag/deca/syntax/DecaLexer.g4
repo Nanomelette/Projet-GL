@@ -223,12 +223,17 @@ IDENT :
 
 
 // INT litterals
-POSITIVE_DIGIT :
+fragment POSITIVE_DIGIT :
    '1' .. '9'
 ;
 
 INT :
    '0' | POSITIVE_DIGIT DIGIT*
+   {
+       int i = Integer.parseInt(getText());
+       int borne = 2147483647;
+       assert((-borne-1 < i) && (i < borne));
+   }
 ;
 
 
@@ -245,11 +250,11 @@ fragment SIGN :
    )
 ;
 
-EXP : 
+fragment EXP : 
    ('E' | 'e') SIGN NUM
 ;
 
-DEC :
+fragment DEC :
    NUM '.' NUM
 ;
 
@@ -270,7 +275,14 @@ fragment FLOATHEX :
 ;
 
 FLOAT :
-   FLOATDEC | FLOATHEX
+   (FLOATDEC | FLOATHEX)
+   {
+       double res = Double.parseDouble(getText());
+       float round = (float)res;
+       assert((round != Float.POSITIVE_INFINITY));
+       assert(!((round == 0.0) && (res != 0.0)));
+       setText(String.valueOf(round));
+   }
 ;
 
 // Strings
