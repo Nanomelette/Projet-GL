@@ -26,6 +26,7 @@ options {
 @header {
     import fr.ensimag.deca.tree.*;
     import java.io.PrintStream;
+    import fr.ensimag.deca.tools.SymbolTable;
 }
 
 @members {
@@ -408,7 +409,7 @@ literal returns[AbstractExpr tree]
     | s=STRING {
             try{
                 String str = new String();
-                str = $s.text.substring(1, $s.text.length()-1);
+                str = $s.text;
                 $tree = new StringLiteral(str);
             } catch (NumberFormatException e){
                 $tree = null;
