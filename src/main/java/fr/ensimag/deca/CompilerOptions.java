@@ -44,14 +44,15 @@ public class CompilerOptions {
     
     public void parseArgs(String[] args) throws CLIException {
         if (args.length != 0) {
-            if ((args.length == 0)) {
+            if ((args.length == 1)) {
                 if (args[0] == "-b") {
                     System.out.println("Groupe 4 Equipe 20");
+                } else {
+                    // Gestion du cas ou seul un seul nom de fichier est fourni
+                File sourceFile = new File(args[0]);
+                sourceFiles.add(sourceFile);
                 }
             }
-            // Gestion du cas ou seul un seul nom de fichier est fourni
-            File sourceFile = new File(args[0]);
-            sourceFiles.add(sourceFile);
         }
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
