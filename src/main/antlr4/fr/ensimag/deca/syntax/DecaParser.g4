@@ -85,6 +85,7 @@ list_decl_var[ListDeclVar l, AbstractIdentifier t]
         $l.add($dv1.tree);
         } (COMMA dv2=decl_var[$t] {
             assert($dv2.tree!=null);
+            $l.add($dv2.tree);
         }
       )*
     ;
