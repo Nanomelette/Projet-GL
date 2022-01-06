@@ -232,7 +232,12 @@ INT :
    {
        int i = Integer.parseInt(getText());
        int borne = 2147483647;
-       assert((-borne-1 < i) && (i < borne));
+       try {
+           assert ((-borne-1 < i) && (i < borne)) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " est trop grand";
+       } catch (java.lang.AssertionError e) {
+            System.out.println(e.getMessage());
+            System.exit(0);
+       }
    }
 ;
 
@@ -279,8 +284,14 @@ FLOAT :
    {
        double res = Double.parseDouble(getText());
        float round = (float)res;
-       assert((round != Float.POSITIVE_INFINITY));
-       assert(!((round == 0.0) && (res != 0.0)));
+       try { 
+        assert (round != Float.POSITIVE_INFINITY) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " est trop grand et l'arrondi se fait vers l'infini" ;
+
+        assert (!((round == 0.0) && (res != 0.0))) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " est trop petit et l'arrondi se fait vers 0";
+       } catch (java.lang.AssertionError e) {
+            System.out.println(e.getMessage());
+            System.exit(0);
+       }
        setText(String.valueOf(round));
    }
 ;
@@ -332,4 +343,12 @@ INCLUDE :
 
 DEFAULT:
    .
+   {
+       try {
+            assert false : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Caractère(s) non reconnu(s) par notre lexer";
+       } catch (java.lang.AssertionError e) {
+            System.out.println(e.getMessage());
+            System.exit(0);
+       }
+   }
 ;
