@@ -30,6 +30,7 @@ options {
 }
 
 @members {
+    private static SymbolTable symbol_table = new SymbolTable();
     @Override
     protected AbstractProgram parseProgram() {
         return prog().tree;
@@ -501,7 +502,7 @@ literal returns[AbstractExpr tree]
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
-        $tree = new Identifier(SymbolTable.create($IDENT.text));
+        $tree = new Identifier(symbol_table.create($IDENT.text));
         setLocation($tree, $IDENT);
         } 
     ;
