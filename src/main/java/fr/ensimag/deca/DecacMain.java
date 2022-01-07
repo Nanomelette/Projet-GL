@@ -1,6 +1,10 @@
 package fr.ensimag.deca;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.URL;
+import java.util.Scanner;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -26,10 +30,21 @@ public class DecacMain {
             System.exit(1);
         }
         if (options.getPrintBanner()) {
-            throw new UnsupportedOperationException("decac -b not yet implemented");
+            System.out.println("Groupe 4 Equipe 20");
+            System.out.println("Hagenburg Arthur / Maggiori Oscar / Martineau Thomas / Gariel Arnaud / Kuhnast Antoine");
+            URL location = DecacMain.class.getProtectionDomain().getCodeSource().getLocation();
+            try (Scanner input = new Scanner(new File(location.getPath()+"../../src/main/java/fr/ensimag/deca/banner.txt"))) {
+                while (input.hasNextLine())
+                {
+                    System.out.println(input.nextLine());
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            System.exit(1);
         }
         if (options.getSourceFiles().isEmpty()) {
-            throw new UnsupportedOperationException("decac without argument not yet implemented");
+            options.displayUsage();
         }
         if (options.getParallel()) {
             // A FAIRE : instancier DecacCompiler pour chaque fichier à

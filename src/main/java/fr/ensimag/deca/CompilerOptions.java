@@ -1,10 +1,13 @@
 package fr.ensimag.deca;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -46,11 +49,82 @@ public class CompilerOptions {
         if (args.length != 0) {
             if ((args.length == 1)) {
                 if (args[0].equals("-b")) {
-                    System.out.println("Groupe 4 Equipe 20");
+                    printBanner = true;
                 } else {
-                    // Gestion du cas ou seul un seul nom de fichier est fourni
+                    // Only one filepath is given
                     File sourceFile = new File(args[0]);
                     sourceFiles.add(sourceFile);
+                }
+            } else {
+                // More than one argument
+                boolean pOrVUsed = false;
+                int traceDepth = 0;
+                int firstSourceIndex = 0;
+                for (int i = 0; i<args.length; i++) {
+                    if (args[i].charAt(0) == '-') {
+                        if (args[i].length() == 2) {
+                            if ((args[i].charAt(1) == 'p') && !pOrVUsed) {
+                                // -p option : parse
+                                pOrVUsed = true;
+                                // TODO
+                            } else if ((args[i].charAt(1) == 'v') && !pOrVUsed) {
+                                // -v option : verification
+                                pOrVUsed = true;
+                                // TODO
+                            } else if (args[i].charAt(1) == 'n') {
+                                // -n option : no check
+                                // TODO
+                            } else if (args[i].charAt(1) == 'r') {
+                                // - r X option (must parse the X) : registers 
+                                // TODO
+                                if (args[i+1] != null) {
+                                    try {
+                                        int xOption = Integer.parseInt(args[i+1]);
+                                        if ((xOption >= 4) && (xOption <= 16)) {
+                                            i += 1;
+                                            // TODO
+                                        } else {
+                                            throw new CLIException("Incorrect number of registers");
+                                        }
+                                    } catch (NumberFormatException e) {
+                                        throw new CLIException("Incorrect number of registers");
+                                    }
+                                    
+                                } else {
+                                    throw new CLIException("Incorrect arguments");
+                                }
+                            } else if (args[i].charAt(1) == 'd') {
+                                // d option : debug
+                                traceDepth += 1;
+                            } else if (args[i].charAt(1) == 'P') {
+                                // P option : parallel
+                                // TODO
+                            } else {
+                                throw new CLIException("Incorrect arguments");
+                            }
+                        } else {
+                            throw new CLIException("Incorrect arguments");
+                        }
+                    } else {
+                        // It's a filepath, we stop the option managment
+                        firstSourceIndex = i;
+                        break;
+                    }
+                }
+                // filepath management
+                for (int i = firstSourceIndex; i<args.length; i++) {
+                    File sourceFile = new File(args[i]);
+                    if (sourceFile.getName().length() > 5) {
+                        if (sourceFile.getName().substring(sourceFile.getName().length()-5, sourceFile.getName().length()).equals(".deca")) {
+                            if (!sourceFiles.contains(sourceFile)) {
+                                sourceFiles.add(sourceFile);
+                            }
+                        } else {
+                            throw new CLIException("Incorrect extension : .deca expected");
+                        }
+                    } else {
+                        throw new CLIException("Incorrect extension : .deca expected");
+                    }
                 }
             }
         }
@@ -79,6 +153,14 @@ public class CompilerOptions {
     }
 
     protected void displayUsage() {
-        throw new UnsupportedOperationException("not yet implemented");
+        URL location = DecacMain.class.getProtectionDomain().getCodeSource().getLocation();
+        try (Scanner input = new Scanner(new File(location.getPath()+"../../src/main/java/fr/ensimag/deca/docDecac.txt"))) {
+            while (input.hasNextLine())
+            {
+                System.out.println(input.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
