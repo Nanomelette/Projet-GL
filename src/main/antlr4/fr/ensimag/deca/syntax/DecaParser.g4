@@ -505,7 +505,13 @@ literal returns[AbstractExpr tree]
     | THIS {
         } 
     | NULL {
-        }
+        try{
+                $tree = new Null();
+            } catch (NumberFormatException e){
+                $tree = null;
+            }
+            setLocation($tree, $NULL);
+        } {$tree != null}?
     ;
 
 ident returns[AbstractIdentifier tree]
