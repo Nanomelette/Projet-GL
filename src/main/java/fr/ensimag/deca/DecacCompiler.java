@@ -170,6 +170,7 @@ public class DecacCompiler {
     private boolean doCompile(String sourceName, String destName,
             PrintStream out, PrintStream err)
             throws DecacFatalError, LocationException {
+        // A
         AbstractProgram prog = doLexingAndParsing(sourceName, err);
 
         if (prog == null) {
@@ -178,10 +179,20 @@ public class DecacCompiler {
         }
         assert(prog.checkAllLocations());
 
+        if (compilerOptions.getParse()) {
+            prog.prettyPrint(System.out);
+            // TODO : décompiler l'arbre et afficher sa décompilation
+            System.exit(0);
+        }
 
-        // prog.verifyProgram(this);
-        // assert(prog.checkAllDecorations());
+        // B
+        prog.verifyProgram(this);
+        assert(prog.checkAllDecorations());
+        if (compilerOptions.getVerification()) {
+            System.exit(0);
+        }
 
+        // C
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
