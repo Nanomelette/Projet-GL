@@ -79,7 +79,7 @@ public class EnvironmentExp {
      */
     public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
         if(DictionnaryMap.containsKey(name)){
-            throws new DoubleDefException();
+            throw new DoubleDefException();
         }
         DictionnaryMap.put(name, def);
         
