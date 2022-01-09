@@ -1,5 +1,6 @@
 package fr.ensimag.deca.context;
 
+import java.util.*;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 /**
@@ -20,14 +21,28 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
  * @date 01/01/2022
  */
 public class EnvironmentExp {
+
     // A FAIRE : implémenter la structure de donnée représentant un
     // environnement (association nom -> définition, avec possibilité
     // d'empilement).
 
     EnvironmentExp parentEnvironment;
-    
+
+    List<EnvironmentExp> ListDictionaries = new LinkedList<EnvironmentExp>();
+    HashMap<Symbol, ExpDefinition> DictionnaryMap;
+
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
+
+        if( parentEnvironment == null ){
+            /* initialisation de la Hashmap*/
+            DictionnaryMap = new HashMap<Symbol,ExpDefinition>();
+        }
+        
+        else {
+            
+        }
+
     }
 
     public static class DoubleDefException extends Exception {
@@ -39,7 +54,12 @@ public class EnvironmentExp {
      * symbol is undefined.
      */
     public ExpDefinition get(Symbol key) {
-        throw new UnsupportedOperationException("not yet implemented");
+        if(!DictionnaryMap.containsKey(key)){
+            return null;
+        }
+        return DictionnaryMap.get(key);
+        //throw new UnsupportedOperationException("not yet implemented");
+
     }
 
     /**
@@ -58,7 +78,12 @@ public class EnvironmentExp {
      *
      */
     public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
-        throw new UnsupportedOperationException("not yet implemented");
+        if(DictionnaryMap.containsKey(name)){
+            throws new DoubleDefException();
+        }
+        DictionnaryMap.put(name, def);
+        
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
 }
