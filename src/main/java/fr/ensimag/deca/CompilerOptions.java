@@ -39,10 +39,20 @@ public class CompilerOptions {
         return Collections.unmodifiableList(sourceFiles);
     }
 
+    public boolean getParse() {
+        return parse;
+    }
+
+    public boolean getVerification() {
+        return verification;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
     private List<File> sourceFiles = new ArrayList<File>();
+    private boolean parse = false;
+    private boolean verification = false;
 
     
     public void parseArgs(String[] args) throws CLIException {
@@ -66,17 +76,16 @@ public class CompilerOptions {
                             if ((args[i].charAt(1) == 'p') && !pOrVUsed) {
                                 // -p option : parse
                                 pOrVUsed = true;
-                                // TODO
+                                parse = true;
                             } else if ((args[i].charAt(1) == 'v') && !pOrVUsed) {
                                 // -v option : verification
                                 pOrVUsed = true;
-                                // TODO
+                                verification = true;
                             } else if (args[i].charAt(1) == 'n') {
                                 // -n option : no check
                                 // TODO
                             } else if (args[i].charAt(1) == 'r') {
                                 // - r X option (must parse the X) : registers 
-                                // TODO
                                 if (args[i+1] != null) {
                                     try {
                                         int xOption = Integer.parseInt(args[i+1]);
