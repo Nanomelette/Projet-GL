@@ -44,7 +44,7 @@ public class Program extends AbstractProgram {
         // Pass 3
         // classes.verifyListClassBody(compiler);
         main.verifyMain(compiler);
-        // LOG.debug("verify program: end");
+        LOG.debug("verify program: end");
     }
 
     @Override
