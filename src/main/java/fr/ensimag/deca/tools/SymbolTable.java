@@ -15,6 +15,7 @@ import java.util.Map;
  * @author gl20
  * @date 01/01/2022
  */
+
 public class SymbolTable {
     private Map<String, Symbol> map = new HashMap<String, Symbol>();
 

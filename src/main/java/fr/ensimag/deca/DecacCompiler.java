@@ -3,6 +3,7 @@ package fr.ensimag.deca;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
 import fr.ensimag.ima.pseudocode.AbstractLine;
@@ -35,6 +36,7 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+    private static final SymbolTable symbol_table = new SymbolTable();
     
     /**
      * Portable newline character.
@@ -45,6 +47,10 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+    }
+
+    public SymbolTable getSymbolTable(){
+        return symbol_table;
     }
 
     /**

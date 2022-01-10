@@ -50,17 +50,28 @@ public class ClassType extends Type {
         super(className);
     }
     
-
+    /**
+     * True if this and otherType represent the same type (in the case of
+     * classes, this means they represent the same class).
+     */
     @Override
     public boolean sameType(Type otherType) {
-        throw new UnsupportedOperationException("not yet implemented");
+        if(otherType.isClass()){
+            return true;
+        }
+        return false;
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**
      * Return true if potentialSuperClass is a superclass of this class.
      */
     public boolean isSubClassOf(ClassType potentialSuperClass) {
-        throw new UnsupportedOperationException("not yet implemented"); 
+        if(potentialSuperClass){
+            return true;
+        }
+        return false;
+        //throw new UnsupportedOperationException("not yet implemented"); 
     }
 
 

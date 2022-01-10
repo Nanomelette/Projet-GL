@@ -27,7 +27,6 @@ public class EnvironmentExp {
     // d'empilement).
 
     EnvironmentExp parentEnvironment;
-
     List<EnvironmentExp> ListDictionaries = new LinkedList<EnvironmentExp>();
     HashMap<Symbol, ExpDefinition> DictionnaryMap;
 
@@ -35,14 +34,15 @@ public class EnvironmentExp {
         this.parentEnvironment = parentEnvironment;
 
         if( parentEnvironment == null ){
-            /* initialisation de la Hashmap*/
             DictionnaryMap = new HashMap<Symbol,ExpDefinition>();
         }
         
-        else {
+
+        else if (DictionnaryMap.isEmpty()){
+            ListDictionaries.add(parentEnvironment);
+            DictionnaryMap = new HashMap<Symbol,ExpDefinition>();
             
         }
-
     }
 
     public static class DoubleDefException extends Exception {
@@ -59,7 +59,6 @@ public class EnvironmentExp {
         }
         return DictionnaryMap.get(key);
         //throw new UnsupportedOperationException("not yet implemented");
-
     }
 
     /**
@@ -82,7 +81,6 @@ public class EnvironmentExp {
             throw new DoubleDefException();
         }
         DictionnaryMap.put(name, def);
-        
         //throw new UnsupportedOperationException("not yet implemented");
     }
 

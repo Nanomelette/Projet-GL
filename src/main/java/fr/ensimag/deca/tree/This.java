@@ -1,5 +1,4 @@
 package fr.ensimag.deca.tree;
-
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -13,11 +12,11 @@ import java.io.PrintStream;
  * @author gl20
  * @date 01/01/2022
  */
-public class Null extends AbstractExpr {
+public class This extends AbstractExpr {
 
     private Object value;
 
-    public Null() {
+    public This() {
         this.value = null;
     }
 
@@ -28,14 +27,13 @@ public class Null extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        //throw new UnsupportedOperationException("not yet implemented");
-        return currentClass.getType();
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("null");
+        s.print(null);
     }
 
     @Override
@@ -50,7 +48,8 @@ public class Null extends AbstractExpr {
 
     @Override
     String prettyPrintNode() {
-        return "Null (" + value + ")";
+        return "This (" + value + ")";
     }
 
 }
+

@@ -27,10 +27,11 @@ options {
     import fr.ensimag.deca.tree.*;
     import java.io.PrintStream;
     import fr.ensimag.deca.tools.SymbolTable;
+    import fr.ensimag.deca.DecacCompiler;
 }
 
 @members {
-    private static SymbolTable symbol_table = new SymbolTable();
+    //private static SymbolTable symbol_table = new SymbolTable();
     @Override
     protected AbstractProgram parseProgram() {
         return prog().tree;
@@ -82,6 +83,7 @@ decl_var_set[ListDeclVar l]
 
 list_decl_var[ListDeclVar l, AbstractIdentifier t]
     : dv1=decl_var[$t] {
+        assert($dv1.tree!=null);
         $l.add($dv1.tree);
         } (COMMA dv2=decl_var[$t] {
             assert($dv2.tree!=null);
@@ -524,7 +526,8 @@ literal returns[AbstractExpr tree]
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
-        $tree = new Identifier(symbol_table.create($IDENT.text));
+        
+        $tree = new Identifier(getDecacCompiler().getSymbolTable().create($IDENT.text));
         setLocation($tree, $IDENT);
         } 
     ;
