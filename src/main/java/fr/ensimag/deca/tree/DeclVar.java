@@ -20,6 +20,10 @@ public class DeclVar extends AbstractDeclVar {
     final private AbstractIdentifier varName;
     final private AbstractInitialization initialization;
 
+    public AbstractIdentifier getVarName() {
+        return varName;
+    }
+
     public DeclVar(AbstractIdentifier type, AbstractIdentifier varName, AbstractInitialization initialization) {
         Validate.notNull(type);
         Validate.notNull(varName);

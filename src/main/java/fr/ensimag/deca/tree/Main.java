@@ -3,7 +3,13 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+
 import java.io.PrintStream;
+import java.util.Iterator;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -37,6 +43,13 @@ public class Main extends AbstractMain {
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
         // A FAIRE: traiter les déclarations de variables.
+        int offset = 1;
+        for (AbstractDeclVar absDeclVar : declVariables.getList()) {
+            DAddr address = new RegisterOffset(offset, Register.GB);
+            Identifier var = (Identifier)((DeclVar)absDeclVar).getVarName();
+            var.getExpDefinition().setOperand(address);
+            offset++;
+        }
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
     }
