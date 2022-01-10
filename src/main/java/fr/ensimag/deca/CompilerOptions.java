@@ -72,7 +72,6 @@ public class CompilerOptions {
             } else {
                 // More than one argument
                 boolean pOrVUsed = false;
-                int traceDepth = 0;
                 int firstSourceIndex = 0;
                 for (int i = 0; i<args.length; i++) {
                     if (args[i].charAt(0) == '-') {
@@ -108,7 +107,9 @@ public class CompilerOptions {
                                 }
                             } else if (args[i].charAt(1) == 'd') {
                                 // d option : debug
-                                traceDepth += 1;
+                                if (debug < 3) {
+                                    debug += 1;
+                                }
                             } else if (args[i].charAt(1) == 'P') {
                                 // P option : parallel
                                 // TODO
