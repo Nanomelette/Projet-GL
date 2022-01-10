@@ -47,13 +47,17 @@ public class CompilerOptions {
         return verification;
     }
 
+    public int getMaxRegister() {
+        return maxRegister;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
     private List<File> sourceFiles = new ArrayList<File>();
     private boolean parse = false;
     private boolean verification = false;
-
+    private int maxRegister = 16;
     
     public void parseArgs(String[] args) throws CLIException {
         if (args.length != 0) {
@@ -91,7 +95,7 @@ public class CompilerOptions {
                                         int xOption = Integer.parseInt(args[i+1]);
                                         if ((xOption >= 4) && (xOption <= 16)) {
                                             i += 1;
-                                            // TODO
+                                            maxRegister = xOption;
                                         } else {
                                             throw new CLIException("Incorrect number of registers");
                                         }
