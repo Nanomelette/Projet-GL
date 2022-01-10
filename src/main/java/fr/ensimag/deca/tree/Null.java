@@ -50,7 +50,7 @@ public class Null extends AbstractExpr {
 
     @Override
     String prettyPrintNode() {
-        return "Null (" + value + ")";
+        return "Null";
     }
 
 }
