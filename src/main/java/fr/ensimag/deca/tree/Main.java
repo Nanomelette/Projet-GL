@@ -49,7 +49,7 @@ public class Main extends AbstractMain {
             Identifier var = (Identifier)((DeclVar)absDeclVar).getVarName();
             var.getExpDefinition().setOperand(address);
             offset++;
-        } // Et si il y a trop de variable ? 
+        } //TODO :  Et si il y a trop de variable ? 
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
     }
