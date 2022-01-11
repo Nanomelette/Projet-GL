@@ -1,5 +1,6 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.Memory;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -37,7 +38,11 @@ import org.apache.log4j.Logger;
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
     private static final SymbolTable symbol_table = new SymbolTable();
-    
+    private Memory memory;
+
+    public Memory getMemory() {
+        return memory;
+    }
     /**
      * Portable newline character.
      */
@@ -47,6 +52,7 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        this.memory = new Memory();
     }
 
     public SymbolTable getSymbolTable(){
@@ -107,6 +113,19 @@ public class DecacCompiler {
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
     }
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
+     */
+    public void addInstructionatFirst(Instruction instruction) {
+        program.addFirst(instruction);
+    }
+
+    public void addInstructionatFirst(Instruction instruction, String comment) {
+        program.addFirst(instruction, comment);
+    }
+
     
     /**
      * @see 
@@ -192,8 +211,8 @@ public class DecacCompiler {
         }
 
         // B
-        prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
+        // prog.verifyProgram(this);
+        // assert(prog.checkAllDecorations());
         if (compilerOptions.getVerification()) {
             System.exit(0);
         }
@@ -245,6 +264,9 @@ public class DecacCompiler {
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
+    }
+
+    private void codeGenInitialization() {
     }
 
 }
