@@ -11,6 +11,13 @@ import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -39,6 +46,9 @@ public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
     private static final SymbolTable symbol_table = new SymbolTable();
     private Memory memory;
+
+    //TODO : vérifier qu'il faille bien le définir ici
+    private Label pile_pleine = new Label("pile_pleine");
 
     public Memory getMemory() {
         return memory;
@@ -118,11 +128,11 @@ public class DecacCompiler {
      * @see
      * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
      */
-    public void addInstructionatFirst(Instruction instruction) {
+    public void addInstructionAtFirst(Instruction instruction) {
         program.addFirst(instruction);
     }
 
-    public void addInstructionatFirst(Instruction instruction, String comment) {
+    public void addInstructionAtFirst(Instruction instruction, String comment) {
         program.addFirst(instruction, comment);
     }
 
@@ -218,18 +228,30 @@ public class DecacCompiler {
         }
 
         // C
-        addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
-
+        
         FileOutputStream fstream = null;
         try {
             fstream = new FileOutputStream(destName);
         } catch (FileNotFoundException e) {
             throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
         }
+        // Ecriture de l'header
+        addInstructionAtFirst(new ADDSP(16));
+        addInstructionAtFirst(new BOV(pile_pleine));
+        // TODO : gérer l'argument de TSTO : surement un truc du genre 'debut de la pile + taille de la pile'
+        addInstructionAtFirst(new TSTO(1));
+        addInstructionAtFirst(null, "start main program");
+
+        addLabel(pile_pleine);
+        addInstruction(new WSTR("Error: full stack."));
+        addInstruction(new WNL());
+        addInstruction(new ERROR());
+
+        
 
         LOG.info("Writing assembler file ...");
 
@@ -264,9 +286,6 @@ public class DecacCompiler {
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
-    }
-
-    private void codeGenInitialization() {
     }
 
 }
