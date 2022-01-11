@@ -1,6 +1,15 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.IMAProgram;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -64,6 +73,34 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         leftOperand.prettyPrint(s, prefix, false);
         rightOperand.prettyPrint(s, prefix, true);
+    }
+
+    protected DVal op1;
+    protected GPRegister op2;
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        AbstractExpr leftOperand = getLeftOperand();
+        AbstractExpr rightOperand = getRightOperand();
+
+        if (rightOperand instanceof Identifier) {
+            op1 = ((Identifier)rightOperand).getExpDefinition().getOperand();
+            leftOperand.codeGenInst(compiler);
+            op2 = compiler.getMemory().getLastRegister();
+        } else {
+            leftOperand.codeGenInst(compiler);
+            op1 = (DVal)compiler.getMemory().getLastRegister();
+
+            rightOperand.codeGenInst(compiler);
+            op2 = compiler.getMemory().getLastRegister();
+        }
+
+        // TODO : Gestion des registres quand on il y a plus assez
+        // if () {
+        //     compiler.addInstruction(new LOAD(op2, Register.getR(0)));
+        //     compiler.addInstruction(new POP(op2));
+        //     op1 = Register.getR(0);
+        // }
     }
 
 }
