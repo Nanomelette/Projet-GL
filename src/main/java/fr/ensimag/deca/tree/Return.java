@@ -18,7 +18,7 @@ public class Return extends AbstractInst {
         return condition;
     }
 
-    public Return(AbstractExpr condition, ListInst body) {
+    public Return(AbstractExpr condition) {
         Validate.notNull(condition);
         this.condition = condition;
     }
@@ -37,7 +37,7 @@ public class Return extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("return (");
+        s.print("Return (");
         getCondition().decompile(s);
         s.println(") {");
         s.indent();
