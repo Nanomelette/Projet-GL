@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.BooleanType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -33,6 +34,7 @@ public class BooleanLiteral extends AbstractExpr {
             Type type = new BooleanType(compiler.getSymbolTable().create("boolean"));
             this.setType(type);
             return type;
+            //throw new UnsupportedOperationException("not yet implemented");
     }
 
 
