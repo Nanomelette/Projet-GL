@@ -11,12 +11,12 @@ import org.apache.log4j.Logger;
  * @author gl20
  * @date 01/01/2022
  */
-public class ListDeclField extends TreeList<AbstractDeclField> {
-    private static final Logger LOG = Logger.getLogger(ListDeclField.class);
+public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
+    private static final Logger LOG = Logger.getLogger(ListDeclMethod.class);
     
     @Override
     public void decompile(IndentPrintStream s) {
-        for (AbstractDeclField c : getList()) {
+        for (AbstractDeclMethod c : getList()) {
             c.decompile(s);
             s.println();
         }
@@ -25,15 +25,15 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
     /**
      * Pass 2 of [SyntaxeContextuelle]
      */
-    void verifyListField(DecacCompiler compiler, Identifier classeSup, Identifier classe) throws ContextualError {
-        LOG.debug("verify listField: start");
+    void verifyListMethod(DecacCompiler compiler, Identifier classeSup) throws ContextualError {
+        LOG.debug("verify listMethod: start");
 
-        for(AbstractDeclField c : this.getList()){
-            c.verifyField(compiler, classeSup, classe);
+        for(AbstractDeclMethod c : this.getList()){
+            c.verifyMethod(compiler, classeSup);
         }
 
         //throw new UnsupportedOperationException("not yet implemented");
-        LOG.debug("verify listField: end");
+        LOG.debug("verify listMethod: end");
     }
 
 }
