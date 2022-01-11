@@ -41,15 +41,12 @@ public class Return extends AbstractInst {
         getCondition().decompile(s);
         s.println(") {");
         s.indent();
-        getBody().decompile(s);
-        s.unindent();
-        s.print("}");
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
         condition.iter(f);
-        body.iter(f);
+
     }
 
     @Override
