@@ -8,7 +8,7 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 import java.io.PrintStream;
-import java.util.Iterator;
+
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -49,7 +49,7 @@ public class Main extends AbstractMain {
             Identifier var = (Identifier)((DeclVar)absDeclVar).getVarName();
             var.getExpDefinition().setOperand(address);
             offset++;
-        }
+        } // Et si il y a trop de variable ? 
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
     }
