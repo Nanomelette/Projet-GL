@@ -32,17 +32,7 @@ public class EnvironmentExp {
 
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
-
-        if( parentEnvironment == null ){
-            DictionnaryMap = new HashMap<Symbol,ExpDefinition>();
-        }
-        
-
-        else if (DictionnaryMap.isEmpty()){
-            ListDictionaries.add(parentEnvironment);
-            DictionnaryMap = new HashMap<Symbol,ExpDefinition>();
-            
-        }
+        DictionnaryMap = new HashMap<Symbol,ExpDefinition>();
     }
 
     public static class DoubleDefException extends Exception {
