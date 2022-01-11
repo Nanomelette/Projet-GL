@@ -162,6 +162,7 @@ inst returns[AbstractInst tree]
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
+            $tree = new Return($expr.tree);
         }
     ;
 
@@ -608,9 +609,16 @@ decl_method
         }
     ;
 
-list_params
+list_params returns [ListDeclParam tree]
+@init {
+    $tree = new ListDeclParam():
+}
     : (p1=param {
+        assert($p1.tree != null);
+        $tree.add($p1.tree)
         } (COMMA p2=param {
+            assert(p2.tree != null);
+            $tree.add($p2.tree)
         }
       )*)?
     ;
@@ -626,7 +634,11 @@ multi_line_string returns[String text, Location location]
         }
     ;
 
-param
+param returns [AbstractDeclParam tree]
     : type ident {
+        assert($type.tree != null);
+        assert($ident.tree!= null);
+        $tree = new DeclParam($type.tree,$ident.tree);
+        setLocation($tree, $type.start);
         }
     ;

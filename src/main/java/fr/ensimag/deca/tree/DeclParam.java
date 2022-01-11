@@ -10,11 +10,14 @@ import java.io.PrintStream;
 
 public class DeclParam {
 
-    private Identifier param;
+    private Identifier type;
+    private Identifier name;
 
-    public DeclParam(Identifier param){
-        Validate.notNull(param);
-        this.param = param;
+    public DeclParam(Identifier type, Identifier name){
+        Validate.notNull(type);
+        Validate.notNull(name);
+        this.type = type;
+        this.name = name;
     }
 
     protected void verifyParam(DecacCompiler compiler)

@@ -1,17 +1,21 @@
 package fr.ensimag.deca.tree;
 
-import org.apache.commons.lang.Validate;
-import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+import java.io.ObjectInputStream.GetField;
 
-public class DeclField {
+import org.apache.commons.lang.Validate;
+
+public class DeclField extends AbstractDeclField {
 
     private Identifier field;
     private Initialization init;
+    
 
     public DeclField(Identifier field, Initialization init){
         Validate.notNull(field);
@@ -20,9 +24,25 @@ public class DeclField {
         this.init = init;
     }
 
-    protected void verifyField(DecacCompiler compiler, Identifier classeSup, Identifier classe)
-            throws ContextualError{
-            this.verifyField(compiler, classeSup, classe);
-        }
+    public Identifier getField(){
+        return this.field;
+    }
+
+    public Initialization getInit(){
+        return this.init;
+    }
+
+    @Override
+    public void verifyField(DecacCompiler compiler, Identifier classeSup, Identifier classe)
+    throws ContextualError {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        s.print(getField().decompile());
+        s.print(getInit().decompile());
+        //throw new UnsupportedOperationException("Not yet implemented");
+    }
     
 }
