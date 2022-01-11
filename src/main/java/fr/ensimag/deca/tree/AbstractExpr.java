@@ -123,13 +123,14 @@ public abstract class AbstractExpr extends AbstractInst {
         this.codeGenInst(compiler);
         GPRegister register = compiler.getMemory().getLastRegister();
         compiler.addInstruction(new LOAD(register, Register.R1));
-        // TODO : WINT, WFLOAT, W....
 
+        // TODO : WINT, WFLOAT, W....
         // if (getType().isInt()) {
         //     compiler.addInstruction(new WINT());
         // } else if (getType().isFloat()) {
         //     compiler.addInstruction(new WFLOAT());
         // }
+
         compiler.addInstruction(new WINT());
 
     }
