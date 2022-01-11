@@ -167,19 +167,24 @@ inst returns[AbstractInst tree]
 
 if_then_else returns[IfThenElse tree]
 @init {
+    boolean else_present = false;
+    boolean else_if_present = false; 
 }
     : if1=IF OPARENT condition=expr CPARENT OBRACE li_if=list_inst CBRACE {
             assert($condition.tree != null);
             assert($li_if.tree != null);
+            $tree = new IfThenElse($expr.tree,null,null);
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
           assert($elsif_cond.tree != null);
           assert($elsif_li.tree != null);
+          else_if_present = true;
           $tree = new IfThenElse($elsif_cond.tree, $elsif_li.tree, null);
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
           assert($li_else.tree != null);
+          else_present = true;
         }
       )? {
           $tree = new IfThenElse($condition.tree, $li_if.tree, $li_else.tree);
