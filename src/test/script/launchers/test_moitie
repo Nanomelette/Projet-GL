@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo "/n test_synt moitie.deca \n"
+test_synt "./src/test/deca/context/valid/tests/moitie.deca"
+
+echo "\n test_context moitie.deca \n"
+test_context "./src/test/deca/context/valid/tests/moitie.deca"
