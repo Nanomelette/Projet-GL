@@ -10,17 +10,20 @@ import java.io.PrintStream;
 
 public class DeclMethod {
 
-    private Identifier method;
+    private AbstractIdentifier type;
+    private AbstractIdentifier name;
     private ListDeclParam listDeclParam;
 
-    public DeclMethod(Identifier method, ListDeclParam listDeclParam){
-        Validate.notNull(method);
+    public DeclMethod(AbstractIdentifier type, AbstractIdentifier name, ListDeclParam listDeclParam){
+        Validate.notNull(type);
+        Validate.notNull(name);
         Validate.notNull(listDeclParam);
-        this.method = method;
+        this.type = type;
+        this.name = name;
         this.listDeclParam = listDeclParam;
     }
 
-    protected void verifyMethod(DecacCompiler compiler, Identifier classeSup)
+    protected void verifyMethod(DecacCompiler compiler, AbstractIdentifier classeSup)
             throws ContextualError{
             this.verifyMethod(compiler, classeSup);
         }

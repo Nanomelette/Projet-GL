@@ -13,18 +13,21 @@ import org.apache.commons.lang.Validate;
 
 public class DeclField extends AbstractDeclField {
 
-    private Identifier field;
+    private AbstractIdentifier type;
+    private AbstractIdentifier field;
     private Initialization init;
     
 
-    public DeclField(Identifier field, Initialization init){
+    public DeclField(AbstractIdentifier type, AbstractIdentifier field, Initialization init){
+        Validate.notNull(type);
         Validate.notNull(field);
         Validate.notNull(init);
+        this.type = type;
         this.field = field;
         this.init = init;
     }
 
-    public Identifier getField(){
+    public AbstractIdentifier getField(){
         return this.field;
     }
 
@@ -33,7 +36,7 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    public void verifyField(DecacCompiler compiler, Identifier classeSup, Identifier classe)
+    public void verifyField(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
     throws ContextualError {
         throw new UnsupportedOperationException("Not yet implemented");
     }

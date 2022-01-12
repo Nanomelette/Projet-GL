@@ -25,7 +25,7 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
     /**
      * Pass 2 of [SyntaxeContextuelle]
      */
-    void verifyListField(DecacCompiler compiler, Identifier classeSup, Identifier classe) throws ContextualError {
+    void verifyListField(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe) throws ContextualError {
         LOG.debug("verify listField: start");
 
         for(AbstractDeclField c : this.getList()){
