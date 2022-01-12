@@ -35,7 +35,13 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        
+        Type type = this.expression.verifyExpr(compiler, localEnv, currentClass);
+        if(type == null && t.isClass()){
+            this.expression.setType(t);
+        }
+        
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
 
