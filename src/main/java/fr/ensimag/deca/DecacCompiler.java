@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-    private static final SymbolTable SYMBOL_TABLE = new SymbolTable();
+    private SymbolTable symbol_table = new SymbolTable();
     
     /**
      * Portable newline character.
@@ -50,7 +50,7 @@ public class DecacCompiler {
     }
 
     public SymbolTable getSymbolTable(){
-        return SYMBOL_TABLE;
+        return symbol_table;
     }
 
     /**

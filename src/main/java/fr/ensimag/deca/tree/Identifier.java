@@ -167,7 +167,15 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        return currentClass.getType();
+        if ( localEnv.get(name) == null )
+	    	throw new ContextualError("undeclared identifier", this.getLocation());
+    	else
+    	{
+    		setDefinition(localEnv.get(getName()));
+    		setType(localEnv.get(name).getType());        	
+    		return ( localEnv.get(name).getType() ) ;
+
+    	}
         //throw new UnsupportedOperationException("not yet implemented");
     }
 

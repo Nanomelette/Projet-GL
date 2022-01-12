@@ -60,9 +60,9 @@ public class IfThenElse extends AbstractInst {
     @Override
     public void decompile(IndentPrintStream s) {
         //throw new UnsupportedOperationException("not yet implemented");
-        s.print("if{");
+        s.print("if(");
         condition.decompile(s);
-        s.println("}");
+        s.println(")");
         s.indent();
         if(thenBranch != null){
             s.print("then {");

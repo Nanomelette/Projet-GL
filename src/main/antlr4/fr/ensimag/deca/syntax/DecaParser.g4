@@ -437,8 +437,7 @@ primary_expr returns[AbstractExpr tree]
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
-            setLocation($tree, $args.start);
-            setLocation($tree, $m.start);
+            
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
@@ -617,7 +616,7 @@ list_params returns [ListDeclParam tree]
         assert($p1.tree != null);
         $tree.add($p1.tree);
         } (COMMA p2=param {
-            assert(p2.tree != null);
+            assert($p2.tree != null);
             $tree.add($p2.tree);
         }
       )*)?
@@ -638,7 +637,7 @@ param returns [AbstractDeclParam tree]
     : type ident {
         assert($type.tree != null);
         assert($ident.tree!= null);
-        $tree = new DeclParam($type.tree,$ident.tree);
+        //$tree = new DeclParam($type.tree,$ident.tree);
         setLocation($tree, $type.start);
         }
     ;
