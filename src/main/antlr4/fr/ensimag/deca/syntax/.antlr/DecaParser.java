@@ -3085,7 +3085,7 @@ public class DecaParser extends AbstractDecaParser {
 		List_paramsContext _localctx = new List_paramsContext(_ctx, getState());
 		enterRule(_localctx, 68, RULE_list_params);
 
-		    _localctx.tree = new ListDeclParam():
+		    ((List_paramsContext)_localctx).tree =  new ListDeclParam();
 
 		int _la;
 		try {
@@ -3100,7 +3100,7 @@ public class DecaParser extends AbstractDecaParser {
 				((List_paramsContext)_localctx).p1 = param();
 
 				        assert(((List_paramsContext)_localctx).p1.tree != null);
-				        _localctx.tree.add(((List_paramsContext)_localctx).p1.tree)
+				        _localctx.tree.add(((List_paramsContext)_localctx).p1.tree);
 				        
 				setState(555);
 				_errHandler.sync(this);
@@ -3114,7 +3114,7 @@ public class DecaParser extends AbstractDecaParser {
 					((List_paramsContext)_localctx).p2 = param();
 
 					            assert(p2.tree != null);
-					            _localctx.tree.add(((List_paramsContext)_localctx).p2.tree)
+					            _localctx.tree.add(((List_paramsContext)_localctx).p2.tree);
 					        
 					}
 					}

@@ -611,14 +611,14 @@ decl_method
 
 list_params returns [ListDeclParam tree]
 @init {
-    $tree = new ListDeclParam():
+    $tree = new ListDeclParam();
 }
     : (p1=param {
         assert($p1.tree != null);
-        $tree.add($p1.tree)
+        $tree.add($p1.tree);
         } (COMMA p2=param {
             assert(p2.tree != null);
-            $tree.add($p2.tree)
+            $tree.add($p2.tree);
         }
       )*)?
     ;
