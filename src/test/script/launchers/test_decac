@@ -1,0 +1,5 @@
+#!/bin/sh
+
+    test_lex "$@" > test_lex.txt
+    test_synt "$@" > test_synt.txt
+    test_cont "$@" > test_cont.txt
