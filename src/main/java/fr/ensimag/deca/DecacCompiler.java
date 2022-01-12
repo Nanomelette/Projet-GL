@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
     private static final SymbolTable symbol_table = new SymbolTable();
-    private Memory memory;
+    private Memory memory = new Memory();
 
     //TODO : vérifier qu'il faille bien le définir ici
     private Label pile_pleine = new Label("pile_pleine");
@@ -62,7 +62,7 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
-        this.memory = new Memory();
+        this.memory.setMaxRegister(compilerOptions.getMaxRegister());
     }
 
     public SymbolTable getSymbolTable(){

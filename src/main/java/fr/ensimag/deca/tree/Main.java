@@ -42,14 +42,7 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // A FAIRE: traiter les déclarations de variables.
-        int offset = 1;
-        for (AbstractDeclVar absDeclVar : declVariables.getList()) {
-            DAddr address = new RegisterOffset(offset, Register.GB);
-            Identifier var = (Identifier)((DeclVar)absDeclVar).getVarName();
-            var.getExpDefinition().setOperand(address);
-            offset++;
-        } //TODO :  Et si il y a trop de variable ? 
+        compiler.getMemory().variableInit(declVariables);
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
     }
