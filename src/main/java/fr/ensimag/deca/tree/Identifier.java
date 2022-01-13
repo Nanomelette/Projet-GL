@@ -27,6 +27,8 @@ import org.apache.log4j.Logger;
  * @date 01/01/2022
  */
 public class Identifier extends AbstractIdentifier {
+
+    private static final Logger LOG = Logger.getLogger(Main.class);
     
     @Override
     protected void checkDecoration() {
@@ -169,7 +171,28 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        return currentClass.getType();
+        // if ( localEnv.get(name) == null ){
+	    // 	throw new ContextualError("undeclared identifier", this.getLocation());
+        // }
+    	// else
+    	// {
+
+
+        if (compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())) != null) {
+            this.setDefinition(compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())));
+            this.setType(compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())).getType());
+            return compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())).getType();
+
+        }
+        else if(compiler.GetEnvExp().get(this.name)!= null){
+    		this.setDefinition(compiler.GetEnvExp().get(this.name));
+    		this.setType(compiler.GetEnvExp().get(this.name).getType());        	
+    		return compiler.GetEnvExp().get(this.name).getType();
+        }   
+        else{
+            throw new ContextualError("identificateur non def", getLocation());
+        }
+    	//}
         //throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -179,7 +202,13 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+            Type type = compiler.searchSymbol(this.getName());
+            if ( type == null )
+                throw new ContextualError("Identifier-type error", this.getLocation());
+            else 
+                setType(type);
+                return type ;
+        //throw new UnsupportedOperationException("not yet implemented");
     }
     
     

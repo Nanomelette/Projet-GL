@@ -39,7 +39,6 @@ public class IntLiteral extends AbstractExpr {
         Type type = new IntType(compiler.getSymbolTable().create("int"));
         this.setType(type);
         return type;
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
 

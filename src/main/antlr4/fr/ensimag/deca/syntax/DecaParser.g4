@@ -105,6 +105,7 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         init = new Initialization($e.tree);
         }
       )? {
+        assert(t!= null);
         $tree = new DeclVar(t,$i.tree, init);
         setLocation($tree,$i.start);
         }
@@ -162,32 +163,35 @@ inst returns[AbstractInst tree]
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
+            $tree = new Return($expr.tree);
         }
     ;
 
 if_then_else returns[IfThenElse tree]
 @init {
-    boolean else_present = false;
-    boolean else_if_present = false; 
+    ListInst elseBranch = new ListInst();
+    IfThenElse elifBranch = null;
 }
     : if1=IF OPARENT condition=expr CPARENT OBRACE li_if=list_inst CBRACE {
             assert($condition.tree != null);
             assert($li_if.tree != null);
-            $tree = new IfThenElse($expr.tree,null,null);
+            $tree = new IfThenElse($condition.tree, $li_if.tree, elseBranch);
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
           assert($elsif_cond.tree != null);
           assert($elsif_li.tree != null);
-          else_if_present = true;
-          $tree = new IfThenElse($elsif_cond.tree, $elsif_li.tree, null);
+          elifBranch = new IfThenElse($elsif_cond.tree,$elsif_li.tree, new ListInst());
+          elseBranch.add(elifBranch);
+          elseBranch = elifBranch.getElseBranch();
+          setLocation($tree,$ELSE);
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
           assert($li_else.tree != null);
-          else_present = true;
+          if(elifBranch == null){$tree.setElseBranch($li_else.tree);}
+          else{elifBranch.setElseBranch($li_else.tree);}
         }
       )? {
-          $tree = new IfThenElse($condition.tree, $li_if.tree, $li_else.tree);
       }
     ;
 
@@ -228,7 +232,6 @@ assign_expr returns[AbstractExpr tree]
             assert($e2.tree != null);
             $tree = new Assign((AbstractLValue)$e.tree, $e2.tree);
             setLocation($tree, $e.start);
-            setLocation($tree, $e2.start);
         }
       | /* epsilon */ {
             assert($e.tree != null);
@@ -434,8 +437,7 @@ primary_expr returns[AbstractExpr tree]
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
-            setLocation($tree, $args.start);
-            setLocation($tree, $m.start);
+            
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
@@ -595,10 +597,12 @@ decl_field
         }
     ;
 
-decl_method
+decl_method returns [ListDeclMethod tree]
 @init {
+    
 }
     : type ident OPARENT params=list_params CPARENT (block {
+        
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
         }
@@ -606,9 +610,16 @@ decl_method
         }
     ;
 
-list_params
+list_params returns [ListDeclParam tree]
+@init {
+    $tree = new ListDeclParam();
+}
     : (p1=param {
+        assert($p1.tree != null);
+        $tree.add($p1.tree);
         } (COMMA p2=param {
+            assert($p2.tree != null);
+            $tree.add($p2.tree);
         }
       )*)?
     ;
@@ -624,7 +635,11 @@ multi_line_string returns[String text, Location location]
         }
     ;
 
-param
+param returns [AbstractDeclParam tree]
     : type ident {
+        assert($type.tree != null);
+        assert($ident.tree!= null);
+        //$tree = new DeclParam($type.tree,$ident.tree);
+        setLocation($tree, $type.start);
         }
     ;
