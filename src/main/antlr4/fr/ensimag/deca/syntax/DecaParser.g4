@@ -547,6 +547,8 @@ list_classes returns[ListDeclClass tree]
      }
     :
       (c1=class_decl {
+          assert(c1.tree != null);
+          $tree.add(c1.tree);
         }
       )*
     ;
@@ -599,6 +601,7 @@ decl_field
 
 decl_method
 @init {
+    $tree = newDeclMethod();
 }
     : type ident OPARENT params=list_params CPARENT (block {
         }

@@ -4,16 +4,22 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * @author gl20
  * @date 01/01/2022
  */
 public class DeclVar extends AbstractDeclVar {
+
+    private static final Logger LOG = Logger.getLogger(Main.class);
 
     
     final private AbstractIdentifier type;
@@ -37,9 +43,15 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+
                 if (this.type.verifyExpr(compiler, localEnv, currentClass).isVoid()) {
                     throw new ContextualError("type void", getLocation());
                 }
+                EnvironmentExp Env = new EnvironmentExp(null);           
+                this.varName.setType(type.getType());
+                this.type.verifyExpr(compiler, localEnv, currentClass);
+                initialization.verifyInitialization(compiler, type.getType(), Env , currentClass);
+
     }
 
     

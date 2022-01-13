@@ -22,7 +22,7 @@ public class DeclParam {
 
     protected void verifyParam(DecacCompiler compiler)
             throws ContextualError{
-            this.verifyParam(compiler);
+            throw new UnsupportedOperationException("not yet implemented");
         }
     
 }

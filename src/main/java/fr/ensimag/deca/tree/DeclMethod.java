@@ -13,6 +13,7 @@ public class DeclMethod {
     private AbstractIdentifier type;
     private AbstractIdentifier name;
     private ListDeclParam listDeclParam;
+    private MethodBody method_body;
 
     public DeclMethod(AbstractIdentifier type, AbstractIdentifier name, ListDeclParam listDeclParam){
         Validate.notNull(type);
@@ -25,7 +26,7 @@ public class DeclMethod {
 
     protected void verifyMethod(DecacCompiler compiler, AbstractIdentifier classeSup)
             throws ContextualError{
-            this.verifyMethod(compiler, classeSup);
+                throw new UnsupportedOperationException("not yet implemented");
         }
     
 }

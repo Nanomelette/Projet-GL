@@ -4,6 +4,7 @@ import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
 import fr.ensimag.ima.pseudocode.AbstractLine;
@@ -15,6 +16,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Type;
+
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -36,7 +39,7 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-    private SymbolTable symbol_table = new SymbolTable();
+    private static final SymbolTable SYMBOL_TABLE= new SymbolTable();
     
     /**
      * Portable newline character.
@@ -50,8 +53,17 @@ public class DecacCompiler {
     }
 
     public SymbolTable getSymbolTable(){
-        return symbol_table;
+        return SYMBOL_TABLE;
     }
+
+
+	public Type search(Symbol type) {
+        for (Symbol a : getSymbolTable()) {
+            if (a.getName().equals(type.getName()) )
+                return a.getName();
+            }
+		return null;
+	}
 
     /**
      * Source file associated with this compiler instance.
