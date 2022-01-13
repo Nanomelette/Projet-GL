@@ -1,10 +1,14 @@
 package fr.ensimag.deca;
 
 import fr.ensimag.deca.codegen.Data;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.EnvironmentType;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
 import fr.ensimag.ima.pseudocode.AbstractLine;
@@ -17,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -38,7 +43,8 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-    private static final SymbolTable symbol_table = new SymbolTable();
+
+    // private static final SymbolTable symbol_table = new SymbolTable();
     private Data data = new Data();
 
     public Data getData() {
@@ -55,6 +61,7 @@ public class DecacCompiler {
         nLabel++;
     }
 
+
     /**
      * Portable newline character.
      */
@@ -66,10 +73,29 @@ public class DecacCompiler {
         this.source = source;
         //TODO : on met ça vraiment ici ?
         this.data.setMaxRegister(compilerOptions.getMaxRegister());
+        this.symbolTable = new SymbolTable();
+        this.env_Types = new EnvironmentType(this);
+        this.Env_exp= new EnvironmentExp(null);
     }
 
     public SymbolTable getSymbolTable(){
-        return symbol_table;
+        return this.symbolTable;
+    }
+
+    public EnvironmentType GetEnvTypes () {
+        return this.env_Types ;
+    }
+    
+	public Type searchSymbol(Symbol type) {
+        for (Symbol symbol : env_Types.getEnvironmentTypes().keySet() ) {
+            if (symbol.getName().equals(type.getName()))
+                return env_Types.getType(symbol);
+            }
+		return null;
+	}
+
+    public Symbol addSymbolTable(String name){
+        return this.symbolTable.create(name);
     }
 
     /**
@@ -150,6 +176,9 @@ public class DecacCompiler {
     
     private final CompilerOptions compilerOptions;
     private final File source;
+    private SymbolTable symbolTable;
+    private EnvironmentType env_Types;
+    private EnvironmentExp Env_exp;
     /**
      * The main program. Every instruction generated will eventually end up here.
      */
@@ -281,6 +310,10 @@ public class DecacCompiler {
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
+    }
+
+    public EnvironmentExp GetEnvExp() {
+        return this.Env_exp;
     }
 
 }

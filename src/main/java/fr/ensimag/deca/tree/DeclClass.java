@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import org.apache.commons.lang.Validate;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
@@ -14,6 +15,24 @@ import java.io.PrintStream;
  */
 public class DeclClass extends AbstractDeclClass {
 
+    private Identifier classe;
+    private Identifier classeSup;
+    private ListDeclField listDeclField;
+    private ListDeclMethod listDeclMethod;
+    //private ListDeclMethod listDeclMethod;
+
+    public DeclClass(Identifier classe, Identifier classeSup, ListDeclField listDeclField,
+        ListDeclMethod listDeclMethod) {
+        Validate.notNull(classe);
+        Validate.notNull(classeSup);
+        Validate.notNull(listDeclField);
+        Validate.notNull(listDeclMethod);
+        this.classe = classe;
+        this.classe = classeSup;
+        this.listDeclField = listDeclField;
+        this.listDeclMethod = listDeclMethod;
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("class { ... A FAIRE ... }");
@@ -21,13 +40,17 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        //throw new UnsupportedOperationException("not yet implemented");
+        this.verifyClass(compiler);
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        //throw new UnsupportedOperationException("not yet implemented");
+        this.verifyClassMembers(compiler);
+        this.listDeclField.verifyListField(compiler, this.classeSup, this.classe);
+        this.listDeclMethod.verifyListMethod(compiler, this.classeSup);
     }
     
     @Override

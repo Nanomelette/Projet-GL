@@ -32,17 +32,7 @@ public class EnvironmentExp {
 
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
-
-        if( parentEnvironment == null ){
-            DictionnaryMap = new HashMap<Symbol,ExpDefinition>();
-        }
-        
-
-        else if (DictionnaryMap.isEmpty()){
-            ListDictionaries.add(parentEnvironment);
-            DictionnaryMap = new HashMap<Symbol,ExpDefinition>();
-            
-        }
+        DictionnaryMap = new HashMap<Symbol,ExpDefinition>();
     }
 
     public static class DoubleDefException extends Exception {
@@ -54,8 +44,8 @@ public class EnvironmentExp {
      * symbol is undefined.
      */
     public ExpDefinition get(Symbol key) {
-        if(!DictionnaryMap.containsKey(key)){
-            return null;
+        if(DictionnaryMap==null){
+            throw new UnsupportedOperationException ("Empty Dictionnary");
         }
         return DictionnaryMap.get(key);
         //throw new UnsupportedOperationException("not yet implemented");
