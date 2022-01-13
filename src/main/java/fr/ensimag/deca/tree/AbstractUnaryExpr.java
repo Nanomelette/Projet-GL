@@ -7,6 +7,8 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -57,9 +59,17 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
             op = compiler.getData().getFreeRegister(compiler);
             compiler.addInstruction(new LOAD(dval, op));
         } else {
-            operand.codeGenInst(compiler);
-            op = data.getLastUsedRegister();
+            if (data.hasFreeRegister()) {
+                operand.codeGenInst(compiler);
+                op = data.getLastUsedRegister();
+            } else {
+                compiler.addInstruction(new PUSH(data.getMaxRegister()), "sauvegarde");
+                operand.codeGenInst(compiler);
+                op = data.getLastUsedRegister();
+                compiler.addInstruction(new LOAD(op, GPRegister.R0));
+                compiler.addInstruction(new POP((GPRegister)op), "restauration");
+                data.decrementFreeStoragePointer();
+            }
         }
     }
-
 }

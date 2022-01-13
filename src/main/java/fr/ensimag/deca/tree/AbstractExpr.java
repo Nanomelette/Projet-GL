@@ -12,6 +12,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 import java.io.PrintStream;
@@ -131,7 +132,7 @@ public abstract class AbstractExpr extends AbstractInst {
         // } else if (getType().isFloat()) {
         //     compiler.addInstruction(new WFLOAT());
         // } else if (getType().isBoolean()) {
-        //     codeGenPrint(compiler);
+        //     ((BooleanLiteral) this).codeGenPrint(compiler);
         // }
 
     }

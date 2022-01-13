@@ -95,17 +95,22 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             op2 = data.getLastUsedRegister();
             // <dval(e2)>
             op1 = rightOperand.getDVal();
-            LOG.debug("!= null : " + op2);
         } else {
             if (data.hasFreeRegister()) {
-                // <codeExp(e1,n)>
-                leftOperand.codeGenInst(compiler);
-                op2 = data.getLastUsedRegister();
-                // <codeExp(e2,n+1)>
-                data.incrementFreeStoragePointer();
-                rightOperand.codeGenInst(compiler);
-                op1 = (DVal)data.getLastUsedRegister();
-                LOG.debug("hasFreeRegister : " + op2);
+                if (data.nbFreeRegsiter() == 1) {
+                    // <codeExp(e1,n)>
+                    leftOperand.codeGenInst(compiler);
+                    op2 = data.getLastUsedRegister();
+                    data.incrementFreeStoragePointer();
+                    // <codeExp(e2,n+1)>
+                    rightOperand.codeGenInst(compiler);
+                    op1 = (DVal)data.getLastUsedRegister();
+                } else {
+                    leftOperand.codeGenInst(compiler);
+                    op2 = data.getLastUsedRegister();
+                    rightOperand.codeGenInst(compiler);
+                    op1 = (DVal)data.getLastUsedRegister();
+                }
             } else {
                 // <codeExp(e1,n)> - PUSH Rn ; sauvegarde
                 leftOperand.codeGenInst(compiler);
@@ -116,11 +121,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 // LOAD Rn, R0
                 compiler.addInstruction(new LOAD(op2, GPRegister.R0));
                 // POP Rn;
-                LOG.debug("On va POP : " + op2);
                 compiler.addInstruction(new POP((GPRegister)op2), "restauration");
                 data.decrementFreeStoragePointer();
                 op1 = (DVal)GPRegister.R0;
-                LOG.debug("reste : " + op2);
             }
         }
     }

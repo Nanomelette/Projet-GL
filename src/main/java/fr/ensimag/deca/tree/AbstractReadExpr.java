@@ -12,6 +12,4 @@ public abstract class AbstractReadExpr extends AbstractExpr {
     public AbstractReadExpr() {
         super();
     }
-
-
 }

@@ -7,6 +7,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -36,7 +38,15 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        int n = compiler.getNLabel();
+        Label E_Cond = new Label("E_Cond."+n);
+        Label E_Start = new Label("E_Start."+n);
+        compiler.addInstruction(new BRA(E_Cond));
+        compiler.addLabel(E_Start);
+        body.codeGenListInst(compiler);
+        compiler.addLabel(E_Cond);
+        condition.codeBoolean(true, E_Start, compiler);
+        compiler.incrNLabel();
     }
 
     @Override
@@ -67,5 +77,4 @@ public class While extends AbstractInst {
         condition.prettyPrint(s, prefix, false);
         body.prettyPrint(s, prefix, true);
     }
-
 }

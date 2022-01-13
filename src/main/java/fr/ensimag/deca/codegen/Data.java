@@ -28,12 +28,13 @@ public class Data {
     // otherwise it is in the stack.
     private int freeStoragePointer = 2;
     private int gBOffset = 1;
-    private int maxStackLength;
+    private int maxStackLength = 0;
     // private Deque<GPRegister> registersStack = new LinkedList<GPRegister>();
     private GPRegister lastUsedRegister = GPRegister.getR(2);
 
     // Labels :
     private Label pile_pleine = new Label("pile_pleine");
+    private Label io_error = new Label("io_error");
 
     public Data() {};
 
@@ -55,10 +56,17 @@ public class Data {
         } else {
             GPRegister lastRegister = GPRegister.getR(maxRegister - 1);
             // registersStack.addFirst(lastRegister);
-            LOG.debug("On va PUSH  : " + lastRegister);
             // compiler.addInstruction(new PUSH(lastRegister), "sauvegarde");
             // freeStoragePointer++;
             return lastRegister;
+        }
+    }
+
+    public int nbFreeRegsiter() {
+        if (hasFreeRegister()) {
+            return maxRegister - freeStoragePointer - 1;
+        } else {
+            return 0;
         }
     }
 
@@ -95,9 +103,10 @@ public class Data {
     }
 
     public void addHeader(DecacCompiler compiler) {
-        compiler.addInstructionAtFirst(new ADDSP(gBOffset));
+        compiler.addInstructionAtFirst(new ADDSP(gBOffset-1));
+        // TODO : Gérer message d'erreur
         compiler.addInstructionAtFirst(new BOV(pile_pleine));
-        compiler.addInstructionAtFirst(new TSTO(gBOffset+maxStackLength));
+        compiler.addInstructionAtFirst(new TSTO(gBOffset+maxStackLength-1));
         compiler.addInstructionAtFirst(null, "start main program");
     }
 
@@ -106,6 +115,11 @@ public class Data {
         compiler.addInstruction(new WSTR("Error: full stack."));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
+        compiler.addLabel(io_error);
+        compiler.addInstruction(new WSTR("Error: io_error."));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+        
     }
 
     public int getFreeStoragePointer() {
