@@ -38,7 +38,7 @@ public class Main extends AbstractMain {
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
         EnvironmentExp localEnv = new EnvironmentExp(null);
-        localEnv = this.declVariables.verifyListDeclVariable(compiler, localEnv, null);
+        declVariables.verifyListDeclVariable(compiler, localEnv, null);
         insts.verifyListInst(compiler,localEnv,null,null);
         
         LOG.debug("verify Main: end");

@@ -1,11 +1,14 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.VariableDefinition;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -44,13 +47,23 @@ public class DeclVar extends AbstractDeclVar {
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
 
-                if (this.type.verifyExpr(compiler, localEnv, currentClass).isVoid()) {
+                Type varType = type.verifyType(compiler);
+                LOG.debug(varType.toString());
+                if (type.verifyType(compiler).isVoid()){
                     throw new ContextualError("type void", getLocation());
+                }       
+                try {
+                    ExpDefinition varDefinition= new VariableDefinition(varType, varName.getLocation());
+                    varName.setDefinition(varDefinition);
+                    varName.setType(varType);
+                    localEnv.declare(varName.getName(),varDefinition);
+                    initialization.verifyInitialization(compiler, varName.getType(), localEnv , currentClass);
+                } catch (EnvironmentExp.DoubleDefException e) {
+                    // TODO Auto-generated catch block
+                    String message = "L'identificateur ne peut etre defini plus qu'une fois";
+                    throw new ContextualError(message, getLocation());
                 }
-                EnvironmentExp Env = new EnvironmentExp(null);           
-                this.varName.setType(type.getType());
-                this.type.verifyExpr(compiler, localEnv, currentClass);
-                initialization.verifyInitialization(compiler, type.getType(), Env , currentClass);
+
 
     }
 

@@ -105,6 +105,7 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         init = new Initialization($e.tree);
         }
       )? {
+        assert(t!= null);
         $tree = new DeclVar(t,$i.tree, init);
         setLocation($tree,$i.start);
         }
@@ -231,7 +232,6 @@ assign_expr returns[AbstractExpr tree]
             assert($e2.tree != null);
             $tree = new Assign((AbstractLValue)$e.tree, $e2.tree);
             setLocation($tree, $e.start);
-            setLocation($tree, $e2.start);
         }
       | /* epsilon */ {
             assert($e.tree != null);
@@ -547,8 +547,6 @@ list_classes returns[ListDeclClass tree]
      }
     :
       (c1=class_decl {
-          assert(c1.tree != null);
-          $tree.add(c1.tree);
         }
       )*
     ;
@@ -599,11 +597,12 @@ decl_field
         }
     ;
 
-decl_method
+decl_method returns [ListDeclMethod tree]
 @init {
-    $tree = newDeclMethod();
+    
 }
     : type ident OPARENT params=list_params CPARENT (block {
+        
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
         }

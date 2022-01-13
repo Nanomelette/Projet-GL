@@ -18,6 +18,7 @@ public class ClassDefinition extends TypeDefinition {
     }
 
     public int getNumberOfFields() {
+
         return numberOfFields;
     }
 

@@ -1,5 +1,8 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.EnvironmentType;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -16,7 +19,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.lang.reflect.Type;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -39,7 +41,7 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-    private static final SymbolTable SYMBOL_TABLE= new SymbolTable();
+    private static final SymbolTable SYMBOL_TABLE = new SymbolTable();
     
     /**
      * Portable newline character.
@@ -56,14 +58,21 @@ public class DecacCompiler {
         return SYMBOL_TABLE;
     }
 
-
-	public Type search(Symbol type) {
-        for (Symbol a : getSymbolTable()) {
-            if (a.getName().equals(type.getName()) )
-                return a.getName();
+    public EnvironmentType GetEnvTypes () {
+        return this.env_Types ;
+    }
+    
+	public Type searchSymbol(Symbol type) {
+        for (Symbol symbol : env_Types.getEnvironmentTypes().keySet() ) {
+            if (symbol.getName().equals(type.getName()))
+                return env_Types.getType(symbol);
             }
 		return null;
 	}
+
+    public Symbol addSymbolTable(String name){
+        return this.symbolTable.create(name);
+    }
 
     /**
      * Source file associated with this compiler instance.
@@ -130,6 +139,9 @@ public class DecacCompiler {
     
     private final CompilerOptions compilerOptions;
     private final File source;
+    private SymbolTable symbolTable = new SymbolTable();
+    private EnvironmentType env_Types = new EnvironmentType(this);
+    private EnvironmentExp Env_exp= new EnvironmentExp(null);
     /**
      * The main program. Every instruction generated will eventually end up here.
      */
@@ -257,6 +269,10 @@ public class DecacCompiler {
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
+    }
+
+    public EnvironmentExp GetEnvExp() {
+        return this.Env_exp;
     }
 
 }

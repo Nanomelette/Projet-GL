@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2022
  */
 public class ListDeclVar extends TreeList<AbstractDeclVar> {
-    private static final Logger LOG = Logger.getLogger(Main.class);
+    private static final Logger LOG = Logger.getLogger(ListDeclVar.class);
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -38,7 +38,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
     public EnvironmentExp verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
                 for (AbstractDeclVar v : getList()) {
-                    LOG.debug(localEnv.getClass().getName());
+                    //LOG.debug(localEnv.getClass().getName().toString());
                     v.verifyDeclVar(compiler,localEnv,currentClass);
                 }
                 return localEnv;
