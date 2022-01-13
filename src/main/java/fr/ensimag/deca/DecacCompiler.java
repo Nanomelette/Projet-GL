@@ -44,6 +44,17 @@ public class DecacCompiler {
     public Data getData() {
         return data;
     }
+
+    private int nLabel = 0;
+    
+    public int getNLabel() {
+        return nLabel;
+    }
+
+    public void incrNLabel() {
+        nLabel++;
+    }
+
     /**
      * Portable newline character.
      */

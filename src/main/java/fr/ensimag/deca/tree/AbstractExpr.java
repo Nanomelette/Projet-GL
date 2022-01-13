@@ -9,6 +9,7 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
@@ -160,4 +161,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected <Optional>DVal getDVal() {
         return null;
     }
+
+    protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {}
 }
+

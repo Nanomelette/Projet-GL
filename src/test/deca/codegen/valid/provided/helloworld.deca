@@ -1,6 +1,15 @@
 {
-    println("Hello world !");
-    println(true);
-    println(1);
-    println(1.25);
+    println(true && true);
+    println(false && true);
+    println(true && false);
+    println(false && false);
+    println(true || true);
+    println(false || true);
+    println(true || false);
+    println(false || false);
+
+    println(true && true && false);
+    println((1 && false) && true);
+
+    println(!(!(!(!(!(!(!(!(!(!true))))))))));
 }
