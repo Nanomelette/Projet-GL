@@ -7,11 +7,10 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 import java.io.PrintStream;
@@ -121,17 +120,17 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenPrint(DecacCompiler compiler) {
         this.codeGenInst(compiler);
-        GPRegister register = compiler.getMemory().getLastRegister();
+        GPRegister register = compiler.getData().getLastUsedRegister();
         compiler.addInstruction(new LOAD(register, Register.R1));
-
-        // TODO : WINT, WFLOAT, W....
+        compiler.addInstruction(new WINT());
+        // TODO
         // if (getType().isInt()) {
         //     compiler.addInstruction(new WINT());
         // } else if (getType().isFloat()) {
         //     compiler.addInstruction(new WFLOAT());
+        // } else if (getType().isBoolean()) {
+        //     codeGenPrint(compiler);
         // }
-
-        compiler.addInstruction(new WINT());
 
     }
 
@@ -156,5 +155,9 @@ public abstract class AbstractExpr extends AbstractInst {
             s.print(t);
             s.println();
         }
+    }
+
+    protected <Optional>DVal getDVal() {
+        return null;
     }
 }
