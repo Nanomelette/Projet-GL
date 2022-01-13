@@ -1,6 +1,6 @@
 package fr.ensimag.deca;
 
-import fr.ensimag.deca.codegen.Memory;
+import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -11,12 +11,6 @@ import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.instructions.ADDSP;
-import fr.ensimag.ima.pseudocode.instructions.BOV;
-import fr.ensimag.ima.pseudocode.instructions.ERROR;
-import fr.ensimag.ima.pseudocode.instructions.TSTO;
-import fr.ensimag.ima.pseudocode.instructions.WNL;
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,13 +39,10 @@ import org.apache.log4j.Logger;
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
     private static final SymbolTable symbol_table = new SymbolTable();
-    private Memory memory = new Memory();
+    private Data data = new Data();
 
-    //TODO : vérifier qu'il faille bien le définir ici
-    private Label pile_pleine = new Label("pile_pleine");
-
-    public Memory getMemory() {
-        return memory;
+    public Data getData() {
+        return data;
     }
     /**
      * Portable newline character.
@@ -62,7 +53,8 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
-        this.memory.setMaxRegister(compilerOptions.getMaxRegister());
+        //TODO : on met ça vraiment ici ?
+        this.data.setMaxRegister(compilerOptions.getMaxRegister());
     }
 
     public SymbolTable getSymbolTable(){
@@ -232,7 +224,7 @@ public class DecacCompiler {
         addComment("end main program");
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
-        
+
         FileOutputStream fstream = null;
         try {
             fstream = new FileOutputStream(destName);
@@ -240,17 +232,9 @@ public class DecacCompiler {
             throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
         }
         // Ecriture de l'header
-        addInstructionAtFirst(new ADDSP(16));
-        addInstructionAtFirst(new BOV(pile_pleine));
-        // TODO : gérer l'argument de TSTO : surement un truc du genre 'debut de la pile + taille de la pile'
-        addInstructionAtFirst(new TSTO(1));
-        addInstructionAtFirst(null, "start main program");
-
-        addLabel(pile_pleine);
-        addInstruction(new WSTR("Error: full stack."));
-        addInstruction(new WNL());
-        addInstruction(new ERROR());
-
+        data.addHeader(this);
+        // Ecriture des Labels
+        data.addBottom(this);
         
 
         LOG.info("Writing assembler file ...");
