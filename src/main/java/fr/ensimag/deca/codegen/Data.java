@@ -10,7 +10,6 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.ADDSP;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
@@ -29,6 +28,7 @@ public class Data {
     // otherwise it is in the stack.
     private int freeStoragePointer = 2;
     private int gBOffset = 1;
+    private int maxStackLength;
     // private Deque<GPRegister> registersStack = new LinkedList<GPRegister>();
     private GPRegister lastUsedRegister = GPRegister.getR(2);
 
@@ -62,24 +62,15 @@ public class Data {
         }
     }
 
-    // /**
-    //  * Renvoie le dernier registre dans lequel nous avons écrit.
-    //  * @return
-    //  */
-    // public GPRegister getLastRegister() {
-    //     if (hasFreeRegister()) {
-    //         return GPRegister.getR(freeStoragePointer - 1);
-    //     } else {
-    //         return GPRegister.getR(maxRegister - 1);
-    //     }
-    // }
-
     public void decrementFreeStoragePointer() {
         freeStoragePointer--;
     }
 
     public void incrementFreeStoragePointer() {
         freeStoragePointer++;
+        if (freeStoragePointer > maxStackLength) {
+            maxStackLength = freeStoragePointer;
+        }
     }
 
     public void restoreData() {
@@ -94,16 +85,6 @@ public class Data {
         return lastUsedRegister;
     }
 
-
-
-
-
-
-
-
-
-
-
     public void variableInit(ListDeclVar declVariables) {
         for (AbstractDeclVar absDeclVar : declVariables.getList()) {
             DAddr address = new RegisterOffset(gBOffset, Register.GB);
@@ -112,48 +93,11 @@ public class Data {
             gBOffset++;
         }
     }
-    
-    // public void storeValue(GPRegister register) {
-    //     registersStack.addFirst(register);
-    //     storagePointer++;
-    // }
-
-    // public GPRegister downloadValue() {
-    //     storagePointer--;
-    //     return registersStack.removeFirst();
-    // }
-
-    // public void save(DecacCompiler compiler, DVal op1) {
-    //     GPRegister op2;
-    //     if (storagePointer < maxRegister) {
-    //         op2 = GPRegister.getR(storagePointer);
-    //         compiler.addInstruction(new LOAD(op1, op2));
-    
-    //     } else {
-    //         op2 = GPRegister.getR(maxRegister-1);
-    //         compiler.addInstruction(new PUSH(registersStack.peekFirst()));
-    //         compiler.addInstruction(new LOAD(op1, op2));
-    //     }
-    //     storeValue(op2);
-    // }
-
-    // public GPRegister download(DecacCompiler compiler) {
-    //     GPRegister op1 = downloadValue();
-    //     if (storagePointer < maxRegister) {
-    //         return op1;
-    //     } else {
-    //         compiler.addInstruction(new LOAD(op1, GPRegister.R1));
-    //         compiler.addInstruction(new POP(op1));
-    //         return GPRegister.R1;
-    //     }
-    // }
 
     public void addHeader(DecacCompiler compiler) {
-        // Ecriture de l'header
-        compiler.addInstructionAtFirst(new ADDSP(16));
+        compiler.addInstructionAtFirst(new ADDSP(gBOffset));
         compiler.addInstructionAtFirst(new BOV(pile_pleine));
-        // TODO : gérer l'argument de TSTO : surement un truc du genre 'debut de la pile + taille de la pile'
-        compiler.addInstructionAtFirst(new TSTO(6));
+        compiler.addInstructionAtFirst(new TSTO(gBOffset+maxStackLength));
         compiler.addInstructionAtFirst(null, "start main program");
     }
 
