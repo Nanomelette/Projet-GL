@@ -1,0 +1,6 @@
+#!/bin/sh
+for i in ./src/test/deca/context/valid/tests/*.deca
+    do
+    echo "$i"
+    test_context "$i"
+done

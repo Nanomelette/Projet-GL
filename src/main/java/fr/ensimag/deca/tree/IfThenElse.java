@@ -29,11 +29,27 @@ public class IfThenElse extends AbstractInst {
         this.thenBranch = thenBranch;
         this.elseBranch = elseBranch;
     }
+
+
+    public ListInst getElseBranch(){
+        return this.elseBranch;
+    }
+
+    public void setElseBranch(ListInst elseBranch){
+        this.elseBranch = elseBranch;
+    }
     
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+            this.condition.verifyCondition(compiler, localEnv, currentClass);
+            if(thenBranch!=null){
+                this.thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
+            }
+            if(elseBranch!= null){
+                this.elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
+            }
     }
 
     @Override
@@ -43,7 +59,21 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        //throw new UnsupportedOperationException("not yet implemented");
+        s.print("if(");
+        condition.decompile(s);
+        s.println(")");
+        s.indent();
+        if(thenBranch != null){
+            s.print("then {");
+            thenBranch.decompile(s);
+            s.println("}");
+        }
+        s.indent();
+        s.print("else {");
+        elseBranch.decompile(s);
+        s.println("}");
+        s.indent();
     }
 
     @Override
