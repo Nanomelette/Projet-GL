@@ -1,16 +1,18 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.Definition;
+import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Register;
+
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 
 import java.io.PrintStream;
+import org.apache.log4j.Logger;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -20,6 +22,8 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2022
  */
 public abstract class AbstractBinaryExpr extends AbstractExpr {
+
+    private static final Logger LOG = Logger.getLogger(AbstractBinaryExpr.class);
 
     public AbstractExpr getLeftOperand() {
         return leftOperand;
@@ -83,24 +87,42 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         AbstractExpr leftOperand = getLeftOperand();
         AbstractExpr rightOperand = getRightOperand();
 
-        if (rightOperand instanceof Identifier) {
-            op1 = ((Identifier)rightOperand).getExpDefinition().getOperand();
+        Data data = compiler.getData();
+
+        if (rightOperand.getDVal() != null) {
+            // <codeExp(e1,n)>
             leftOperand.codeGenInst(compiler);
-            op2 = compiler.getMemory().getLastRegister();
+            op2 = data.getLastUsedRegister();
+            // <dval(e2)>
+            op1 = rightOperand.getDVal();
+            LOG.debug("!= null : " + op2);
         } else {
-            leftOperand.codeGenInst(compiler);
-            op1 = (DVal)compiler.getMemory().getLastRegister();
-
-            rightOperand.codeGenInst(compiler);
-            op2 = compiler.getMemory().getLastRegister();
+            if (data.hasFreeRegister()) {
+                // <codeExp(e1,n)>
+                leftOperand.codeGenInst(compiler);
+                op2 = data.getLastUsedRegister();
+                // <codeExp(e2,n+1)>
+                data.incrementFreeStoragePointer();
+                rightOperand.codeGenInst(compiler);
+                op1 = (DVal)data.getLastUsedRegister();
+                LOG.debug("hasFreeRegister : " + op2);
+            } else {
+                // <codeExp(e1,n)> - PUSH Rn ; sauvegarde
+                leftOperand.codeGenInst(compiler);
+                compiler.addInstruction(new PUSH(data.getMaxRegister()), "sauvegarde");
+                // <codeExp(e2,n)>
+                rightOperand.codeGenInst(compiler);
+                op2 = data.getMaxRegister();
+                // LOAD Rn, R0
+                compiler.addInstruction(new LOAD(op2, GPRegister.R0));
+                // POP Rn;
+                LOG.debug("On va POP : " + op2);
+                compiler.addInstruction(new POP((GPRegister)op2), "restauration");
+                data.decrementFreeStoragePointer();
+                op1 = (DVal)GPRegister.R0;
+                LOG.debug("reste : " + op2);
+            }
         }
-
-        // TODO : Gestion des registres quand on il y a plus assez
-        // if () {
-        //     compiler.addInstruction(new LOAD(op2, Register.getR(0)));
-        //     compiler.addInstruction(new POP(op2));
-        //     op1 = Register.getR(0);
-        // }
     }
 
 }
