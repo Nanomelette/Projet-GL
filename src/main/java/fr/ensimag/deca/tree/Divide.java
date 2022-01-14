@@ -1,5 +1,8 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.instructions.DIV;
+import fr.ensimag.ima.pseudocode.instructions.QUO;
 
 /**
  *
@@ -15,6 +18,18 @@ public class Divide extends AbstractOpArith {
     @Override
     protected String getOperatorName() {
         return "/";
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        super.codeGenInst(compiler);
+        if (this.getType().isFloat()) {
+            compiler.addInstruction(new DIV(op1, op2)); // Cas des flottants
+        } else {
+            compiler.addInstruction(new QUO(op1, op2)); // Cas des entiers
+        }
+        // TODO : GÉRER LES OVERFLOW ? 
+        compiler.getData().setLastUsedRegister(op2);
     }
 
 }
