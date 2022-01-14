@@ -1,0 +1,17 @@
+// Description:
+//     Calcul du modulo
+
+// Resultats:
+//     0
+//     1
+//     2
+
+// Historique:
+//     créé le 14/01/2022
+
+
+{
+    println(42%42);
+    println(1%2);
+    println(12962%10);
+}
