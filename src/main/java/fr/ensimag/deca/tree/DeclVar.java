@@ -48,15 +48,14 @@ public class DeclVar extends AbstractDeclVar {
             throws ContextualError {
 
                 Type varType = type.verifyType(compiler);
-                LOG.debug(varType.toString());
-                if (type.verifyType(compiler).isVoid()){
+                if (varType.isVoid()){
                     throw new ContextualError("type void", getLocation());
                 }       
                 try {
                     ExpDefinition varDefinition= new VariableDefinition(varType, varName.getLocation());
                     varName.setDefinition(varDefinition);
                     varName.setType(varType);
-                    localEnv.declare(varName.getName(),varDefinition);
+                    compiler.GetEnvExp().declare(varName.getName(),varDefinition);
                     initialization.verifyInitialization(compiler, varName.getType(), localEnv , currentClass);
                 } catch (EnvironmentExp.DoubleDefException e) {
                     // TODO Auto-generated catch block

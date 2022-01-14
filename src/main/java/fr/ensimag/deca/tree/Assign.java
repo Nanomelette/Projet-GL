@@ -1,6 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+
+import org.apache.log4j.Logger;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -14,6 +17,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
  */
 public class Assign extends AbstractBinaryExpr {
 
+    private static final Logger LOG = Logger.getLogger(Main.class);
     @Override
     public AbstractLValue getLeftOperand() {
         // The cast succeeds by construction, as the leftOperand has been set
@@ -30,7 +34,7 @@ public class Assign extends AbstractBinaryExpr {
             ClassDefinition currentClass) throws ContextualError {
         Type type = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         this.getRightOperand().verifyRValue(compiler, localEnv, currentClass, type);
-        setType(type);
+        this.setType(type);
         return getType();
         //throw new UnsupportedOperationException("not yet implemented");
     }

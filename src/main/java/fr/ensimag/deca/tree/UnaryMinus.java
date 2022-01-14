@@ -23,6 +23,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
             ClassDefinition currentClass) throws ContextualError {
                 Type type = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
                 if (type.isInt() || type.isFloat()) {
+                    this.setType(type);
                     return type;
                 } else {
                     throw new ContextualError("NotBooleanType", getLocation());

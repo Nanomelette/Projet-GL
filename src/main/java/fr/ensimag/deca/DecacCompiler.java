@@ -82,21 +82,18 @@ public class DecacCompiler {
         return this.symbolTable;
     }
 
-    public EnvironmentType GetEnvTypes () {
+    public EnvironmentType GetEnvTypes(){
         return this.env_Types ;
     }
     
 	public Type searchSymbol(Symbol type) {
-        for (Symbol symbol : env_Types.getEnvironmentTypes().keySet() ) {
+        for (Symbol symbol : env_Types.getEnvironmentType().keySet() ) {
+            //System.out.println("initial:" + type + " comparé avec : " + symbol);
             if (symbol.getName().equals(type.getName()))
                 return env_Types.getType(symbol);
             }
 		return null;
 	}
-
-    public Symbol addSymbolTable(String name){
-        return this.symbolTable.create(name);
-    }
 
     /**
      * Source file associated with this compiler instance.
@@ -313,7 +310,7 @@ public class DecacCompiler {
     }
 
     public EnvironmentExp GetEnvExp() {
-        return this.Env_exp;
+        return Env_exp;
     }
 
 }

@@ -1,6 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+
+import org.apache.log4j.Logger;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -14,6 +17,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
  */
 public class ListInst extends TreeList<AbstractInst> {
 
+    private static final Logger LOG = Logger.getLogger(ListInst.class);
+
     /**
      * Implements non-terminal "list_inst" of [SyntaxeContextuelle] in pass 3
      * @param compiler contains "env_types" attribute
@@ -26,6 +31,7 @@ public class ListInst extends TreeList<AbstractInst> {
     public void verifyListInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+                LOG.debug("Entering verifyListInst");
         for (AbstractInst i : getList()){        	
     		i.verifyInst(compiler, localEnv, currentClass, returnType);
     	}

@@ -16,6 +16,7 @@ public class DeclField extends AbstractDeclField {
     private AbstractIdentifier type;
     private AbstractIdentifier field;
     private Initialization init;
+    private Visibility visib;
     
 
     public DeclField(AbstractIdentifier type, AbstractIdentifier field, Initialization init){

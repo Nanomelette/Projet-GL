@@ -14,11 +14,14 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class MethodCall extends AbstractExpr {
 
-    private AbstractExpr expr;
-    private AbstractIdentifier method_ident;
+    private AbstractExpr obj;
+    private AbstractIdentifier meth;
+    private ListExpr param;
 
-    public MethodCall(){
-        
+    public MethodCall(AbstractExpr expr, AbstractIdentifier method, ListExpr listExpr){
+        this.obj = expr;
+        this.meth = method;
+        this.param = listExpr;
     }
 
     @Override
@@ -30,7 +33,6 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO Auto-generated method stub
         
     }
 

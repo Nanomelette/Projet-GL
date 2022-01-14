@@ -9,6 +9,7 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -16,6 +17,7 @@ import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -24,6 +26,7 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2022
  */
 public abstract class AbstractExpr extends AbstractInst {
+
     /**
      * @return true if the expression does not correspond to any concrete token
      * in the source code (and should be decompiled to the empty string).
@@ -88,6 +91,14 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
+            Type type = this.verifyExpr(compiler, localEnv, currentClass);
+            if(type.isInt() && expectedType.isFloat()){
+                ConvFloat cf = new ConvFloat(this);
+                return cf;
+            }
+            if(type.isFloat() && expectedType.isInt() || type.sameType(expectedType)){
+                return this;
+            }        
         throw new UnsupportedOperationException("not yet implemented");
     }
     
@@ -96,7 +107,10 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        this.verifyExpr(compiler, localEnv, currentClass);
+        Type verifType = this.verifyExpr(compiler, localEnv, currentClass);
+        if(verifType.sameType(returnType)){
+            throw new UnsupportedOperationException("same type");
+        }
         //throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -112,7 +126,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+    	setType(verifyExpr(compiler, localEnv, currentClass));	
+	 	if (!(this.verifyExpr(compiler, localEnv, currentClass).getName().getName().equals("boolean")))
+		    	throw new ContextualError ( "condition type must be boolean",this.getLocation());        
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**

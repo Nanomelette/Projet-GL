@@ -28,17 +28,19 @@ public class SymbolTable {
     public Symbol create(String name) {
         //throw new UnsupportedOperationException("Symbol creation");
         Symbol value = new Symbol(name);
-        if(!(map.containsKey(name))){
-            map.put(name, value);
-        }
+        this.map.putIfAbsent(name, value);
         return value;
+    }
+
+    public Map<String, Symbol> getMap(){
+        return this.map;
     }
 
     public static class Symbol {
         // Constructor is private, so that Symbol instances can only be created
         // through SymbolTable.create factory (which thus ensures uniqueness
         // of symbols).
-        private Symbol(String name) {
+        public Symbol(String name) {
             super();
             this.name = name;
         }
