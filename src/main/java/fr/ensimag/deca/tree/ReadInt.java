@@ -12,13 +12,11 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 import java.io.PrintStream;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.lf5.Log4JLogRecord;
+// import org.apache.log4j.Logger;
 
 
 
@@ -29,7 +27,7 @@ import org.apache.log4j.lf5.Log4JLogRecord;
  */
 public class ReadInt extends AbstractReadExpr {
 
-    private static final Logger LOG = Logger.getLogger(AbstractBinaryExpr.class);
+    // private static final Logger LOG = Logger.getLogger(AbstractBinaryExpr.class);
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,

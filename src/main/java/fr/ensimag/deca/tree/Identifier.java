@@ -1,7 +1,6 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -18,7 +17,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
+// import org.apache.log4j.Logger;
 
 /**
  * Deca Identifier
@@ -28,7 +27,7 @@ import org.apache.log4j.Logger;
  */
 public class Identifier extends AbstractIdentifier {
 
-    private static final Logger LOG = Logger.getLogger(Main.class);
+    // private static final Logger LOG = Logger.getLogger(Main.class);
     
     @Override
     protected void checkDecoration() {

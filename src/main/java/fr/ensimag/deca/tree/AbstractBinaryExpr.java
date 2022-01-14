@@ -11,7 +11,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 
 import java.io.PrintStream;
-import org.apache.log4j.Logger;
+// import org.apache.log4j.Logger;
 
 import org.apache.commons.lang.Validate;
 
@@ -23,7 +23,7 @@ import org.apache.commons.lang.Validate;
  */
 public abstract class AbstractBinaryExpr extends AbstractExpr {
 
-    private static final Logger LOG = Logger.getLogger(AbstractBinaryExpr.class);
+    // private static final Logger LOG = Logger.getLogger(AbstractBinaryExpr.class);
 
     public AbstractExpr getLeftOperand() {
         return leftOperand;
