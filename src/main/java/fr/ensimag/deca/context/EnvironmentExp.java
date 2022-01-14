@@ -77,8 +77,4 @@ public class EnvironmentExp {
         return this.DictionnaryMap;
     }
 
-    public ExpDefinition getExpDefinition(Symbol key){
-        return this.DictionnaryMap.get(key);
-    }
-
 }

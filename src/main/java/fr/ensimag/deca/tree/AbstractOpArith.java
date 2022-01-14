@@ -28,8 +28,10 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             }
             else {
                 if (type1.isFloat()) {
+                    setType(type1);
                     return type1;
                 } else {
+                    setType(type2);
                     return type2;
                 }
             }

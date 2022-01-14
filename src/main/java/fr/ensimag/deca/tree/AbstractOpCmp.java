@@ -26,7 +26,9 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
                 if ((!type1.isInt() && !type1.isFloat()) || (!type2.isInt() && !type2.isFloat())) {
                     if (getOperatorName() == "==" || getOperatorName() == "!=") {
                         if (type1.isBoolean() && type2.isBoolean()) {
-                            return new BooleanType(compiler.getSymbolTable().create("boolean"));
+                            Type type = new BooleanType(compiler.getSymbolTable().create("boolean"));
+                            this.setType(type);
+                            return type;
                         } else {
                             throw new ContextualError("NotIntAndNotFloatType", getLocation());
                         }
@@ -34,7 +36,9 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
                         throw new ContextualError("NotIntAndNotFloatType", getLocation());
                     }
                 } else {
-                    return new BooleanType(compiler.getSymbolTable().create("boolean"));
+                    Type type = new BooleanType(compiler.getSymbolTable().create("boolean"));
+                    this.setType(type);
+                    return type;
                 }
     }
 
