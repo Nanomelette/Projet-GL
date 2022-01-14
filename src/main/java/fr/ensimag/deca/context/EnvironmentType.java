@@ -37,7 +37,7 @@ public class EnvironmentType {
     }
     
     public TypeDefinition getDefinition( Symbol s ){
-    	return this.getEnvironmentTypes().get(s);
+    	return this.getEnvironmentType().get(s);
     }
     
     public void setEnvironmentType(Symbol s , Type type , Location location){
@@ -45,7 +45,7 @@ public class EnvironmentType {
     	this.env_Type.put(s, typeDef);
     }
     
-    public HashMap<Symbol, TypeDefinition> getEnvironmentTypes(){
+    public HashMap<Symbol, TypeDefinition> getEnvironmentType(){
     	return this.env_Type;
     }
     

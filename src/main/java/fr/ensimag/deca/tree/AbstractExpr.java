@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -82,7 +83,14 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+            this.verifyExpr(compiler, localEnv, currentClass);
+            if(type == verifyExpr(compiler, localEnv, currentClass)){
+                Identifier ident = new Identifier(new Symbol(expectedType.toString()));
+                return ident;
+            }
+            return null;
+        
+        //throw new UnsupportedOperationException("not yet implemented");
     }
     
     
@@ -106,7 +114,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+    	setType(verifyExpr(compiler, localEnv, currentClass));	
+	 	if (!(this.verifyExpr(compiler, localEnv, currentClass).getName().getName().equals("boolean")))
+		    	throw new ContextualError ( "condition type must be boolean",this.getLocation());        
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**

@@ -56,7 +56,7 @@ public class DeclVar extends AbstractDeclVar {
                     ExpDefinition varDefinition= new VariableDefinition(varType, varName.getLocation());
                     varName.setDefinition(varDefinition);
                     varName.setType(varType);
-                    localEnv.declare(varName.getName(),varDefinition);
+                    compiler.GetEnvExp().declare(varName.getName(),varDefinition);
                     initialization.verifyInitialization(compiler, varName.getType(), localEnv , currentClass);
                 } catch (EnvironmentExp.DoubleDefException e) {
                     // TODO Auto-generated catch block

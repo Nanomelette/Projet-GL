@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
  */
 public class Identifier extends AbstractIdentifier {
 
-    private static final Logger LOG = Logger.getLogger(Main.class);
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
     
     @Override
     protected void checkDecoration() {
@@ -169,26 +169,43 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        // if ( localEnv.get(name) == null ){
-	    // 	throw new ContextualError("undeclared identifier", this.getLocation());
-        // }
-    	// else
-    	// {
 
+        //System.out.println(compiler.getSymbolTable().getMap().toString());
+        System.out.println("1 - Key           := " + compiler.getSymbolTable().create(this.name.getName()));
+        System.out.println("2 - EnvExp        := " + compiler.GetEnvExp().getDictionnary().toString());
+        System.out.println("3 - EnvExp keys   := " + compiler.GetEnvExp().getDictionnary().keySet().toString());
+        System.out.println("4 - EnvExp values := " + compiler.GetEnvExp().getDictionnary().values().toString());
+        System.out.println("5 - Symbol Table  := " + compiler.getSymbolTable().getMap().toString());
+        //System.out.println("4 - TEST := " + compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())));
 
-        if (compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())) != null) {
-            this.setDefinition(compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())));
-            this.setType(compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())).getType());
-            return compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())).getType();
-
+        Symbol key = new Symbol(this.name.getName());
+        System.out.println("-"+this.name.toString()+"-");
+        System.out.println("-"+compiler.GetEnvExp().getDictionnary().keySet().toArray()[0]+"-");
+        if(this.name.getName().equals(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[0]).getName())){
+            System.out.println("enfin !");
         }
-        else if(compiler.GetEnvExp().get(this.name)!= null){
+        int i=0;
+        while(i < compiler.GetEnvExp().getDictionnary().keySet().size()-1){
+            i++;
+            if(this.name.getName().equals(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName())){
+                break;
+            }
+        }
+        System.out.println((Symbol)compiler.getSymbolTable().create((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName())));
+
+        if (this.name.getName().equals(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName())) {
+            System.out.println("Entering if");;
+            this.setDefinition(compiler.GetEnvExp().getExpDefinition((Symbol)compiler.getSymbolTable().create((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName()))));
+            this.setType(compiler.GetEnvExp().getExpDefinition((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))).getType());
+            return compiler.GetEnvExp().getExpDefinition((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))).getType();
+        }
+        else if(compiler.GetEnvExp().getExpDefinition(key)!= null){
     		this.setDefinition(compiler.GetEnvExp().get(this.name));
     		this.setType(compiler.GetEnvExp().get(this.name).getType());        	
     		return compiler.GetEnvExp().get(this.name).getType();
         }   
         else{
-            throw new ContextualError("identificateur non def", getLocation());
+            throw new ContextualError("identifier not defined", getLocation());
         }
     	//}
         //throw new UnsupportedOperationException("not yet implemented");

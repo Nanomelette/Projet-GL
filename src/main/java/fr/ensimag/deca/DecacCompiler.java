@@ -14,6 +14,8 @@ import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
+import net.bytebuddy.dynamic.DynamicType.Builder.MethodDefinition.ParameterDefinition.Initial;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -60,12 +62,13 @@ public class DecacCompiler {
         return this.symbolTable;
     }
 
-    public EnvironmentType GetEnvTypes () {
+    public EnvironmentType GetEnvTypes(){
         return this.env_Types ;
     }
     
 	public Type searchSymbol(Symbol type) {
-        for (Symbol symbol : env_Types.getEnvironmentTypes().keySet() ) {
+        for (Symbol symbol : env_Types.getEnvironmentType().keySet() ) {
+            System.out.println("initial:" + type + " comparé avec : " + symbol);
             if (symbol.getName().equals(type.getName()))
                 return env_Types.getType(symbol);
             }
