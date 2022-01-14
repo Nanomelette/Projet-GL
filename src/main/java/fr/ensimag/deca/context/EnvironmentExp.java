@@ -27,7 +27,6 @@ public class EnvironmentExp {
     // d'empilement).
 
     EnvironmentExp parentEnvironment;
-    List<EnvironmentExp> ListDictionaries = new LinkedList<EnvironmentExp>();
     HashMap<Symbol, ExpDefinition> DictionnaryMap;
 
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
@@ -44,7 +43,7 @@ public class EnvironmentExp {
      * symbol is undefined.
      */
     public ExpDefinition get(Symbol key) {
-        if(DictionnaryMap==null){
+        if(DictionnaryMap==null | key == null){
             throw new UnsupportedOperationException ("Empty Dictionnary");
         }
         return DictionnaryMap.get(key);
@@ -72,6 +71,14 @@ public class EnvironmentExp {
         }
         DictionnaryMap.put(name, def);
         //throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    public HashMap<Symbol, ExpDefinition> getDictionnary(){
+        return this.DictionnaryMap;
+    }
+
+    public ExpDefinition getExpDefinition(Symbol key){
+        return this.DictionnaryMap.get(key);
     }
 
 }

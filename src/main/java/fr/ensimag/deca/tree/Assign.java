@@ -1,6 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+
+import org.apache.log4j.Logger;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -15,6 +18,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
  */
 public class Assign extends AbstractBinaryExpr {
 
+    private static final Logger LOG = Logger.getLogger(Main.class);
     @Override
     public AbstractLValue getLeftOperand() {
         // The cast succeeds by construction, as the leftOperand has been set

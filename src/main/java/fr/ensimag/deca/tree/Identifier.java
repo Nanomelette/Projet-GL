@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
  */
 public class Identifier extends AbstractIdentifier {
 
-    private static final Logger LOG = Logger.getLogger(Main.class);
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
     
     @Override
     protected void checkDecoration() {
@@ -169,28 +169,27 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        // if ( localEnv.get(name) == null ){
-	    // 	throw new ContextualError("undeclared identifier", this.getLocation());
-        // }
-    	// else
-    	// {
-
-
-        if (compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())) != null) {
-            this.setDefinition(compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())));
-            this.setType(compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())).getType());
-            return compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())).getType();
-
+        int i=0;
+        while(i < compiler.GetEnvExp().getDictionnary().keySet().size()){
+            if(this.name.getName().equals(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName())){
+                break;
+            }
+            i++;
         }
-        else if(compiler.GetEnvExp().get(this.name)!= null){
-    		this.setDefinition(compiler.GetEnvExp().get(this.name));
-    		this.setType(compiler.GetEnvExp().get(this.name).getType());        	
-    		return compiler.GetEnvExp().get(this.name).getType();
+        Symbol symb = compiler.getSymbolTable().create("void");
+        if (compiler.GetEnvExp().getExpDefinition(symb) != null) {
+            this.setDefinition(compiler.GetEnvExp().getExpDefinition(symb));
+            this.setType(compiler.GetEnvExp().getExpDefinition(symb).getType());
+            return compiler.GetEnvExp().getExpDefinition(symb).getType();
+        }
+        else if(compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))!=null){
+    		this.setDefinition(compiler.GetEnvExp().getExpDefinition((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))));
+    		this.setType(compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i])).getType());        	
+    		return compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i])).getType();
         }   
         else{
-            throw new ContextualError("identificateur non def", getLocation());
+            throw new ContextualError("identifier not defined", getLocation());
         }
-    	//}
         //throw new UnsupportedOperationException("not yet implemented");
     }
 

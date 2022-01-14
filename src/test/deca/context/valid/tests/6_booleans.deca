@@ -12,6 +12,5 @@
         boolean b = false;
         boolean c;
         c = a && b;
-        println("Booleen: ", c || !c != true);
         
 }
