@@ -244,7 +244,7 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        assert(prog.checkAllLocations());
+        // assert(prog.checkAllLocations());
 
         if (compilerOptions.getParse()) {
             prog.prettyPrint(System.out);

@@ -1,5 +1,5 @@
 package fr.ensimag.deca.tree;
-import org.apache.log4j.Logger;
+// import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.instructions.MUL;
@@ -11,7 +11,7 @@ import fr.ensimag.ima.pseudocode.instructions.MUL;
  * @date 01/01/2022
  */
 public class Multiply extends AbstractOpArith {
-    private static final Logger LOG = Logger.getLogger(Multiply.class);
+    // private static final Logger LOG = Logger.getLogger(Multiply.class);
 
     public Multiply(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
@@ -27,7 +27,6 @@ public class Multiply extends AbstractOpArith {
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);
         // <mnemo(op)> <dval(e2)> Rn
-        LOG.debug("    Used : " + compiler.getData().getLastUsedRegister());
         compiler.addInstruction(new MUL(op1, op2));
         compiler.getData().setLastUsedRegister(op2);
     }
