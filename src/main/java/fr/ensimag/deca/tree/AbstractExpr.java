@@ -83,14 +83,15 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-            this.verifyExpr(compiler, localEnv, currentClass);
-            if(type == verifyExpr(compiler, localEnv, currentClass)){
-                Identifier ident = new Identifier(new Symbol(expectedType.toString()));
-                return ident;
+            //Type type = compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[0])).getType();
+            if(type.isFloat() && expectedType.isBoolean()){
+                ConvFloat cf = new ConvFloat(this);
+                return cf;
             }
-            return null;
-        
-        //throw new UnsupportedOperationException("not yet implemented");
+            if(type.isFloat() && expectedType.isInt() || type.sameType(expectedType)){
+                return this;
+            }        
+        throw new UnsupportedOperationException("not yet implemented");
     }
     
     

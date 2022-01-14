@@ -48,7 +48,7 @@ public class DeclVar extends AbstractDeclVar {
             throws ContextualError {
 
                 Type varType = type.verifyType(compiler);
-                LOG.debug(varType.toString());
+                LOG.debug("varType" + varType.toString());
                 if (type.verifyType(compiler).isVoid()){
                     throw new ContextualError("type void", getLocation());
                 }       

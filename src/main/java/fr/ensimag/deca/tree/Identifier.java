@@ -178,12 +178,11 @@ public class Identifier extends AbstractIdentifier {
         System.out.println("5 - Symbol Table  := " + compiler.getSymbolTable().getMap().toString());
         //System.out.println("4 - TEST := " + compiler.GetEnvExp().get(compiler.getSymbolTable().create(this.name.getName())));
 
-        Symbol key = new Symbol(this.name.getName());
-        System.out.println("-"+this.name.toString()+"-");
-        System.out.println("-"+compiler.GetEnvExp().getDictionnary().keySet().toArray()[0]+"-");
-        if(this.name.getName().equals(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[0]).getName())){
-            System.out.println("enfin !");
-        }
+        //System.out.println("-"+this.name.toString()+"-");
+        //System.out.println("-"+compiler.GetEnvExp().getDictionnary().keySet().toArray()[0]+"-");
+        // if(this.name.getName().equals(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[0]).getName())){
+        //     System.out.println("enfin !");
+        // }
         int i=0;
         while(i < compiler.GetEnvExp().getDictionnary().keySet().size()-1){
             i++;
@@ -191,23 +190,24 @@ public class Identifier extends AbstractIdentifier {
                 break;
             }
         }
-        System.out.println((Symbol)compiler.getSymbolTable().create((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName())));
+        //System.out.println((Symbol)compiler.getSymbolTable().create((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName())));
+
+        //System.out.println("type : " +compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i])).getType());
 
         if (this.name.getName().equals(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName())) {
             System.out.println("Entering if");;
-            this.setDefinition(compiler.GetEnvExp().getExpDefinition((Symbol)compiler.getSymbolTable().create((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName()))));
-            this.setType(compiler.GetEnvExp().getExpDefinition((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))).getType());
+            setDefinition(compiler.GetEnvExp().getExpDefinition((Symbol)compiler.getSymbolTable().create((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName()))));
+            setType(compiler.GetEnvExp().getExpDefinition((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))).getType());
             return compiler.GetEnvExp().getExpDefinition((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))).getType();
         }
-        else if(compiler.GetEnvExp().getExpDefinition(key)!= null){
-    		this.setDefinition(compiler.GetEnvExp().get(this.name));
-    		this.setType(compiler.GetEnvExp().get(this.name).getType());        	
-    		return compiler.GetEnvExp().get(this.name).getType();
+        else if(compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))!=null){
+    		setDefinition(compiler.GetEnvExp().getExpDefinition((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))));
+    		setType(compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i])).getType());        	
+    		return compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i])).getType();
         }   
         else{
             throw new ContextualError("identifier not defined", getLocation());
         }
-    	//}
         //throw new UnsupportedOperationException("not yet implemented");
     }
 
