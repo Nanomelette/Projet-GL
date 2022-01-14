@@ -4,30 +4,14 @@ import java.io.PrintStream;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
+public class New extends AbstractExpr {
 
-public class MethodBodyAsm extends AbstractExpr {
-    private StringLiteral code;
-
-    public MethodBodyAsm(StringLiteral string){
-        this.code= string;
-    }
-
-
-    @Override
-    public void decompile(IndentPrintStream s) {
-        s.print("asm(");
-        s.print(code.decompile());
-        s.print(");");
-    }
-
+    private Identifier class_;
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
@@ -36,6 +20,12 @@ public class MethodBodyAsm extends AbstractExpr {
         return null;
     }
 
+    @Override
+    public void decompile(IndentPrintStream s) {     
+        s.print("new");
+        s.print(class_.decompile());
+        s.print("()");
+    }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
@@ -43,12 +33,10 @@ public class MethodBodyAsm extends AbstractExpr {
         
     }
 
-
     @Override
     protected void iterChildren(TreeFunction f) {
         // TODO Auto-generated method stub
         
     }
-
     
 }
