@@ -14,15 +14,12 @@ import java.io.PrintStream;
  */
 public class This extends AbstractExpr {
 
-    private Object value;
+    private boolean implicit;
 
-    public This() {
-        this.value = null;
+    public This(boolean bool) {
+        this.implicit = bool;
     }
 
-    public Object getValue() {
-        return value;
-    }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
@@ -33,7 +30,9 @@ public class This extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(null);
+        if(!this.implicit){
+            s.print("this");
+        }
     }
 
     @Override
@@ -48,7 +47,10 @@ public class This extends AbstractExpr {
 
     @Override
     String prettyPrintNode() {
-        return "This (" + value + ")";
+        if(this.implicit){
+            return "";
+        }
+        return "this";
     }
 
 }
