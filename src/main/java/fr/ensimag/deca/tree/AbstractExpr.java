@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
  */
 public abstract class AbstractExpr extends AbstractInst {
 
-    private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
     /**
      * @return true if the expression does not correspond to any concrete token
      * in the source code (and should be decompiled to the empty string).
@@ -87,7 +86,7 @@ public abstract class AbstractExpr extends AbstractInst {
             Type expectedType)
             throws ContextualError {
             Type type = this.verifyExpr(compiler, localEnv, currentClass);
-            if(type.isFloat() && expectedType.isBoolean()){
+            if(type.isInt() && expectedType.isFloat()){
                 ConvFloat cf = new ConvFloat(this);
                 return cf;
             }

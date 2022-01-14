@@ -160,6 +160,8 @@ inst returns[AbstractInst tree]
             assert($condition.tree != null);
             assert($body.tree != null);
             $tree = new While($condition.tree, $body.tree);
+            setLocation($tree, $condition.start);
+            setLocation($tree, $body.start);
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
@@ -176,6 +178,8 @@ if_then_else returns[IfThenElse tree]
             assert($condition.tree != null);
             assert($li_if.tree != null);
             $tree = new IfThenElse($condition.tree, $li_if.tree, elseBranch);
+            setLocation($tree, $condition.start);
+            setLocation($tree, $li_if.start);
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
           assert($elsif_cond.tree != null);
@@ -183,13 +187,15 @@ if_then_else returns[IfThenElse tree]
           elifBranch = new IfThenElse($elsif_cond.tree,$elsif_li.tree, new ListInst());
           elseBranch.add(elifBranch);
           elseBranch = elifBranch.getElseBranch();
-          setLocation($tree,$ELSE);
+          setLocation($tree,$elsif_cond.start);
+          setLocation($tree,$elsif_li.start);
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
           assert($li_else.tree != null);
           if(elifBranch == null){$tree.setElseBranch($li_else.tree);}
           else{elifBranch.setElseBranch($li_else.tree);}
+          setLocation($tree,$li_else.start);
         }
       )? {
       }
@@ -232,6 +238,7 @@ assign_expr returns[AbstractExpr tree]
             assert($e2.tree != null);
             $tree = new Assign((AbstractLValue)$e.tree, $e2.tree);
             setLocation($tree, $e.start);
+            setLocation($tree, $e2.start);
         }
       | /* epsilon */ {
             assert($e.tree != null);
