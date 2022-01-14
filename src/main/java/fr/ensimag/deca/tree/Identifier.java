@@ -191,18 +191,17 @@ public class Identifier extends AbstractIdentifier {
             }
         }
         //System.out.println((Symbol)compiler.getSymbolTable().create((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName())));
-
         //System.out.println("type : " +compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i])).getType());
-
-        if (this.name.getName().equals(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName())) {
+        Symbol symb = compiler.getSymbolTable().create("void");
+        if (compiler.GetEnvExp().getExpDefinition(symb) != null) {
             System.out.println("Entering if");;
-            setDefinition(compiler.GetEnvExp().getExpDefinition((Symbol)compiler.getSymbolTable().create((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName()))));
-            setType(compiler.GetEnvExp().getExpDefinition((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))).getType());
-            return compiler.GetEnvExp().getExpDefinition((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))).getType();
+            this.setDefinition(compiler.GetEnvExp().getExpDefinition(symb));
+            this.setType(compiler.GetEnvExp().getExpDefinition(symb).getType());
+            return compiler.GetEnvExp().getExpDefinition(symb).getType();
         }
         else if(compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))!=null){
-    		setDefinition(compiler.GetEnvExp().getExpDefinition((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))));
-    		setType(compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i])).getType());        	
+    		this.setDefinition(compiler.GetEnvExp().getExpDefinition((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))));
+    		this.setType(compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i])).getType());        	
     		return compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i])).getType();
         }   
         else{
@@ -217,7 +216,9 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
+        LOG.debug("Entering verifyType of identifier");
             Type type = compiler.searchSymbol(this.getName());
+            LOG.debug(type);
             if ( type == null )
                 throw new ContextualError("Identifier-type error", this.getLocation());
             else 

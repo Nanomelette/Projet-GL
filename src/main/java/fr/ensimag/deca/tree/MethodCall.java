@@ -15,7 +15,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 public class MethodCall extends AbstractExpr {
 
     private AbstractExpr expr;
-    private AbstractIdentifier method_ident;
+    private AbstractIdentifier method_Ident;
+    private ListExpr listExpr;
 
     public MethodCall(){
         

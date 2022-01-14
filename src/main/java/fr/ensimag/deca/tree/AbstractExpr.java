@@ -11,6 +11,7 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -19,6 +20,8 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2022
  */
 public abstract class AbstractExpr extends AbstractInst {
+
+    private static final Logger LOG = Logger.getLogger(AbstractExpr.class);
     /**
      * @return true if the expression does not correspond to any concrete token
      * in the source code (and should be decompiled to the empty string).
@@ -83,6 +86,8 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
+            LOG.debug("Entering verifyRValue");
+            LOG.debug(type);
             //Type type = compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[0])).getType();
             if(type.isFloat() && expectedType.isBoolean()){
                 ConvFloat cf = new ConvFloat(this);
@@ -99,7 +104,10 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        this.verifyExpr(compiler, localEnv, currentClass);
+        Type verifType = this.verifyExpr(compiler, localEnv, currentClass);
+        if(verifType.sameType(returnType)){
+            throw new UnsupportedOperationException("same type");
+        }
         //throw new UnsupportedOperationException("not yet implemented");
     }
 

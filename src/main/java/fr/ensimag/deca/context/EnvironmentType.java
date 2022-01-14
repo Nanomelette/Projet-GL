@@ -19,10 +19,10 @@ public class EnvironmentType {
     
     public EnvironmentType(DecacCompiler compiler){
         
-    	Symbol symbInt = compiler.addSymbolTable("int");
-    	Symbol symbFloat = compiler.addSymbolTable("float");
-    	Symbol symbBoolean = compiler.addSymbolTable("boolean");
-    	Symbol symbVoid = compiler.addSymbolTable("void");
+    	Symbol symbInt = compiler.getSymbolTable().create("int");
+    	Symbol symbFloat = compiler.getSymbolTable().create("float");
+    	Symbol symbBoolean = compiler.getSymbolTable().create("boolean");
+    	Symbol symbVoid = compiler.getSymbolTable().create("void");
 
     	Type typeInt = new IntType(symbInt);
     	Type typeFloat = new FloatType(symbFloat) ;
@@ -54,7 +54,7 @@ public class EnvironmentType {
     }
 
     public TypeDefinition get(Symbol create) {
-        return this.env_Type.get(create);
+        return env_Type.get(create);
         
     }
 

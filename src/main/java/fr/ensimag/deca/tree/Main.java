@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
@@ -39,7 +40,10 @@ public class Main extends AbstractMain {
         // (mais ce n'est à priori pas nécessaire).
         EnvironmentExp localEnv = new EnvironmentExp(null);
         declVariables.verifyListDeclVariable(compiler, localEnv, null);
-        insts.verifyListInst(compiler,localEnv,null,null);
+        LOG.debug(compiler.getSymbolTable().create("void"));
+        LOG.debug(compiler.GetEnvTypes().getEnvironmentType().keySet().toString());
+        Symbol symbVoid = compiler.getSymbolTable().create("void");
+        insts.verifyListInst(compiler,localEnv,null,compiler.searchSymbol(symbVoid));
         
         LOG.debug("verify Main: end");
         //throw new UnsupportedOperationException("not yet implemented");
