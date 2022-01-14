@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
+import static org.mockito.ArgumentMatchers.booleanThat;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -20,7 +22,10 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        for (AbstractDeclVar c : getList()){
+            c.decompile();
+        }
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     /**
