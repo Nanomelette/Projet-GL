@@ -40,8 +40,6 @@ public class Main extends AbstractMain {
         // (mais ce n'est à priori pas nécessaire).
         EnvironmentExp localEnv = new EnvironmentExp(null);
         declVariables.verifyListDeclVariable(compiler, localEnv, null);
-        LOG.debug(compiler.getSymbolTable().create("void"));
-        LOG.debug(compiler.GetEnvTypes().getEnvironmentType().keySet().toString());
         Symbol symbVoid = compiler.getSymbolTable().create("void");
         insts.verifyListInst(compiler,localEnv,null,compiler.searchSymbol(symbVoid));
         

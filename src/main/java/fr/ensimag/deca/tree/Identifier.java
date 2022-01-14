@@ -170,15 +170,14 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         int i=0;
-        while(i < compiler.GetEnvExp().getDictionnary().keySet().size()-1){
-            i++;
+        while(i < compiler.GetEnvExp().getDictionnary().keySet().size()){
             if(this.name.getName().equals(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName())){
                 break;
             }
+            i++;
         }
         Symbol symb = compiler.getSymbolTable().create("void");
         if (compiler.GetEnvExp().getExpDefinition(symb) != null) {
-            System.out.println("Entering if");;
             this.setDefinition(compiler.GetEnvExp().getExpDefinition(symb));
             this.setType(compiler.GetEnvExp().getExpDefinition(symb).getType());
             return compiler.GetEnvExp().getExpDefinition(symb).getType();
@@ -200,9 +199,7 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("Entering verifyType of identifier");
             Type type = compiler.searchSymbol(this.getName());
-            LOG.debug(type);
             if ( type == null )
                 throw new ContextualError("Identifier-type error", this.getLocation());
             else 
