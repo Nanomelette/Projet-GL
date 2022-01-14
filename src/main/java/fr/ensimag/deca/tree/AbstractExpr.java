@@ -88,7 +88,7 @@ public abstract class AbstractExpr extends AbstractInst {
             throws ContextualError {
             LOG.debug("Entering verifyRValue");
             LOG.debug(type);
-            //Type type = compiler.GetEnvExp().getExpDefinition(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[0])).getType();
+            Type type = this.verifyExpr(compiler, localEnv, currentClass);
             if(type.isFloat() && expectedType.isBoolean()){
                 ConvFloat cf = new ConvFloat(this);
                 return cf;
