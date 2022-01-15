@@ -9,6 +9,8 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
+import net.bytebuddy.implementation.bind.annotation.AllArguments.Assignment;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -93,7 +95,7 @@ public abstract class AbstractExpr extends AbstractInst {
             if(type.isFloat() && expectedType.isInt() || type.sameType(expectedType)){
                 return this;
             }        
-        throw new UnsupportedOperationException("not yet implemented");
+        throw new ContextualError("Assignment error", getLocation());
     }
     
     
