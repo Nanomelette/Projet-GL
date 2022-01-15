@@ -1,6 +1,10 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 import org.apache.log4j.Logger;
 
@@ -45,4 +49,11 @@ public class Assign extends AbstractBinaryExpr {
         return "=";
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        getRightOperand().codeGenInst(compiler);
+        GPRegister register = compiler.getData().getLastUsedRegister();
+        DAddr adresse = ((Identifier) getLeftOperand()).getExpDefinition().getOperand();
+        compiler.addInstruction(new STORE(register, adresse));
+    }
 }

@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
@@ -14,6 +15,9 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -254,4 +258,11 @@ public class Identifier extends AbstractIdentifier {
         return this.getExpDefinition().getOperand();
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        Data data = compiler.getData();
+        GPRegister register = data.getFreeRegister(compiler);
+        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), register));
+        data.setLastUsedRegister(register);
+    }
 }
