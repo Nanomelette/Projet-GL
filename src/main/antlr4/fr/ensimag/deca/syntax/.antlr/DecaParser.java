@@ -506,6 +506,7 @@ public class DecaParser extends AbstractDecaParser {
 
 				        assert(((Decl_varContext)_localctx).e.tree!=null);
 				        init = new Initialization(((Decl_varContext)_localctx).e.tree);
+				        setLocation(init,(((Decl_varContext)_localctx).e!=null?(((Decl_varContext)_localctx).e.start):null));
 				        
 				}
 			}
