@@ -202,8 +202,14 @@ public class Identifier extends AbstractIdentifier {
             Type type = compiler.searchSymbol(this.getName());
             if ( type == null )
                 throw new ContextualError("Identifier-type error", this.getLocation());
-            else 
+            else {
+                for (Symbol symbol : compiler.GetEnvTypes().getEnvironmentType().keySet() ) {
+                    if (symbol.getName().equals(this.getName().getName()))
+                        this.setDefinition(compiler.GetEnvTypes().get(symbol));
+                    }
+                
                 setType(type);
+            }
                 return type ;
         //throw new UnsupportedOperationException("not yet implemented");
     }
