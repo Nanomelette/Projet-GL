@@ -14,6 +14,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
+import net.bytebuddy.implementation.bind.annotation.AllArguments.Assignment;
 
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -99,7 +100,7 @@ public abstract class AbstractExpr extends AbstractInst {
             if(type.isFloat() && expectedType.isInt() || type.sameType(expectedType)){
                 return this;
             }        
-        throw new UnsupportedOperationException("not yet implemented");
+        throw new ContextualError("Assignment error", getLocation());
     }
     
     
