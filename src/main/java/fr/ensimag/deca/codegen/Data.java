@@ -102,6 +102,14 @@ public class Data {
         }
     }
 
+    public void incrementGbOffset() {
+        gBOffset++;
+    }
+
+    public int getGbOffset() {
+        return gBOffset;
+    }
+
     public void addHeader(DecacCompiler compiler) {
         compiler.addInstructionAtFirst(new ADDSP(gBOffset-1));
         // TODO : Gérer message d'erreur

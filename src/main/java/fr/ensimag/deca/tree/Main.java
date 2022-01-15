@@ -46,14 +46,18 @@ public class Main extends AbstractMain {
         declVariables.verifyListDeclVariable(compiler, localEnv, null);
         Symbol symbVoid = compiler.getSymbolTable().create("void");
         insts.verifyListInst(compiler,localEnv,null,compiler.searchSymbol(symbVoid));
-        
+
         LOG.debug("verify Main: end");
         //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        compiler.getData().variableInit(declVariables);
+        // compiler.getData().variableInit(declVariables);
+        for (AbstractDeclVar absDeclVar : declVariables.getList()) {
+            DeclVar declVar = (DeclVar) absDeclVar;
+            declVar.codeGenDeclVar(compiler);
+        }
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
     }

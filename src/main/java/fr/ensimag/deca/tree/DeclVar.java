@@ -10,6 +10,11 @@ import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
@@ -85,5 +90,17 @@ public class DeclVar extends AbstractDeclVar {
         type.prettyPrint(s, prefix, false);
         varName.prettyPrint(s, prefix, false);
         initialization.prettyPrint(s, prefix, true);
+    }
+
+    public void codeGenDeclVar(DecacCompiler compiler) {
+        DAddr address = new RegisterOffset(compiler.getData().getGbOffset(), Register.GB);
+        Identifier var = (Identifier) getVarName();
+        var.getExpDefinition().setOperand(address);
+        compiler.getData().incrementGbOffset();
+        if (initialization instanceof Initialization) {
+            Initialization init = (Initialization) initialization;
+            init.getExpression().codeGenInst(compiler);
+            compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
+        }
     }
 }
