@@ -173,23 +173,17 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        int i=0;
-        while(i < compiler.GetEnvExp().getDictionnary().keySet().size()){
-            if(this.name.getName().equals(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName())){
-                break;
-            }
-            i++;
-        }
-        Symbol symb = compiler.getSymbolTable().create("void");
+
+        Symbol symb = compiler.getSymbolTable().create(this.name.getName());
         if (compiler.GetEnvExp().get(symb) != null) {
             this.setDefinition(compiler.GetEnvExp().get(symb));
             this.setType(compiler.GetEnvExp().get(symb).getType());
             return compiler.GetEnvExp().get(symb).getType();
         }
-        else if(compiler.GetEnvExp().get(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))!=null){
-    		this.setDefinition(compiler.GetEnvExp().get((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))));
-    		this.setType(compiler.GetEnvExp().get(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i])).getType());        	
-    		return compiler.GetEnvExp().get(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i])).getType();
+        else if(compiler.GetEnvExp().get(this.name)!=null){
+    		this.setDefinition(compiler.GetEnvExp().get(this.name));
+    		this.setType(compiler.GetEnvExp().get(this.name).getType());        	
+    		return compiler.GetEnvExp().get(this.name).getType();
         }   
         else{
             throw new ContextualError("identifier not defined", getLocation());
