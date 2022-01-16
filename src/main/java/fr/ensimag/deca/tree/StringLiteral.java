@@ -40,7 +40,7 @@ public class StringLiteral extends AbstractStringLiteral {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-            Type type = new StringType(compiler.getSymbolTable().create("string"));
+            Type type = new StringType(compiler.getSymbolTable().create("String"));
             this.setType(type);
             return type;
     }

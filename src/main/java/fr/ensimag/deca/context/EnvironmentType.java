@@ -22,16 +22,19 @@ public class EnvironmentType {
     	Symbol symbInt = compiler.getSymbolTable().create("int");
     	Symbol symbFloat = compiler.getSymbolTable().create("float");
     	Symbol symbBoolean = compiler.getSymbolTable().create("boolean");
+        Symbol symbString = compiler.getSymbolTable().create("String");
     	Symbol symbVoid = compiler.getSymbolTable().create("void");
 
     	Type typeInt = new IntType(symbInt);
     	Type typeFloat = new FloatType(symbFloat) ;
     	Type typeBoolean = new BooleanType(symbBoolean) ;
+        Type typeString = new StringType(symbString) ;
     	Type typeVoid = new VoidType(symbVoid) ;
     	
     	setEnvironmentType(symbInt,typeInt,Location.BUILTIN);
     	setEnvironmentType(symbFloat,typeFloat,Location.BUILTIN);
-		setEnvironmentType(symbBoolean,typeBoolean ,Location.BUILTIN);
+		setEnvironmentType(symbBoolean,typeBoolean,Location.BUILTIN);
+        setEnvironmentType(symbString,typeString,Location.BUILTIN);
     	setEnvironmentType(symbVoid,typeVoid,Location.BUILTIN);
 		
     }
