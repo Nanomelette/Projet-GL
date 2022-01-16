@@ -230,13 +230,16 @@ fragment POSITIVE_DIGIT :
 INT :
    '0' | POSITIVE_DIGIT DIGIT*
    {
-       int i = Integer.parseInt(getText());
-       int borne = 2147483647;
        try {
+           int i = Integer.parseInt(getText());
+           int borne = 2147483647;
            assert ((-borne-1 < i) && (i < borne)) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " est trop grand";
        } catch (java.lang.AssertionError e) {
             System.out.println(e.getMessage());
             System.exit(0);
+       } catch (java.lang.NumberFormatException e) {
+           System.out.println(getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " est trop grand");
+           System.exit(0);
        }
    }
 ;
@@ -291,6 +294,9 @@ FLOAT :
        } catch (java.lang.AssertionError e) {
             System.out.println(e.getMessage());
             System.exit(0);
+       } catch (java.lang.NumberFormatException e) {
+           System.out.println(getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " est trop petit et l'arrondi se fait vers 0");
+           System.exit(0);
        }
        setText(String.valueOf(round));
    }
