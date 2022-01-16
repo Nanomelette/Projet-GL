@@ -185,10 +185,10 @@ public class Identifier extends AbstractIdentifier {
             this.setType(compiler.GetEnvExp().get(symb).getType());
             return compiler.GetEnvExp().get(symb).getType();
         }
-        else if(compiler.GetEnvExp().get(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))!=null){
-    		this.setDefinition(compiler.GetEnvExp().get((((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]))));
-    		this.setType(compiler.GetEnvExp().get(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i])).getType());        	
-    		return compiler.GetEnvExp().get(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i])).getType();
+        else if(compiler.GetEnvExp().get(this.name)!=null){
+    		this.setDefinition(compiler.GetEnvExp().get(this.name));
+    		this.setType(compiler.GetEnvExp().get(this.name).getType());        	
+    		return compiler.GetEnvExp().get(this.name).getType();
         }   
         else{
             throw new ContextualError("identifier not defined", getLocation());
