@@ -37,7 +37,6 @@ public class EnvironmentType {
     }
     
     public TypeDefinition getDefinition( Symbol s ){
-    	System.out.println("GetDef");
 		return this.getEnvironmentType().get(s);
     }
     
