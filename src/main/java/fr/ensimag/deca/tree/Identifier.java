@@ -177,20 +177,15 @@ public class Identifier extends AbstractIdentifier {
             i++;
         }
         if ((i == compiler.GetEnvExp().getDictionnary().keySet().size())) {
-            throw new ContextualError("Undefined Identifier", getLocation());
+            throw new ContextualError("identifier not defined", getLocation());
         }
-        Symbol symb = compiler.getSymbolTable().create(this.name.getName());
+        Symbol symb = (Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i];
         if (compiler.GetEnvExp().get(symb) != null) {
             this.setDefinition(compiler.GetEnvExp().get(symb));
             this.setType(compiler.GetEnvExp().get(symb).getType());
             return compiler.GetEnvExp().get(symb).getType();
         }
-        else if(compiler.GetEnvExp().get(this.name)!=null){
-    		this.setDefinition(compiler.GetEnvExp().get(this.name));
-    		this.setType(compiler.GetEnvExp().get(this.name).getType());        	
-    		return compiler.GetEnvExp().get(this.name).getType();
-        }   
-        else{
+        else {
             throw new ContextualError("identifier not defined", getLocation());
         }
         //throw new UnsupportedOperationException("not yet implemented");
