@@ -13,6 +13,7 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 import net.bytebuddy.implementation.bind.annotation.AllArguments.Assignment;
 
@@ -144,15 +145,15 @@ public abstract class AbstractExpr extends AbstractInst {
         this.codeGenInst(compiler);
         GPRegister register = compiler.getData().getLastUsedRegister();
         compiler.addInstruction(new LOAD(register, Register.R1));
-        compiler.addInstruction(new WINT());
+        // compiler.addInstruction(new WINT());
         // TODO
-        // if (getType().isInt()) {
-        //     compiler.addInstruction(new WINT());
-        // } else if (getType().isFloat()) {
-        //     compiler.addInstruction(new WFLOAT());
-        // } else if (getType().isBoolean()) {
-        //     ((BooleanLiteral) this).codeGenPrint(compiler);
-        // }
+        if (getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        } else if (getType().isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        } else if (getType().isBoolean()) {
+            ((BooleanLiteral) this).codeGenPrint(compiler);
+        }
 
     }
 
