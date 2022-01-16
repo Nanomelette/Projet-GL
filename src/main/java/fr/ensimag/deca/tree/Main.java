@@ -43,7 +43,7 @@ public class Main extends AbstractMain {
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
         EnvironmentExp localEnv = new EnvironmentExp(null);
-        declVariables.verifyListDeclVariable(compiler, localEnv, null);
+        localEnv = declVariables.verifyListDeclVariable(compiler, localEnv, null);
         Symbol symbVoid = compiler.getSymbolTable().create("void");
         insts.verifyListInst(compiler,localEnv,null,compiler.searchSymbol(symbVoid));
 
