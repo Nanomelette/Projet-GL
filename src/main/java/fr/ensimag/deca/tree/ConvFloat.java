@@ -5,6 +5,7 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.FloatType;
 
 /**
  * Conversion of an int into a float. Used for implicit conversions.
@@ -20,9 +21,9 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) {
-        Symbol symb = compiler.getSymbolTable().create("float");
-        setType(compiler.searchSymbol(symb));
-        return compiler.searchSymbol(symb);
+            Type type = new FloatType(compiler.getSymbolTable().create("float"));
+            this.setType(type);
+            return type;   
         //throw new UnsupportedOperationException("not yet implemented");
     }
 
