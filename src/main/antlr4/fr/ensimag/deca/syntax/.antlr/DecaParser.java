@@ -1,4 +1,4 @@
-// Generated from /user/9/.base/marthoma/home/Projet_GL/src/main/antlr4/fr/ensimag/deca/syntax/DecaParser.g4 by ANTLR 4.8
+// Generated from /Users/oscarmaggiori/ensimag/GL/Projet_GL/gl20/src/main/antlr4/fr/ensimag/deca/syntax/DecaParser.g4 by ANTLR 4.8
 
     import fr.ensimag.deca.tree.*;
     import java.io.PrintStream;
@@ -589,6 +589,7 @@ public class DecaParser extends AbstractDecaParser {
 	public static class InstContext extends ParserRuleContext {
 		public AbstractInst tree;
 		public ExprContext e1;
+		public Token SEMI;
 		public List_exprContext list_expr;
 		public If_then_elseContext if_then_else;
 		public ExprContext condition;
@@ -661,8 +662,10 @@ public class DecaParser extends AbstractDecaParser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(134);
-				match(SEMI);
+				((InstContext)_localctx).SEMI = match(SEMI);
 
+				        ((InstContext)_localctx).tree =  new NoOperation();
+				        setLocation(_localctx.tree, ((InstContext)_localctx).SEMI);
 				        
 				}
 				break;

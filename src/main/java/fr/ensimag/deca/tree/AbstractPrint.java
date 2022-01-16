@@ -7,6 +7,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+import java.util.Iterator;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -61,7 +63,21 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print("print");
+    	s.print(getSuffix()) ;
+    	if (this.getPrintHex() == true ) {
+            s.print("x");  
+        }
+    	s.print("(");
+        Iterator<AbstractExpr> it = getArguments().getList().iterator();
+        if (it.hasNext()) {
+            it.next().decompile(s);
+        }
+        while (it.hasNext()) {
+            s.print(", ");
+            it.next().decompile(s);
+        }
+    	s.print(");");
     }
 
     @Override

@@ -1,4 +1,4 @@
-// Generated from /user/9/.base/marthoma/home/Projet_GL/src/main/antlr4/fr/ensimag/deca/syntax/DecaLexer.g4 by ANTLR 4.8
+// Generated from /Users/oscarmaggiori/ensimag/GL/Projet_GL/gl20/src/main/antlr4/fr/ensimag/deca/syntax/DecaLexer.g4 by ANTLR 4.8
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -161,13 +161,16 @@ public class DecaLexer extends AbstractDecaLexer {
 		switch (actionIndex) {
 		case 0:
 
-			       int i = Integer.parseInt(getText());
-			       int borne = 2147483647;
 			       try {
+			           int i = Integer.parseInt(getText());
+			           int borne = 2147483647;
 			           assert ((-borne-1 < i) && (i < borne)) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " est trop grand";
 			       } catch (java.lang.AssertionError e) {
 			            System.out.println(e.getMessage());
 			            System.exit(0);
+			       } catch (java.lang.NumberFormatException e) {
+			           System.out.println(getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " est trop grand");
+			           System.exit(0);
 			       }
 			   
 			break;
@@ -186,6 +189,9 @@ public class DecaLexer extends AbstractDecaLexer {
 			       } catch (java.lang.AssertionError e) {
 			            System.out.println(e.getMessage());
 			            System.exit(0);
+			       } catch (java.lang.NumberFormatException e) {
+			           System.out.println(getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " est trop petit et l'arrondi se fait vers 0");
+			           System.exit(0);
 			       }
 			       setText(String.valueOf(round));
 			   

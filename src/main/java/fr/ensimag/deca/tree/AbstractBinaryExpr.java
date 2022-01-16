@@ -55,14 +55,17 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         this.rightOperand = rightOperand;
     }
 
-
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("(");
+        if (getOperatorName() != "=") {
+            s.print("(");
+        }
         getLeftOperand().decompile(s);
         s.print(" " + getOperatorName() + " ");
         getRightOperand().decompile(s);
-        s.print(")");
+        if (getOperatorName() != "=") {
+            s.print(")");
+        }
     }
 
     abstract protected String getOperatorName();
@@ -104,12 +107,12 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                     data.incrementFreeStoragePointer();
                     // <codeExp(e2,n+1)>
                     rightOperand.codeGenInst(compiler);
-                    op1 = (DVal)data.getLastUsedRegister();
+                    op1 = (DVal) data.getLastUsedRegister();
                 } else {
                     leftOperand.codeGenInst(compiler);
                     op2 = data.getLastUsedRegister();
                     rightOperand.codeGenInst(compiler);
-                    op1 = (DVal)data.getLastUsedRegister();
+                    op1 = (DVal) data.getLastUsedRegister();
                 }
             } else {
                 // <codeExp(e1,n)> - PUSH Rn ; sauvegarde
@@ -121,9 +124,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 // LOAD Rn, R0
                 compiler.addInstruction(new LOAD(op2, GPRegister.R0));
                 // POP Rn;
-                compiler.addInstruction(new POP((GPRegister)op2), "restauration");
+                compiler.addInstruction(new POP((GPRegister) op2), "restauration");
                 data.decrementFreeStoragePointer();
-                op1 = (DVal)GPRegister.R0;
+                op1 = (DVal) GPRegister.R0;
             }
         }
     }
