@@ -37,7 +37,7 @@ public class EnvironmentType {
     }
     
     public TypeDefinition getDefinition( Symbol s ){
-    	return this.getEnvironmentType().get(s);
+		return this.getEnvironmentType().get(s);
     }
     
     public void setEnvironmentType(Symbol s , Type type , Location location){
