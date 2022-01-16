@@ -179,7 +179,7 @@ public class Identifier extends AbstractIdentifier {
         if ((i == compiler.GetEnvExp().getDictionnary().keySet().size())) {
             throw new ContextualError("Undefined Identifier", getLocation());
         }
-        Symbol symb = compiler.getSymbolTable().create("void");
+        Symbol symb = compiler.getSymbolTable().create(this.name.getName());
         if (compiler.GetEnvExp().get(symb) != null) {
             this.setDefinition(compiler.GetEnvExp().get(symb));
             this.setType(compiler.GetEnvExp().get(symb).getType());
