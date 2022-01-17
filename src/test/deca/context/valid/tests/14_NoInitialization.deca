@@ -1,0 +1,10 @@
+// Description:
+//    Test NoInitialization()
+//
+// Historique:
+//    cree le 16/01/2022
+
+{
+        int x;
+        println(x);
+}
