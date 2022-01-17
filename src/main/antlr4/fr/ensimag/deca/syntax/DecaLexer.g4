@@ -233,12 +233,12 @@ INT :
        try {
            int i = Integer.parseInt(getText());
            int borne = 2147483647;
-           assert ((-borne-1 < i) && (i < borne)) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " is too large !";
+           assert ((-borne-1 < i) && (i < borne)) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : " + getText() + " is too large !";
        } catch (java.lang.AssertionError e) {
             System.out.println(e.getMessage());
             System.exit(0);
        } catch (java.lang.NumberFormatException e) {
-           System.out.println(getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " is too large !");
+           System.out.println(getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : " + getText() + " is too large !");
            System.exit(0);
        }
    }
@@ -288,14 +288,14 @@ FLOAT :
        double res = Double.parseDouble(getText());
        float round = (float)res;
        try { 
-        assert (round != Float.POSITIVE_INFINITY) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " is too large !" ;
+        assert (round != Float.POSITIVE_INFINITY) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : " + getText() + " is too large !" ;
 
-        assert (!((round == 0.0) && (res != 0.0))) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " is too small !";
+        assert (!((round == 0.0) && (res != 0.0))) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : " + getText() + " is too small !";
        } catch (java.lang.AssertionError e) {
             System.out.println(e.getMessage());
             System.exit(0);
        } catch (java.lang.NumberFormatException e) {
-           System.out.println(getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " is too small !");
+           System.out.println(getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : " + getText() + " is too small !");
            System.exit(0);
        }
        setText(String.valueOf(round));
