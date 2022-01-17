@@ -1,0 +1,37 @@
+// Description:
+//     Table de vérité pour OR
+
+// Résultats:
+//     ok
+//     ok
+//     ok
+//     pas ok
+
+
+{
+    boolean res1 = true || true;
+    boolean res2 = true || false;
+    boolean res3 = false || true;
+    boolean res4 = false || false;
+
+    if (res1) {
+        println("ok");
+    } else {
+        println("pas ok");
+    }
+    if (res2) {
+        println("ok");
+    } else {
+        println("pas ok");
+    }
+    if (res3) {
+        println("ok");
+    } else {
+        println("pas ok");
+    }
+    if (res4) {
+        println("ok");
+    } else {
+        println("pas ok");
+    }
+}

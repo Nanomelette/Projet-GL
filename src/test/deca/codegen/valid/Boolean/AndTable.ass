@@ -1,0 +1,104 @@
+; start main program
+	TSTO #4
+	BOV pile_pleine
+	ADDSP #4
+; Main program
+	LOAD #1, R2
+	LOAD #1, R3
+	CMP #0, R2
+	BEQ False0
+	CMP #0, R3
+	BEQ False0
+	LOAD #1, R2
+	BRA End0
+False0:
+	LOAD #0, R2
+End0:
+	STORE R2, 1(GB)
+	LOAD #1, R2
+	LOAD #0, R3
+	CMP #0, R2
+	BEQ False1
+	CMP #0, R3
+	BEQ False1
+	LOAD #1, R2
+	BRA End1
+False1:
+	LOAD #0, R2
+End1:
+	STORE R2, 2(GB)
+	LOAD #0, R2
+	LOAD #1, R3
+	CMP #0, R2
+	BEQ False2
+	CMP #0, R3
+	BEQ False2
+	LOAD #1, R2
+	BRA End2
+False2:
+	LOAD #0, R2
+End2:
+	STORE R2, 3(GB)
+	LOAD #0, R2
+	LOAD #0, R3
+	CMP #0, R2
+	BEQ False3
+	CMP #0, R3
+	BEQ False3
+	LOAD #1, R2
+	BRA End3
+False3:
+	LOAD #0, R2
+End3:
+	STORE R2, 4(GB)
+; Beginning of main instructions:
+	LOAD 1(GB), R2
+	CMP #0, R2
+	BEQ E_Else.4
+	WSTR "ok"
+	WNL
+	BRA E_End.4
+E_Else.4:
+	WSTR "pas ok"
+	WNL
+E_End.4:
+	LOAD 2(GB), R2
+	CMP #0, R2
+	BEQ E_Else.5
+	WSTR "ok"
+	WNL
+	BRA E_End.5
+E_Else.5:
+	WSTR "pas ok"
+	WNL
+E_End.5:
+	LOAD 3(GB), R2
+	CMP #0, R2
+	BEQ E_Else.6
+	WSTR "ok"
+	WNL
+	BRA E_End.6
+E_Else.6:
+	WSTR "pas ok"
+	WNL
+E_End.6:
+	LOAD 4(GB), R2
+	CMP #0, R2
+	BEQ E_Else.7
+	WSTR "ok"
+	WNL
+	BRA E_End.7
+E_Else.7:
+	WSTR "pas ok"
+	WNL
+E_End.7:
+	HALT
+; end main program
+pile_pleine:
+	WSTR "Error: full stack."
+	WNL
+	ERROR
+io_error:
+	WSTR "Error: io_error."
+	WNL
+	ERROR
