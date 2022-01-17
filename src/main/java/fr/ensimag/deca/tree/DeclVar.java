@@ -106,5 +106,6 @@ public class DeclVar extends AbstractDeclVar {
             init.getExpression().codeGenInst(compiler);
             compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
         }
+        compiler.getData().restoreData();
     }
 }

@@ -16,6 +16,9 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
@@ -254,6 +257,15 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected DVal getDVal() {
         return this.getExpDefinition().getOperand();
+    }
+
+    @Override
+    protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
+        Data data = compiler.getData();
+        GPRegister register = data.getFreeRegister(compiler);
+        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), register));
+        compiler.addInstruction(new CMP(0, register));
+        compiler.addInstruction(new BEQ(E));
     }
 
     @Override
