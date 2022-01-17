@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.REM;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -41,6 +43,7 @@ public class Modulo extends AbstractOpArith {
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);
         compiler.addInstruction(new REM(op1, op2));
+        compiler.addInstruction(new BOV(new Label("zero_division")));
         compiler.getData().setLastUsedRegister(op2);
     }
 

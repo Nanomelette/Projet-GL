@@ -29,13 +29,13 @@ public class Data {
     private int freeStoragePointer = 2;
     private int gBOffset = 1;
     private int maxStackLength = 0;
-    // private Deque<GPRegister> registersStack = new LinkedList<GPRegister>();
     private GPRegister lastUsedRegister = GPRegister.getR(2);
 
     // Labels :
     private Label stack_overflow_error  = new Label("stack_overflow_error");
     private Label io_error = new Label("io_error");
     private Label overflow_error = new Label("overflow_error");
+    private Label zero_division = new Label("zero_division");
 
     public Data() {};
 
@@ -56,9 +56,6 @@ public class Data {
             return GPRegister.getR(freeStoragePointer++);
         } else {
             GPRegister lastRegister = GPRegister.getR(maxRegister - 1);
-            // registersStack.addFirst(lastRegister);
-            // compiler.addInstruction(new PUSH(lastRegister), "sauvegarde");
-            // freeStoragePointer++;
             return lastRegister;
         }
     }
@@ -130,6 +127,10 @@ public class Data {
         compiler.addInstruction(new ERROR());
         compiler.addLabel(io_error);
         compiler.addInstruction(new WSTR("Error: io_error."));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+        compiler.addLabel(zero_division);
+        compiler.addInstruction(new WSTR("Error: zero_division."));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
         

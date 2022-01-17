@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -145,15 +146,12 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenPrint(DecacCompiler compiler) {
         this.codeGenInst(compiler);
-        GPRegister register = compiler.getData().getLastUsedRegister();
+        Data data = compiler.getData();
+        GPRegister register = data.getLastUsedRegister();
         compiler.addInstruction(new LOAD(register, Register.R1));
-        // compiler.addInstruction(new WINT());
-        // TODO
         if (getType().isInt()) {
-            // compiler.addInstruction(new INT(Register.R1, Register.R1));
             compiler.addInstruction(new WINT());
         } else if (getType().isFloat()) {
-            compiler.addInstruction(new FLOAT(Register.R1, Register.R1));
             compiler.addInstruction(new WFLOAT());
         } else if (getType().isBoolean()) {
             ((BooleanLiteral) this).codeGenPrint(compiler);
