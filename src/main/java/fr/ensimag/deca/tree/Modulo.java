@@ -29,7 +29,7 @@ public class Modulo extends AbstractOpArith {
                     this.setType(type1);
                     return type1;
                 } else {
-                    throw new ContextualError("NotBooleanType", getLocation());
+                    throw new ContextualError("NotIntType", getLocation());
                 }
     }
 
