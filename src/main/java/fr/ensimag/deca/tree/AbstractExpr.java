@@ -12,6 +12,8 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
+import fr.ensimag.ima.pseudocode.instructions.INT;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
@@ -148,8 +150,10 @@ public abstract class AbstractExpr extends AbstractInst {
         // compiler.addInstruction(new WINT());
         // TODO
         if (getType().isInt()) {
+            // compiler.addInstruction(new INT(Register.R1, Register.R1));
             compiler.addInstruction(new WINT());
         } else if (getType().isFloat()) {
+            compiler.addInstruction(new FLOAT(Register.R1, Register.R1));
             compiler.addInstruction(new WFLOAT());
         } else if (getType().isBoolean()) {
             ((BooleanLiteral) this).codeGenPrint(compiler);
