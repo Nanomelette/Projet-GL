@@ -33,8 +33,9 @@ public class Data {
     private GPRegister lastUsedRegister = GPRegister.getR(2);
 
     // Labels :
-    private Label pile_pleine = new Label("pile_pleine");
+    private Label stack_overflow_error  = new Label("stack_overflow_error");
     private Label io_error = new Label("io_error");
+    private Label overflow_error = new Label("overflow_error");
 
     public Data() {};
 
@@ -113,13 +114,17 @@ public class Data {
     public void addHeader(DecacCompiler compiler) {
         compiler.addInstructionAtFirst(new ADDSP(gBOffset-1));
         // TODO : Gérer message d'erreur
-        compiler.addInstructionAtFirst(new BOV(pile_pleine));
+        compiler.addInstructionAtFirst(new BOV(stack_overflow_error));
         compiler.addInstructionAtFirst(new TSTO(gBOffset+maxStackLength-1));
         compiler.addInstructionAtFirst(null, "start main program");
     }
 
     public void addBottom(DecacCompiler compiler) {
-        compiler.addLabel(pile_pleine);
+        compiler.addLabel(overflow_error);
+        compiler.addInstruction(new WSTR("Error: overflow_error."));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+        compiler.addLabel(stack_overflow_error);
         compiler.addInstruction(new WSTR("Error: full stack."));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
