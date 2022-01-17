@@ -24,7 +24,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
                     this.setType(type);
                     return type;
                 } else {
-                    throw new ContextualError("NotBooleanType", getLocation());
+                    throw new ContextualError("NotIntOrFloatType", getLocation());
                 }
     }
 
