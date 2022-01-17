@@ -1,14 +1,14 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.IntType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
+import java.util.Iterator;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -63,20 +63,19 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-    	s.print("print");
+        s.print("print");
     	s.print(getSuffix()) ;
-    	if (this.getPrintHex() == true )
-    	s.print("x");  
+    	if (this.getPrintHex() == true ) {
+            s.print("x");  
+        }
     	s.print("(");
-    	for (AbstractExpr a : getArguments().getList()) {
-            if(getArguments().getList().size() == 1){
-                a.decompile(s);
-            }
-            else{
-                s.print(",");
-    		    a.decompile(s);
-            }
-    		  		
+        Iterator<AbstractExpr> it = getArguments().getList().iterator();
+        if (it.hasNext()) {
+            it.next().decompile(s);
+        }
+        while (it.hasNext()) {
+            s.print(", ");
+            it.next().decompile(s);
         }
     	s.print(");");
     }

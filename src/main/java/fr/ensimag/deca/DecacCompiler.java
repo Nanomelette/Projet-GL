@@ -1,5 +1,6 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.context.Type;
@@ -14,7 +15,6 @@ import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
-import net.bytebuddy.dynamic.DynamicType.Builder.MethodDefinition.ParameterDefinition.Initial;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,7 +43,25 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+
+    // private static final SymbolTable symbol_table = new SymbolTable();
+    private Data data = new Data();
+
+    public Data getData() {
+        return data;
+    }
+
+    private int nLabel = 0;
     
+    public int getNLabel() {
+        return nLabel;
+    }
+
+    public void incrNLabel() {
+        nLabel++;
+    }
+
+
     /**
      * Portable newline character.
      */
@@ -53,6 +71,8 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        //TODO : on met ça vraiment ici ?
+        this.data.setMaxRegister(compilerOptions.getMaxRegister());
         this.symbolTable = new SymbolTable();
         this.env_Types = new EnvironmentType(this);
         this.Env_exp= new EnvironmentExp(null);
@@ -129,6 +149,19 @@ public class DecacCompiler {
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
     }
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
+     */
+    public void addInstructionAtFirst(Instruction instruction) {
+        program.addFirst(instruction);
+    }
+
+    public void addInstructionAtFirst(Instruction instruction, String comment) {
+        program.addFirst(instruction, comment);
+    }
+
     
     /**
      * @see 
@@ -208,10 +241,10 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        assert(prog.checkAllLocations());
+        // assert(prog.checkAllLocations());
 
         if (compilerOptions.getParse()) {
-            prog.prettyPrint(System.out);
+            // prog.prettyPrint(System.out);
             prog.decompile(System.out);
             // TODO : décompiler l'arbre et afficher sa décompilation
             System.exit(0);
@@ -225,7 +258,6 @@ public class DecacCompiler {
         }
 
         // C
-        addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
         LOG.debug("Generated assembly code:" + nl + program.display());
@@ -237,6 +269,11 @@ public class DecacCompiler {
         } catch (FileNotFoundException e) {
             throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
         }
+        // Ecriture de l'header
+        data.addHeader(this);
+        // Ecriture des Labels
+        data.addBottom(this);
+        
 
         LOG.info("Writing assembler file ...");
 

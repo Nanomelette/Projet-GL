@@ -1,0 +1,15 @@
+// Description:
+//     oppose de literale
+
+// Résultat:
+//     0
+//     1
+
+// Historique:
+//     cree le 14/01/2022
+
+{
+    println(-(1+1));
+    println(-1+1);
+    println(1+(-2));
+}

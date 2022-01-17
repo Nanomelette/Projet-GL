@@ -2,13 +2,22 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
+import fr.ensimag.ima.pseudocode.instructions.INT;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 import net.bytebuddy.implementation.bind.annotation.AllArguments.Assignment;
 
 import java.io.PrintStream;
@@ -136,7 +145,18 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        this.codeGenInst(compiler);
+        Data data = compiler.getData();
+        GPRegister register = data.getLastUsedRegister();
+        compiler.addInstruction(new LOAD(register, Register.R1));
+        if (getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        } else if (getType().isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        } else if (getType().isBoolean()) {
+            ((BooleanLiteral) this).codeGenPrint(compiler);
+        }
+
     }
 
     @Override
@@ -161,4 +181,11 @@ public abstract class AbstractExpr extends AbstractInst {
             s.println();
         }
     }
+
+    protected <Optional>DVal getDVal() {
+        return null;
+    }
+
+    protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {}
 }
+

@@ -10,7 +10,7 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 import java.io.PrintStream;
-import java.util.Iterator;
+
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -32,6 +32,10 @@ public class Main extends AbstractMain {
         this.insts = insts;
     }
 
+    public ListDeclVar getDeclVariables() {
+        return declVariables;
+    }
+
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");
@@ -42,20 +46,17 @@ public class Main extends AbstractMain {
         localEnv = declVariables.verifyListDeclVariable(compiler, localEnv, null);
         Symbol symbVoid = compiler.getSymbolTable().create("void");
         insts.verifyListInst(compiler,localEnv,null,compiler.searchSymbol(symbVoid));
-        
+
         LOG.debug("verify Main: end");
         //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // A FAIRE: traiter les déclarations de variables.
-        int offset = 1;
+        // compiler.getData().variableInit(declVariables);
         for (AbstractDeclVar absDeclVar : declVariables.getList()) {
-            DAddr address = new RegisterOffset(offset, Register.GB);
-            Identifier var = (Identifier)((DeclVar)absDeclVar).getVarName();
-            var.getExpDefinition().setOperand(address);
-            offset++;
+            DeclVar declVar = (DeclVar) absDeclVar;
+            declVar.codeGenDeclVar(compiler);
         }
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);

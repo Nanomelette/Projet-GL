@@ -2,19 +2,19 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.VariableDefinition;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+
 import java.io.PrintStream;
 
-import com.sun.beans.introspect.PropertyInfo.Name;
-
-import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -71,11 +71,11 @@ public class DeclVar extends AbstractDeclVar {
     
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(type.decompile());
+        type.decompile(s);
         s.print(" ");
-        s.print(varName.decompile());
-        s.print(initialization.decompile());
-        s.print(";");
+        varName.decompile(s);
+        initialization.decompile(s);
+        s.println(";");
     }
 
     @Override
@@ -91,5 +91,18 @@ public class DeclVar extends AbstractDeclVar {
         type.prettyPrint(s, prefix, false);
         varName.prettyPrint(s, prefix, false);
         initialization.prettyPrint(s, prefix, true);
+    }
+
+    public void codeGenDeclVar(DecacCompiler compiler) {
+        DAddr address = new RegisterOffset(compiler.getData().getGbOffset(), Register.GB);
+        Identifier var = (Identifier) getVarName();
+        var.getExpDefinition().setOperand(address);
+        compiler.getData().incrementGbOffset();
+        if (initialization instanceof Initialization) {
+            Initialization init = (Initialization) initialization;
+            init.getExpression().codeGenInst(compiler);
+            compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
+        }
+        compiler.getData().restoreData();
     }
 }

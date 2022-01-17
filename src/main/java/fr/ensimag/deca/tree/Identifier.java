@@ -1,8 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
@@ -14,9 +14,17 @@ import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
+// import org.apache.log4j.Logger;
 
 /**
  * Deca Identifier
@@ -25,8 +33,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2022
  */
 public class Identifier extends AbstractIdentifier {
-
-    private static final Logger LOG = Logger.getLogger(Identifier.class);
+    // private static final Logger LOG = Logger.getLogger(Identifier.class);
     
     @Override
     protected void checkDecoration() {
@@ -247,4 +254,25 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
+    @Override
+    protected DVal getDVal() {
+        return this.getExpDefinition().getOperand();
+    }
+
+    @Override
+    protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
+        Data data = compiler.getData();
+        GPRegister register = data.getFreeRegister(compiler);
+        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), register));
+        compiler.addInstruction(new CMP(0, register));
+        compiler.addInstruction(new BEQ(E));
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        Data data = compiler.getData();
+        GPRegister register = data.getFreeRegister(compiler);
+        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), register));
+        data.setLastUsedRegister(register);
+    }
 }

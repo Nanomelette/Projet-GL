@@ -1,0 +1,29 @@
+// Description:
+//    tests booléens
+//
+// Resultats:
+//    Si readInt = 0 :
+//      Le résultat de l'expression arithmétique : -1
+//    
+//    Sinon si le 2eme readInt == 1 :
+//      Le résultat de l'expression booléenne : 1
+//
+//    Sinon : 
+//      Aucun des deux cas
+// Historique:
+//    cree le 01/01/2022
+
+{
+
+    println("Veuillez rentrer 0 pour afficher le résultat de l'expression arithmétique");
+    println("Ou alors un autre entier, puis 1 pour le résultat de l'expression booléenne");
+    if (readInt() == 0) {
+        print("Le résultat de l'expression arithmétique : ");
+        println(1*(1+1*(1-1*(1+1*(1+1)))));
+    } else if (readInt() == 1) {
+            print("Le résultat de l'expression booléenne : ");
+            println(((true && true) || false) && !(false && (!true || !false && true)));
+        }  else {
+        print("Aucun des deux cas");
+    }
+}

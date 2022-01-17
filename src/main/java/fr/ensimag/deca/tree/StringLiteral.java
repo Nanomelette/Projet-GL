@@ -12,8 +12,7 @@ import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
-import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
+// import org.apache.log4j.Logger;
 
 /**
  * String literal
@@ -23,7 +22,7 @@ import org.apache.log4j.Logger;
  */
 public class StringLiteral extends AbstractStringLiteral {
 
-    private static final Logger LOG = Logger.getLogger(StringLiteral.class);
+    // private static final Logger LOG = Logger.getLogger(StringLiteral.class);
 
     @Override
     public String getValue() {
@@ -52,8 +51,7 @@ public class StringLiteral extends AbstractStringLiteral {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(getValue());
-        //throw new UnsupportedOperationException("not yet implemented");
+        s.print("\"" + getValue() + "\"");
     }
 
     @Override

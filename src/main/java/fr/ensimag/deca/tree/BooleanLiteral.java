@@ -7,6 +7,12 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 import java.io.PrintStream;
@@ -66,4 +72,28 @@ public class BooleanLiteral extends AbstractExpr {
             compiler.addInstruction(new WSTR("false"));
         }
     }
+
+    @Override
+    protected DVal getDVal() {
+        return new ImmediateInteger(value ? 1 : 0);
+    }
+
+    @Override
+    protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
+        if (getValue() == b) {
+            compiler.addInstruction(new BRA(E));
+        }
+        // codeGenInst(compiler);
+        // compiler.addInstruction(new CMP(new ImmediateInteger(b ? 1 : 0), compiler.getData().getLastUsedRegister()));
+        // compiler.addInstruction(new BEQ(E));
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        GPRegister lastRegister = compiler.getData().getFreeRegister(compiler);
+        compiler.addInstruction(new LOAD(value ? 1 : 0, lastRegister));
+        compiler.getData().setLastUsedRegister(lastRegister);
+    }
+
+
 }

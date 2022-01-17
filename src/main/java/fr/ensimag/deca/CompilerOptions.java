@@ -2,7 +2,6 @@ package fr.ensimag.deca;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,12 +50,17 @@ public class CompilerOptions {
         return maxRegister;
     }
 
+    public boolean getNoCheck() {
+        return noCheck;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
     private List<File> sourceFiles = new ArrayList<File>();
     private boolean parse = false;
     private boolean verification = false;
+    private boolean noCheck = false;
     private int maxRegister = 16;
     
     public void parseArgs(String[] args) throws CLIException {
@@ -86,7 +90,7 @@ public class CompilerOptions {
                                 verification = true;
                             } else if (args[i].charAt(1) == 'n') {
                                 // -n option : no check
-                                // TODO
+                                noCheck = true;
                             } else if (args[i].charAt(1) == 'r') {
                                 // - r X option (must parse the X) : registers 
                                 if (args[i+1] != null) {

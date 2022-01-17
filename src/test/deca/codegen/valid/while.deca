@@ -1,0 +1,5 @@
+{
+    while (readInt() == 3) {
+        println("Test");
+    }
+}

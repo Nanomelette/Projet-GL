@@ -1,0 +1,15 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 14: ContextualError: NotIntOrFloatType
+// 
+// Historique:
+//    cree le 01/01/2022
+
+{
+   boolean a = true;
+   int b = 1;
+   // Doit etre refuse.
+   b = -a;
+}

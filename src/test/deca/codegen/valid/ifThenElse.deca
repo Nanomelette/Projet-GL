@@ -1,0 +1,12 @@
+{
+    if (true) {
+        println("ok");
+    } else {
+        println("pas ok");
+    }
+    if (false) {
+        println("ok");
+    } else {
+        println("pas ok");
+    }
+}

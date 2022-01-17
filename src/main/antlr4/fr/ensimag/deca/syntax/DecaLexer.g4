@@ -230,13 +230,16 @@ fragment POSITIVE_DIGIT :
 INT :
    '0' | POSITIVE_DIGIT DIGIT*
    {
-       int i = Integer.parseInt(getText());
-       int borne = 2147483647;
        try {
-           assert ((-borne-1 < i) && (i < borne)) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " est trop grand";
+           int i = Integer.parseInt(getText());
+           int borne = 2147483647;
+           assert ((-borne-1 < i) && (i < borne)) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : " + getText() + " is too large !";
        } catch (java.lang.AssertionError e) {
             System.out.println(e.getMessage());
             System.exit(0);
+       } catch (java.lang.NumberFormatException e) {
+           System.out.println(getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : " + getText() + " is too large !");
+           System.exit(0);
        }
    }
 ;
@@ -264,7 +267,7 @@ fragment DEC :
 ;
 
 fragment FLOATDEC :
-   (DEC | DEC EXP) ('F' | 'f ' | EPS)
+   (DEC | DEC EXP) ('F' | 'f' | EPS)
 ;
 
 fragment DIGITHEX :
@@ -285,12 +288,15 @@ FLOAT :
        double res = Double.parseDouble(getText());
        float round = (float)res;
        try { 
-        assert (round != Float.POSITIVE_INFINITY) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " est trop grand et l'arrondi se fait vers l'infini" ;
+        assert (round != Float.POSITIVE_INFINITY) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : " + getText() + " is too large !" ;
 
-        assert (!((round == 0.0) && (res != 0.0))) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Le littéral " + getText() + " est trop petit et l'arrondi se fait vers 0";
+        assert (!((round == 0.0) && (res != 0.0))) : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : " + getText() + " is too small !";
        } catch (java.lang.AssertionError e) {
             System.out.println(e.getMessage());
             System.exit(0);
+       } catch (java.lang.NumberFormatException e) {
+           System.out.println(getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : " + getText() + " is too small !");
+           System.exit(0);
        }
        setText(String.valueOf(round));
    }
@@ -345,7 +351,7 @@ DEFAULT:
    .
    {
        try {
-            assert false : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : Caractère(s) non reconnu(s) par notre lexer";
+            assert false : getSourceName() + ":" + getInterpreter().getLine() + ":" + getInterpreter().getCharPositionInLine() + " : this character is not recognize by our Lexer !";
        } catch (java.lang.AssertionError e) {
             System.out.println(e.getMessage());
             System.exit(0);
