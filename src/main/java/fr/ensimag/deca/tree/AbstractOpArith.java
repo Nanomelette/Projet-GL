@@ -27,12 +27,26 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
                 throw new ContextualError("NotIntAndNotFloatType", getLocation());
             }
             else {
-                if (type1.isFloat()) {
+                if (type1.isInt()&& type2.isInt()) {
                     setType(type1);
                     return type1;
                 } else {
-                    setType(type2);
-                    return type2;
+                    if (type1.isInt()) {
+                        ConvFloat cf = new ConvFloat(this.getLeftOperand());
+                        Type typeCf = cf.verifyExpr(compiler, localEnv, currentClass);
+                        cf.setType(typeCf);
+                        this.setLeftOperand(cf);
+                        setType(type2);
+                        return type2;
+                    }
+                    if (type2.isInt()) {
+                        ConvFloat cf = new ConvFloat(this.getRightOperand());
+                        Type typeCf = cf.verifyExpr(compiler, localEnv, currentClass);
+                        cf.setType(typeCf);
+                        this.setRightOperand(cf);
+                    }
+                    setType(type1);
+                    return type1;
                 }
             }
     }

@@ -5,7 +5,6 @@ import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
@@ -39,7 +38,9 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         s.print("(");
         operand.decompile(s);
         s.print(")");
-
+        s.print("(");
+        s.print(operand.decompile());
+        s.print(")");
     }
 
     @Override

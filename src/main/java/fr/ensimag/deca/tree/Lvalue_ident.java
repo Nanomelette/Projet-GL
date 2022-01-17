@@ -9,14 +9,9 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
-public class MethodBody extends AbstractExpr{
-    private ListDeclVar var;
-    private ListInst inst;
+public class Lvalue_ident extends AbstractLValue {
 
-    public MethodBody(ListDeclVar listDeclVar, ListInst listInst){
-        this.var = listDeclVar;
-        this.inst = listInst;
-    }
+    private AbstractIdentifier ident;
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
@@ -27,22 +22,20 @@ public class MethodBody extends AbstractExpr{
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("{"); 
-        s.print(var.decompile());
-        s.print(inst.decompile());
-        s.print("}");
+        
+        
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        var.prettyPrint(s,prefix,false);
-        inst.prettyPrint(s,prefix,true);
+        // TODO Auto-generated method stub
+        
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        var.iter(f);
-        inst.iter(f);    
+        // TODO Auto-generated method stub
+        
     }
- 
+    
 }

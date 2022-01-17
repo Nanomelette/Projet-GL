@@ -8,7 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
-public class DeclParam {
+public class DeclParam extends AbstractDeclParam{
 
     private Identifier type;
     private Identifier name;
@@ -24,5 +24,25 @@ public class DeclParam {
             throws ContextualError{
             throw new UnsupportedOperationException("not yet implemented");
         }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        s.print(type.decompile());
+        s.print(" ");
+        s.print(name.decompile());
+        
+    }
+
+    @Override
+    protected void prettyPrintChildren(PrintStream s, String prefix) {
+        type.prettyPrint(s, prefix, false);
+        name.prettyPrint(s, prefix, false); 
+    }
+
+    @Override
+    protected void iterChildren(TreeFunction f) {
+        type.iter(f);
+        name.iter(f);
+    }
     
 }

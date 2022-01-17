@@ -1,0 +1,9 @@
+// Description:
+//    Test creation de plusieurs identifiers (boolean)
+//
+// Historique:
+//    cree le 16/01/2022
+
+{
+    boolean x,y,z = true;
+}
