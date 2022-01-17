@@ -1,6 +1,9 @@
 package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -25,6 +28,9 @@ public class Plus extends AbstractOpArith {
         // <mnemo(op)> <dval(e2)> Rn
         LOG.debug("    Used : " + compiler.getData().getLastUsedRegister());
         compiler.addInstruction(new ADD(op1, op2));
+        if (!(compiler.getCompilerOptions().getNoCheck()) && getType().isFloat()) {
+            compiler.addInstruction(new BOV(new Label("overflow_error")));
+        }
         compiler.getData().setLastUsedRegister(op2);
     }
 }
