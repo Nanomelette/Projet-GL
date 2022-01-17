@@ -10,14 +10,14 @@ import java.io.PrintStream;
 
 public class DeclParam extends AbstractDeclParam{
 
-    private Identifier type;
-    private Identifier name;
+    private AbstractIdentifier type;
+    private AbstractIdentifier name;
 
-    public DeclParam(Identifier type, Identifier name){
-        Validate.notNull(type);
-        Validate.notNull(name);
-        this.type = type;
-        this.name = name;
+    public DeclParam(AbstractIdentifier tree, AbstractIdentifier tree2){
+        Validate.notNull(tree);
+        Validate.notNull(tree2);
+        this.type = tree;
+        this.name = tree2;
     }
 
     protected void verifyParam(DecacCompiler compiler)

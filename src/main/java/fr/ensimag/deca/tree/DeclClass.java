@@ -15,21 +15,21 @@ import java.io.PrintStream;
  */
 public class DeclClass extends AbstractDeclClass {
 
-    private Identifier classe;
-    private Identifier classeSup;
-    private ListDeclField listDeclField;
+    private AbstractIdentifier classe;
+    private AbstractIdentifier classeSup;
+    private ListDeclFieldSet listDeclField;
     private ListDeclMethod listDeclMethod;
     //private ListDeclMethod listDeclMethod;
 
-    public DeclClass(Identifier classe, Identifier classeSup, ListDeclField listDeclField,
+    public DeclClass(AbstractIdentifier tree, AbstractIdentifier tree2, ListDeclFieldSet listField,
         ListDeclMethod listDeclMethod) {
-        Validate.notNull(classe);
-        Validate.notNull(classeSup);
-        Validate.notNull(listDeclField);
+        Validate.notNull(tree);
+        Validate.notNull(tree2);
+        Validate.notNull(listField);
         Validate.notNull(listDeclMethod);
-        this.classe = classe;
-        this.classe = classeSup;
-        this.listDeclField = listDeclField;
+        this.classe = tree;
+        this.classe = tree2;
+        this.listDeclField = listField;
         this.listDeclMethod = listDeclMethod;
     }
 

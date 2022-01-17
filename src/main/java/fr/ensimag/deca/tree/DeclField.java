@@ -13,27 +13,23 @@ import org.apache.commons.lang.Validate;
 
 public class DeclField extends AbstractDeclField {
 
-    private AbstractIdentifier type;
     private AbstractIdentifier field;
-    private Initialization init;
+    private AbstractInitialization init;
     private Visibility visib;
     
 
-    public DeclField(AbstractIdentifier type, AbstractIdentifier field, Initialization init){
-        Validate.notNull(type);
+    public DeclField( AbstractIdentifier field, AbstractInitialization init){
         Validate.notNull(field);
         Validate.notNull(init);
-        this.type = type;
         this.field = field;
         this.init = init;
     }
 
-    public AbstractIdentifier getField(){
-        return this.field;
+    public DeclField(AbstractIdentifier tree, AbstractExpr tree2, AbstractInitialization init2) {
     }
 
-    public Initialization getInit(){
-        return this.init;
+    public AbstractIdentifier getField(){
+        return this.field;
     }
 
     @Override
@@ -44,9 +40,7 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(getField().decompile());
-        s.print(getInit().decompile());
-        //throw new UnsupportedOperationException("Not yet implemented");
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

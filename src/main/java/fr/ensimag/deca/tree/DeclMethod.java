@@ -8,7 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
-public class DeclMethod {
+public class DeclMethod extends AbstractDeclMethod{
 
     private AbstractIdentifier type;
     private AbstractIdentifier name;
@@ -28,5 +28,23 @@ public class DeclMethod {
             throws ContextualError{
                 throw new UnsupportedOperationException("not yet implemented");
         }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    protected void prettyPrintChildren(PrintStream s, String prefix) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    protected void iterChildren(TreeFunction f) {
+        // TODO Auto-generated method stub
+        
+    }
     
 }
