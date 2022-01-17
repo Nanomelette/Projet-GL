@@ -267,7 +267,7 @@ fragment DEC :
 ;
 
 fragment FLOATDEC :
-   (DEC | DEC EXP) ('F' | 'f ' | EPS)
+   (DEC | DEC EXP) ('F' | 'f' | EPS)
 ;
 
 fragment DIGITHEX :
