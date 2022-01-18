@@ -3,7 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BGE;
-import fr.ensimag.ima.pseudocode.instructions.BLE;
+import fr.ensimag.ima.pseudocode.instructions.BLT;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.SGE;
 
@@ -37,6 +37,6 @@ public class GreaterOrEqual extends AbstractOpIneq {
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
         super.codeGenInst(compiler);
         compiler.addInstruction(new CMP(op1, op2));
-        compiler.addInstruction(b ? new BGE(E) : new BLE(E));
+        compiler.addInstruction(b ? new BGE(E) : new BLT(E));
     }
 }

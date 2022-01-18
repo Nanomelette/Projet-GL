@@ -2,7 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.instructions.BGT;
+import fr.ensimag.ima.pseudocode.instructions.BGE;
 import fr.ensimag.ima.pseudocode.instructions.BLT;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.SLT;
@@ -36,6 +36,6 @@ public class Lower extends AbstractOpIneq {
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
         super.codeGenInst(compiler);
         compiler.addInstruction(new CMP(op1, op2));
-        compiler.addInstruction(b ? new BLT(E) : new BGT(E));
+        compiler.addInstruction(b ? new BLT(E) : new BGE(E));
     }
 }
