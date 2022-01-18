@@ -45,7 +45,8 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO Auto-generated method stub
+        this.field.prettyPrint(s, prefix, false);
+        this.init.prettyPrint(s, prefix, true);
         
     }
 

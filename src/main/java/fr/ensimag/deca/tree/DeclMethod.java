@@ -13,15 +13,16 @@ public class DeclMethod extends AbstractDeclMethod{
     private AbstractIdentifier type;
     private AbstractIdentifier name;
     private ListDeclParam listDeclParam;
-    private MethodBody method_body;
+    private AbstractMethodBody methodBody;
 
-    public DeclMethod(AbstractIdentifier type, AbstractIdentifier name, ListDeclParam listDeclParam){
+    public DeclMethod(AbstractIdentifier type, AbstractIdentifier name, ListDeclParam listDeclParam, AbstractMethodBody methodBody){
         Validate.notNull(type);
         Validate.notNull(name);
         Validate.notNull(listDeclParam);
         this.type = type;
         this.name = name;
         this.listDeclParam = listDeclParam;
+        this.methodBody = methodBody;
     }
 
     protected void verifyMethod(DecacCompiler compiler, AbstractIdentifier classeSup)
@@ -37,7 +38,10 @@ public class DeclMethod extends AbstractDeclMethod{
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO Auto-generated method stub
+        this.type.prettyPrint(s, prefix, false);
+        this.name.prettyPrint(s, prefix, false);
+        this.listDeclParam.prettyPrint(s, prefix, false);
+        this.methodBody.prettyPrint(s, prefix, true);
         
     }
 

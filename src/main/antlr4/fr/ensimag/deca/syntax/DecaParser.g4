@@ -662,8 +662,8 @@ decl_method returns [AbstractDeclMethod tree]
     : type ident OPARENT params=list_params CPARENT (b=block {
         assert($b.decls != null);
         assert($b.insts != null);
-        methbody = new MethodBody($block.decls, $block.insts);
-        setLocation($tree, $block.start);
+        methbody = new MethodBody($b.decls, $b.insts);
+        setLocation(methbody, $b.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
           assert($code.text != null);
@@ -675,7 +675,7 @@ decl_method returns [AbstractDeclMethod tree]
           assert($ident.tree != null);
           assert($type.tree != null);
           assert($params.tree != null);
-          $tree = new DeclMethod($type.tree, $ident.tree, $params.tree);
+          $tree = new DeclMethod($type.tree, $ident.tree, $params.tree, methbody);
           setLocation($tree, $type.start);
         }
     ;

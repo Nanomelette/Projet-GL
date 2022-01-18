@@ -28,7 +28,7 @@ public class DeclClass extends AbstractDeclClass {
         Validate.notNull(listField);
         Validate.notNull(listDeclMethod);
         this.classe = tree;
-        this.classe = tree2;
+        this.classeSup = tree2;
         this.listDeclField = listField;
         this.listDeclMethod = listDeclMethod;
     }
@@ -68,7 +68,12 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        throw new UnsupportedOperationException("Not yet supported");
+        this.classe.prettyPrint(s, prefix, false);
+        if (this.classeSup != null) {
+            this.classeSup.prettyPrint(s, prefix, false);
+        }
+        this.listDeclField.prettyPrint(s, prefix, false);
+        this.listDeclMethod.prettyPrint(s, prefix, true);
     }
 
     @Override
