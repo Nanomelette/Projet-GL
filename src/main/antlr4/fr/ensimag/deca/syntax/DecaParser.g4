@@ -424,21 +424,26 @@ select_expr returns[AbstractExpr tree]
     | e1=select_expr DOT i=ident {
             assert($e1.tree != null);
             assert($i.tree != null);
-            setLocation($tree, $e1.start);
 
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
             assert($args.tree != null);
+            $tree = new MethodCall($e1.tree, $i.tree, $args.tree);
             setLocation($tree, $args.start);
         }
         | /* epsilon */ {
-            // we matched "e.i"
+            $tree = new Selection($e1.tree, $i.tree);
+            setLocation($tree, $e1.start);
         }
         )
     ;
 
 primary_expr returns[AbstractExpr tree]
+@init{
+    This t = new This(true);                           
+    }
+
     : ident {
             assert($ident.tree != null);
             $tree = $ident.tree;
@@ -447,6 +452,8 @@ primary_expr returns[AbstractExpr tree]
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
+            $tree = new MethodCall($tree, $m.tree, $args.tree);
+            setLocation($tree, $m.start);
             
         }
     | OPARENT expr CPARENT {
@@ -456,18 +463,22 @@ primary_expr returns[AbstractExpr tree]
         }
     | READINT OPARENT CPARENT {
         $tree = new ReadInt();
+        setLocation($tree, $READINT);
         }
     | READFLOAT OPARENT CPARENT {
         $tree = new ReadFloat();
+        setLocation($tree, $READFLOAT);
         }
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
+            $tree = new New($ident.tree);
             setLocation($tree, $ident.start);
             
         }
     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
             assert($type.tree != null);
             assert($expr.tree != null);
+            $tree = new Cast($type.tree, $expr.tree);
             setLocation($tree, $type.start);
             setLocation($tree, $expr.start);
         }
@@ -530,7 +541,13 @@ literal returns[AbstractExpr tree]
             setLocation($tree, $FALSE);
         } {$tree != null}?
     | THIS {
-        } 
+        try{
+                $tree = new This(false);
+            } catch (NumberFormatException e){
+                $tree = null;
+            }
+            setLocation($tree, $THIS);
+        } {$tree != null}? 
     | NULL {
         try{
                 $tree = new Null();
@@ -623,13 +640,11 @@ visibility returns [Visibility tree]
 list_decl_field returns [ListDeclField tree]
 @init{
     $tree = new ListDeclField();
-}
+    }
     : dv1=decl_field{
-        assert($dv1.tree != null);
         $tree.add($dv1.tree);
         setLocation($tree, $dv1.start);
         }(COMMA dv2=decl_field{
-            assert($dv2.tree!=null);
             $tree.add($dv2.tree);
             setLocation($tree, $COMMA);
         }
@@ -685,10 +700,10 @@ list_params returns [ListDeclParam tree]
     $tree = new ListDeclParam();
 }
     : (p1=param {
-        assert($p1.tree != null);
+        //assert($p1.tree != null);
         $tree.add($p1.tree);
         } (COMMA p2=param {
-            assert($p2.tree != null);
+            //assert($p2.tree != null);
             $tree.add($p2.tree);
         }
       )*)?

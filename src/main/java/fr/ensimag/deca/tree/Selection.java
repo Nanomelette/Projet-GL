@@ -9,12 +9,14 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
-public class New extends AbstractExpr {
+public class Selection extends AbstractLValue{
 
-    private AbstractIdentifier class_;
+    private AbstractExpr obj;
+    private AbstractIdentifier field;
 
-    public New(AbstractIdentifier class_){
-        this.class_ = class_;
+    public Selection(AbstractExpr obj, AbstractIdentifier field){
+        this.obj = obj;
+        this.field = field;
     }
 
     @Override
@@ -25,20 +27,23 @@ public class New extends AbstractExpr {
     }
 
     @Override
-    public void decompile(IndentPrintStream s) {     
-        s.print("new");
-        s.print(class_.decompile());
-        s.print("()");
+    public void decompile(IndentPrintStream s) {
+        s.print(obj.decompile());
+        s.print(".");
+        s.print(field.decompile());        
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        class_.prettyPrint(s, prefix, false);        
+        obj.prettyPrint(s, prefix, false);
+        field.prettyPrint(s, prefix, false);
+        
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        class_.iter(f);
+        obj.iter(f);
+        field.iter(f);
         
     }
     
