@@ -1,0 +1,16 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 15: ContextualError: NotIntAndNotFloatType
+// 
+// Historique:
+//    cree le 01/01/2022
+
+{
+   boolean a = true;
+   int b = 1.0;
+
+   // Doit etre refuse.
+   println(a+b);
+}

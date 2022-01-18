@@ -1,0 +1,17 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//    Ligne 14: ContextualError: condition type must be boolean
+// 
+// Historique:
+//    cree le 01/01/2022
+
+{
+   int a = 1;
+
+   // Doit etre refuse.
+   if (a+1) {
+   	print(a);
+   }
+}
