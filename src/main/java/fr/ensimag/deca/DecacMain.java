@@ -41,7 +41,7 @@ public class DecacMain {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            System.exit(1);
+            System.exit(0);
         }
         if (options.getSourceFiles().isEmpty()) {
             options.displayUsage();
