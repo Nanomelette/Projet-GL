@@ -4,7 +4,12 @@ import java.util.HashMap;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.AbstractIdentifier;
+import fr.ensimag.deca.tree.DeclParam;
+import fr.ensimag.deca.tree.Identifier;
+import fr.ensimag.deca.tree.ListDeclParam;
 import fr.ensimag.deca.tree.Location;
+import fr.ensimag.ima.pseudocode.Label;
 
 
 public class EnvironmentType {
@@ -24,19 +29,33 @@ public class EnvironmentType {
     	Symbol symbBoolean = compiler.getSymbolTable().create("boolean");
         Symbol symbString = compiler.getSymbolTable().create("String");
     	Symbol symbVoid = compiler.getSymbolTable().create("void");
+        Symbol symbObject = compiler.getSymbolTable().create("Object");
+        Symbol symbOther = compiler.getSymbolTable().create("Other");
 
     	Type typeInt = new IntType(symbInt);
     	Type typeFloat = new FloatType(symbFloat) ;
     	Type typeBoolean = new BooleanType(symbBoolean) ;
         Type typeString = new StringType(symbString) ;
     	Type typeVoid = new VoidType(symbVoid) ;
+        ClassType classTypeObject = new ClassType(symbObject,  Location.BUILTIN, null);
     	
     	setEnvironmentType(symbInt,typeInt,Location.BUILTIN);
     	setEnvironmentType(symbFloat,typeFloat,Location.BUILTIN);
 		setEnvironmentType(symbBoolean,typeBoolean,Location.BUILTIN);
         setEnvironmentType(symbString,typeString,Location.BUILTIN);
     	setEnvironmentType(symbVoid,typeVoid,Location.BUILTIN);
+        setEnvironmentType(symbObject, classTypeObject, Location.BUILTIN);
+
+    	ClassDefinition defObject = classTypeObject.getDefinition();
+
+		AbstractIdentifier identObject = new Identifier (symbObject) ;
+		AbstractIdentifier identOther  = new Identifier(symbOther);
 		
+		ParamDefinition defOther = new ParamDefinition(classTypeObject, Location.BUILTIN);
+		
+		identOther.setDefinition(defOther);
+		
+		ListDeclParam listParamEquals  = new ListDeclParam() ;
     }
     
     public TypeDefinition getDefinition( Symbol s ){
