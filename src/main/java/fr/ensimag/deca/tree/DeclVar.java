@@ -60,7 +60,6 @@ public class DeclVar extends AbstractDeclVar {
                     compiler.GetEnvExp().declare(varName.getName(),varDefinition);
                     initialization.verifyInitialization(compiler, varName.getType(), localEnv , currentClass);
                 } catch (EnvironmentExp.DoubleDefException e) {
-                    // TODO Auto-generated catch block
                     String message = "L'identificateur ne peut etre defini plus qu'une fois";
                     throw new ContextualError(message, getLocation());
                 }

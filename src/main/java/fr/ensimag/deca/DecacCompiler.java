@@ -88,12 +88,7 @@ public class DecacCompiler {
     }
     
 	public Type searchSymbol(Symbol type) {
-        for (Symbol symbol : env_Types.getEnvironmentType().keySet() ) {
-            //System.out.println("initial:" + type + " comparé avec : " + symbol);
-            if (symbol.getName().equals(type.getName()))
-                return env_Types.getType(symbol);
-            }
-		return null;
+		return env_Types.getType(type);
 	}
 
     /**

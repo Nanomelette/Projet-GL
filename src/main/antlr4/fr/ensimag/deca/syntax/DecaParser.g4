@@ -661,7 +661,7 @@ decl_field returns [AbstractDeclField tree]
       (EQUALS e=expr {
           assert($e.tree != null);
           init = new Initialization($e.tree);
-          setLocation($tree, $EQUALS);
+          setLocation(init, $EQUALS);
         }
       )? {
           $tree = new DeclField($i.tree, init);
