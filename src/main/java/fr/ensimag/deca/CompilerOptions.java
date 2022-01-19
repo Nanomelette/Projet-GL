@@ -54,6 +54,10 @@ public class CompilerOptions {
         return noCheck;
     }
 
+    public boolean getTree() {
+        return tree;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
@@ -62,6 +66,7 @@ public class CompilerOptions {
     private boolean verification = false;
     private boolean noCheck = false;
     private int maxRegister = 16;
+    private boolean tree = false;
     
     public void parseArgs(String[] args) throws CLIException {
         if (args.length != 0) {
@@ -117,6 +122,8 @@ public class CompilerOptions {
                             } else if (args[i].charAt(1) == 'P') {
                                 // P option : parallel
                                 // TODO
+                            } else if (args[i].charAt(1) == 't') {
+                                tree = true;
                             } else {
                                 throw new CLIException("Incorrect arguments");
                             }
