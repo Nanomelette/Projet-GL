@@ -128,4 +128,8 @@ public class MethodCall extends AbstractExpr {
         data.setLastUsedRegister(Register.R0);
     }
     
+    @Override
+    protected void codeGenSelect(DecacCompiler compiler) {
+        super.codeGenInst(compiler);
+    }
 }

@@ -61,8 +61,8 @@ public class New extends AbstractExpr {
         GPRegister register = data.getFreeRegister(compiler);
         compiler.addInstruction(new NEW(class_.getClassDefinition().getNumberOfFields(), register));
         compiler.addInstruction(new BOV(tas_plein));
-        //DAddr addr = class_.getClassDefinition().get...; // TODO : Adresse de la table des methodes de A et non getDVal
-        //compiler.addInstruction(new LEA(addr, Register.R0)); <- A décommenter une fois que c'est bon !!
+        DAddr addr = class_.getClassDefinition().getAddressVTable(); 
+        compiler.addInstruction(new LEA(addr, Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, register)));
         compiler.addInstruction(new PUSH(register));
         compiler.addInstruction(new BSR(new Label("init."+class_.getName())));

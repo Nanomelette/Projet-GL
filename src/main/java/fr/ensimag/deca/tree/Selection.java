@@ -56,13 +56,29 @@ public class Selection extends AbstractLValue{
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Data data = compiler.getData();
-        obj.codeGenInst(compiler);
+        obj.codeGenSelect(compiler);
         // On met dans objRegister l'adresse de l'obj en partie gauche
         GPRegister objRegister = data.getLastUsedRegister();
         compiler.addInstruction(new CMP(new NullOperand(), objRegister));
         compiler.addInstruction(new BEQ(new Label("null_dereference")));
         // On récupère l'offset du champ concerné
         
+    }
+
+    @Override
+    protected void codeGenSelect(DecacCompiler compiler) {
+        Data data = compiler.getData();
+        obj.codeGenSelect(compiler);
+        // On met dans objRegister l'adresse de l'obj en partie gauche
+        GPRegister objRegister = data.getLastUsedRegister();
+        compiler.addInstruction(new CMP(new NullOperand(), objRegister));
+        compiler.addInstruction(new BEQ(new Label("null_dereference")));
+    }
+
+    @Override
+    protected void codeGenAssign(DecacCompiler compiler) {
+        codeGenInst(compiler);
+
     }
     
 }

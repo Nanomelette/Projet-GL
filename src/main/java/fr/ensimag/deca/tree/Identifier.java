@@ -270,6 +270,14 @@ public class Identifier extends AbstractIdentifier {
         data.setLastUsedRegister(register);
     }
 
+    @Override
+    protected void codeGenSelect(DecacCompiler compiler) {
+        Data data = compiler.getData();
+        GPRegister register = data.getFreeRegister(compiler);
+        compiler.addInstruction(new LOAD(getClassDefinition().getAddressVTable(), register));
+        data.setLastUsedRegister(register);
+    } 
+
     /**
      * Methode use to generate code that assign the result 
      * saved in lastUsedRegister to this identifer

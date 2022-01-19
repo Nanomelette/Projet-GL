@@ -57,4 +57,5 @@ public class Assign extends AbstractBinaryExpr {
         // compiler.addInstruction(new STORE(register, adress));
         getLeftOperand().codeGenAssign(compiler);
     }
+
 }
