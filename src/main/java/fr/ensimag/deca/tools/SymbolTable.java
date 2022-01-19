@@ -26,10 +26,15 @@ public class SymbolTable {
      * this Symbol. Otherwise, create a new Symbol and add it to the table.
      */
     public Symbol create(String name) {
-        //throw new UnsupportedOperationException("Symbol creation");
-        Symbol value = new Symbol(name);
-        this.map.putIfAbsent(name, value);
-        return value;
+        // Symbol value = new Symbol(name);
+        // this.map.putIfAbsent(name, value);
+        // return value;
+        if (map.containsKey(name)) {
+            return map.get(name);
+        }
+        Symbol newsymbol = new Symbol(name);
+        map.put(name, newsymbol);
+        return newsymbol;
     }
 
     public Map<String, Symbol> getMap(){
@@ -55,5 +60,17 @@ public class SymbolTable {
         }
 
         private String name;
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (!(obj instanceof Symbol)) {
+                return false;
+            }
+            Symbol other = (Symbol)obj;
+            return other.getName().equals(getName());
+        }
     }
 }

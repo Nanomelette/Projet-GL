@@ -12,7 +12,8 @@ import fr.ensimag.deca.context.ContextualError;
 public abstract class AbstractMain extends Tree {
 
     protected abstract void codeGenMain(DecacCompiler compiler);
-
+    
+    protected abstract void vTableInitialization(DecacCompiler compiler, ListDeclClass classes);
 
     /**
      * Implements non-terminal "main" of [SyntaxeContextuelle] in pass 3 

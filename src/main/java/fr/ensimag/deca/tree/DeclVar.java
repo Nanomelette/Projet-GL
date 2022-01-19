@@ -93,11 +93,24 @@ public class DeclVar extends AbstractDeclVar {
         initialization.prettyPrint(s, prefix, true);
     }
 
-    public void codeGenDeclVar(DecacCompiler compiler) {
+    public void codeGenDeclVarGlob(DecacCompiler compiler) {
         DAddr address = new RegisterOffset(compiler.getData().getGbOffset(), Register.GB);
         Identifier var = (Identifier) getVarName();
         var.getExpDefinition().setOperand(address);
         compiler.getData().incrementGbOffset();
+        if (initialization instanceof Initialization) {
+            Initialization init = (Initialization) initialization;
+            init.getExpression().codeGenInst(compiler);
+            compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
+        }
+        compiler.getData().restoreData();
+    }
+
+    public void codeGenDeclVarLoc(DecacCompiler compiler) {
+        DAddr address = new RegisterOffset(compiler.getData().getlB(), Register.LB);
+        Identifier var = (Identifier) getVarName();
+        var.getExpDefinition().setOperand(address);
+        compiler.getData().incrementLb();
         if (initialization instanceof Initialization) {
             Initialization init = (Initialization) initialization;
             init.getExpression().codeGenInst(compiler);
