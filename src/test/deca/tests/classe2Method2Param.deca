@@ -1,0 +1,10 @@
+// classe pour l'addition de int et float.
+
+class A {
+	float f(int i, float j) {
+		return i+j;
+	}
+	int f(int i, float j) {
+		return i+j;
+	}
+}
