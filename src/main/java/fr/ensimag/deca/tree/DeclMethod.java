@@ -6,6 +6,13 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.LabelOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+
 import java.io.PrintStream;
 
 public class DeclMethod extends AbstractDeclMethod{
@@ -54,6 +61,36 @@ public class DeclMethod extends AbstractDeclMethod{
     protected void iterChildren(TreeFunction f) {
         // TODO Auto-generated method stub
         
+    }
+    @Override
+    public AbstractIdentifier getName() {
+        return name;
+    }
+
+    @Override
+    protected void addToVTable(DecacCompiler compiler, String debName) {
+        Label labelName = new Label(debName + name.getName().getName());
+        compiler.addInstruction(
+            new LOAD(new LabelOperand(labelName), Register.R0)
+            );
+        compiler.addInstruction(new STORE(Register.R0, 
+                                    new RegisterOffset(
+                                        compiler.getData().getGbOffset(), Register.GB)
+                                    )
+                                );
+        
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj instanceof DeclMethod) {
+            DeclMethod other = (DeclMethod)obj;
+            return other.getName().getName().getName().equals(this.getName().getName().getName());
+        }
+        return false;
     }
     
 }

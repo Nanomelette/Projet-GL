@@ -1,5 +1,6 @@
 package fr.ensimag.deca.codegen;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 import org.antlr.v4.runtime.misc.ObjectEqualityComparator;
@@ -41,15 +42,19 @@ public class Data {
     private GPRegister lastUsedRegister = GPRegister.getR(2);
 
     // Labels :
-    private Label stack_overflow_error  = new Label("stack_overflow_error");
-    private Label io_error = new Label("io_error");
-    private Label overflow_error = new Label("overflow_error");
-    private Label zero_division = new Label("zero_division");
-    private Label null_dereference = new Label("null_dereference");
-    private Label equals = new Label("code.Object.equals");
+    // private Label stack_overflow_error  = new Label("stack_overflow_error");
+    // private Label io_error = new Label("io_error");
+    // private Label overflow_error = new Label("overflow_error");
+    // private Label zero_division = new Label("zero_division");
+    // private Label equals = new Label("code.Object.equals");
+    private Labels labels = new Labels();
 
 
     public Data() {};
+
+   public Labels getLabels() {
+       return labels;
+   }
 
     public int getlB() {
         return lB;
@@ -138,32 +143,37 @@ public class Data {
     public void addHeader(DecacCompiler compiler) {
         compiler.addInstructionAtFirst(new ADDSP(gBOffset-1));
         // TODO : Gérer message d'erreur
-        compiler.addInstructionAtFirst(new BOV(stack_overflow_error));
+        compiler.addInstructionAtFirst(new BOV(labels.stack_overflow_error));
+        labels.addLabel(labels.stack_overflow_error);
         compiler.addInstructionAtFirst(new TSTO(gBOffset+maxStackLength-1));
         compiler.addInstructionAtFirst(null, "start main program");
     }
 
     public void addBottom(DecacCompiler compiler) {
-        compiler.addLabel(overflow_error);
-        compiler.addInstruction(new WSTR("Error: overflow_error."));
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());
-        compiler.addLabel(stack_overflow_error);
-        compiler.addInstruction(new WSTR("Error: full stack."));
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());
-        compiler.addLabel(io_error);
-        compiler.addInstruction(new WSTR("Error: io_error."));
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());
-        compiler.addLabel(zero_division);
-        compiler.addInstruction(new WSTR("Error: zero_division."));
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());
-        compiler.addLabel(null_dereference);
-        compiler.addInstruction(new WSTR("Error: null_derefence."));
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());
+        // compiler.addLabel(overflow_error);
+        // compiler.addInstruction(new WSTR("Error: overflow_error."));
+        // compiler.addInstruction(new WNL());
+        // compiler.addInstruction(new ERROR());
+        // compiler.addLabel(stack_overflow_error);
+        // compiler.addInstruction(new WSTR("Error: full stack."));
+        // compiler.addInstruction(new WNL());
+        // compiler.addInstruction(new ERROR());
+        // compiler.addLabel(io_error);
+        // compiler.addInstruction(new WSTR("Error: io_error."));
+        // compiler.addInstruction(new WNL());
+        // compiler.addInstruction(new ERROR());
+        // compiler.addLabel(zero_division);
+        // compiler.addInstruction(new WSTR("Error: zero_division."));
+        // compiler.addInstruction(new WNL());
+        // compiler.addInstruction(new ERROR());
+        Iterator<Label> it = labels.getUsedLabels();
+        while (it.hasNext()) {
+            Label label = it.next();
+            compiler.addLabel(label);
+            compiler.addInstruction(new WSTR("Error: " + label.toString()));
+            compiler.addInstruction(new WNL());
+            compiler.addInstruction(new ERROR());
+        }
         
     }
 
@@ -172,11 +182,16 @@ public class Data {
     }
 
     public void newVTable(DecacCompiler compiler) {
-        compiler.addInstruction(null, "Code de la table des méthodes de Object");
+        compiler.addComment("------------------------------------------");
+        compiler.addComment("   Construction des tables des méthodes   ");
+        compiler.addComment("------------------------------------------");
+        compiler.addComment("Code de la table des méthodes de Object");
         compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(1, Register.GB)));
-        compiler.addInstruction(new LOAD(new LabelOperand(equals), Register.R0));
+        compiler.addInstruction(new LOAD(new LabelOperand(labels.equals), Register.R0));
+        labels.addLabel(labels.equals);
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(2, Register.GB)));
+        // Faire la table des étiquettes de Object.
         incrementGbOffset(1);
         incrementFreeStoragePointer(1);
     }

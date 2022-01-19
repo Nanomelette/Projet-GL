@@ -22,5 +22,7 @@ public abstract class AbstractDeclMethod extends Tree {
      * Pass 1 of [GenCode]. Add the method to the vtable.
      * 
      */
-    protected abstract void addToVTable(DecacCompiler compiler);
+    protected abstract void addToVTable(DecacCompiler compiler, String debName);
+
+    public abstract AbstractIdentifier getName();
 }
