@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -53,10 +54,9 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // compiler.getData().variableInit(declVariables);
         for (AbstractDeclVar absDeclVar : declVariables.getList()) {
             DeclVar declVar = (DeclVar) absDeclVar;
-            declVar.codeGenDeclVar(compiler);
+            declVar.codeGenDeclVarGlob(compiler);
         }
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
@@ -83,4 +83,12 @@ public class Main extends AbstractMain {
         declVariables.prettyPrint(s, prefix, false);
         insts.prettyPrint(s, prefix, true);
     }
+
+    public void vTableInitialization(DecacCompiler compiler, ListDeclClass classes) {
+        Data data = compiler.getData();
+        // data.newVTable(compiler);
+        for (AbstractDeclClass absDeclClass : classes.getList()) {
+            absDeclClass.addToVTable(compiler);
+        }
+    } 
 }

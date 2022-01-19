@@ -1,5 +1,8 @@
 package fr.ensimag.deca.codegen;
 
+import java.util.Optional;
+
+import org.antlr.v4.runtime.misc.ObjectEqualityComparator;
 import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
@@ -7,13 +10,18 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.LabelOperand;
+import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.instructions.ADDSP;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.deca.tree.AbstractDeclClass;
 import fr.ensimag.deca.tree.AbstractDeclVar;
 import fr.ensimag.deca.tree.DeclVar;
 import fr.ensimag.deca.tree.Identifier;
@@ -28,6 +36,7 @@ public class Data {
     // otherwise it is in the stack.
     private int freeStoragePointer = 2;
     private int gBOffset = 1;
+    private int lB = 1;
     private int maxStackLength = 0;
     private GPRegister lastUsedRegister = GPRegister.getR(2);
 
@@ -38,6 +47,14 @@ public class Data {
     private Label zero_division = new Label("zero_division");
 
     public Data() {};
+
+    public int getlB() {
+        return lB;
+    }
+
+    public void incrementLb() {
+        lB++;
+    }
 
     public void setMaxRegister(int maxRegister) {
         this.maxRegister = maxRegister;
@@ -72,11 +89,15 @@ public class Data {
         freeStoragePointer--;
     }
 
-    public void incrementFreeStoragePointer() {
+    public void incrementFreeStoragePointer(int... incrementList) {
         freeStoragePointer++;
+        for (int i : incrementList) {
+            freeStoragePointer += i;
+        }
         if (freeStoragePointer > maxStackLength) {
             maxStackLength = freeStoragePointer;
         }
+
     }
 
     public void restoreData() {
@@ -100,8 +121,11 @@ public class Data {
         }
     }
 
-    public void incrementGbOffset() {
+    public void incrementGbOffset(int... incrementList) {
         gBOffset++;
+        for (int i : incrementList) {
+            gBOffset += i;
+        }
     }
 
     public int getGbOffset() {
@@ -139,4 +163,15 @@ public class Data {
     public int getFreeStoragePointer() {
         return freeStoragePointer;
     }
+
+    // public void newVTable(DecacCompiler compiler) {
+    //     compiler.addInstruction(null, "Code de la table des méthodes de Object");
+    //     compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+    //     compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(1, Register.GB)));
+    //     compiler.addInstruction(new LOAD(new LabelOperand(equals), Register.R0));
+    //     compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(2, Register.GB)));
+    //     incrementGbOffset(1);
+    //     incrementFreeStoragePointer(1);
+    // }
+
 }
