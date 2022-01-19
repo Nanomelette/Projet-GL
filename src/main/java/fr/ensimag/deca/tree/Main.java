@@ -86,9 +86,9 @@ public class Main extends AbstractMain {
 
     public void vTableInitialization(DecacCompiler compiler, ListDeclClass classes) {
         Data data = compiler.getData();
-        data.newVTable(compiler);
-        for (AbstractDeclClass absDeclClass : classes.getList()) {
-            absDeclClass.addToVTable(compiler);
+        if (!classes.getList().isEmpty()) {
+            data.newVTable(compiler);
         }
+        classes.addToVTable(compiler);
     } 
 }
