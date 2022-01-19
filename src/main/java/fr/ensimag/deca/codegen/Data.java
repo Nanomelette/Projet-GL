@@ -45,6 +45,7 @@ public class Data {
     private Label io_error = new Label("io_error");
     private Label overflow_error = new Label("overflow_error");
     private Label zero_division = new Label("zero_division");
+    private Label null_dereference = new Label("null_dereference");
     private Label equals = new Label("code.Object.equals");
 
 
@@ -157,6 +158,10 @@ public class Data {
         compiler.addInstruction(new ERROR());
         compiler.addLabel(zero_division);
         compiler.addInstruction(new WSTR("Error: zero_division."));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+        compiler.addLabel(null_dereference);
+        compiler.addInstruction(new WSTR("Error: null_derefence."));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
         
