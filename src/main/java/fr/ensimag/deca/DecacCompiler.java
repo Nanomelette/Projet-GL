@@ -71,8 +71,9 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
-        //TODO : on met ça vraiment ici ?
-        this.data.setMaxRegister(compilerOptions.getMaxRegister());
+        if (compilerOptions != null) {
+            this.data.setMaxRegister(compilerOptions.getMaxRegister());
+        }
         this.symbolTable = new SymbolTable();
         this.env_Types = new EnvironmentType(this);
         this.Env_exp= new EnvironmentExp(null);
