@@ -9,7 +9,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
-public class MethodBody extends AbstractExpr{
+public class MethodBody extends AbstractMethodBody{
     private ListDeclVar var;
     private ListInst inst;
 
@@ -18,7 +18,6 @@ public class MethodBody extends AbstractExpr{
         this.inst = listInst;
     }
 
-    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         // TODO Auto-generated method stub
@@ -43,6 +42,19 @@ public class MethodBody extends AbstractExpr{
     protected void iterChildren(TreeFunction f) {
         var.iter(f);
         inst.iter(f);    
+    }
+
+    @Override
+    protected void verifyMethodBody(DecacCompiler compiler) throws ContextualError {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void verifyClassBody(DecacCompiler compiler, EnvironmentExp members, EnvironmentExp envExpParams,
+            AbstractIdentifier class1, Type return1) throws ContextualError {
+        // TODO Auto-generated method stub
+        
     }
  
 }

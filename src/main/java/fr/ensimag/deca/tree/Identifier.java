@@ -176,20 +176,11 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        int i=0;
-        while(i < compiler.GetEnvExp().getDictionnary().keySet().size()){
-            if(this.name.getName().equals(((Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i]).getName())){
-                break;
-            }
-            i++;
-        }
-        if ((i == compiler.GetEnvExp().getDictionnary().keySet().size())) {
-            throw new ContextualError("identifier not defined", getLocation());
-        }
-        Symbol symb = (Symbol)compiler.GetEnvExp().getDictionnary().keySet().toArray()[i];
+    
+        Symbol symb = (Symbol)compiler.getSymbolTable().create(this.name.getName());
         if (compiler.GetEnvExp().get(symb) != null) {
-            this.setDefinition(compiler.GetEnvExp().get(symb));
-            this.setType(compiler.GetEnvExp().get(symb).getType());
+            setDefinition(compiler.GetEnvExp().get(symb));
+            setType(compiler.GetEnvExp().get(symb).getType());
             return compiler.GetEnvExp().get(symb).getType();
         }
         else {
@@ -204,7 +195,8 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-            Type type = compiler.searchSymbol(this.getName());
+            System.out.println(this.name);
+            Type type = compiler.searchSymbol(this.name);
             if ( type == null )
                 throw new ContextualError("Identifier-type error", this.getLocation());
             else {

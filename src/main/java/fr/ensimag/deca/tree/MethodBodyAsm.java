@@ -13,7 +13,7 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 
-public class MethodBodyAsm extends AbstractExpr {
+public class MethodBodyAsm extends AbstractMethodBody {
     private StringLiteral code;
 
     public MethodBodyAsm(StringLiteral string){
@@ -28,15 +28,6 @@ public class MethodBodyAsm extends AbstractExpr {
         s.print(");");
     }
 
-
-    @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
-            throws ContextualError {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         code.prettyPrint(s, prefix, false);
@@ -46,6 +37,21 @@ public class MethodBodyAsm extends AbstractExpr {
     @Override
     protected void iterChildren(TreeFunction f) {
         code.iter(f);
+    }
+
+
+    @Override
+    protected void verifyMethodBody(DecacCompiler compiler) throws ContextualError {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+    @Override
+    public void verifyClassBody(DecacCompiler compiler, EnvironmentExp members, EnvironmentExp envExpParams,
+            AbstractIdentifier class1, Type return1) throws ContextualError {
+        // TODO Auto-generated method stub
+        
     }
 
     

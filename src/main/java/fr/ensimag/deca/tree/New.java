@@ -23,7 +23,11 @@ import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 public class New extends AbstractExpr {
 
-    private Identifier class_;
+    private AbstractIdentifier class_;
+
+    public New(AbstractIdentifier class_){
+        this.class_ = class_;
+    }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
@@ -41,13 +45,12 @@ public class New extends AbstractExpr {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO Auto-generated method stub
-        
+        class_.prettyPrint(s, prefix, false);        
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO Auto-generated method stub
+        class_.iter(f);
         
     }
     
