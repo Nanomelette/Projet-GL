@@ -17,6 +17,7 @@ import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.INT;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 import net.bytebuddy.implementation.bind.annotation.AllArguments.Assignment;
 
@@ -144,7 +145,7 @@ public abstract class AbstractExpr extends AbstractInst {
      *
      * @param compiler
      */
-    protected void codeGenPrint(DecacCompiler compiler) {
+    protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
         this.codeGenInst(compiler);
         Data data = compiler.getData();
         GPRegister register = data.getLastUsedRegister();
@@ -152,10 +153,15 @@ public abstract class AbstractExpr extends AbstractInst {
         if (getType().isInt()) {
             compiler.addInstruction(new WINT());
         } else if (getType().isFloat()) {
-            compiler.addInstruction(new WFLOAT());
-        } else if (getType().isBoolean()) {
-            ((BooleanLiteral) this).codeGenPrint(compiler);
-        }
+            if (printHex) {
+                compiler.addInstruction(new WFLOATX());
+            } else {
+                compiler.addInstruction(new WFLOAT());
+            }
+        } 
+        // else if (getType().isBoolean()) {
+        //     ((BooleanLiteral) this).codeGenPrint(compiler);
+        // }
 
     }
 
@@ -187,5 +193,9 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {}
+
+    protected void codeGenAssign(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 }
 
