@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.DIV;
 import fr.ensimag.ima.pseudocode.instructions.QUO;
 
@@ -28,7 +30,7 @@ public class Divide extends AbstractOpArith {
         } else {
             compiler.addInstruction(new QUO(op1, op2)); // Cas des entiers
         }
-        // TODO : GÉRER LES OVERFLOW ? 
+        compiler.addInstruction(new BOV(new Label("zero_division")));
         compiler.getData().setLastUsedRegister(op2);
     }
 

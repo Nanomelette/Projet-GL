@@ -47,6 +47,7 @@ public class Data {
     private Label zero_division = new Label("zero_division");
     private Label equals = new Label("code.Object.equals");
 
+
     public Data() {};
 
     public int getlB() {

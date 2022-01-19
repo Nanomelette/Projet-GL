@@ -1,0 +1,13 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 12: ContextualError: Identifier-type error
+// 
+// Historique:
+//    cree le 01/01/2022
+
+{
+   // Doit etre refuse.
+   pangolinLepreux p;
+}

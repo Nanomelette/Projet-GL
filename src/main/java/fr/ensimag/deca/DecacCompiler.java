@@ -245,7 +245,7 @@ public class DecacCompiler {
         // assert(prog.checkAllLocations());
 
         if (compilerOptions.getParse()) {
-            prog.prettyPrint(System.out);
+            // prog.prettyPrint(System.out);
             prog.decompile(System.out);
             // TODO : décompiler l'arbre et afficher sa décompilation
             System.exit(0);
