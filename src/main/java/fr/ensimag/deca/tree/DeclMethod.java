@@ -55,5 +55,11 @@ public class DeclMethod extends AbstractDeclMethod{
         // TODO Auto-generated method stub
         
     }
+
+    @Override
+    protected void addToVTable(DecacCompiler compiler) {
+        // TODO Auto-generated method stub
+        
+    }
     
 }

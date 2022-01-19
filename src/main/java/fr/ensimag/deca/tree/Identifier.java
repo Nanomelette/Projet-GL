@@ -14,6 +14,7 @@ import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
@@ -21,6 +22,7 @@ import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -266,5 +268,16 @@ public class Identifier extends AbstractIdentifier {
         GPRegister register = data.getFreeRegister(compiler);
         compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), register));
         data.setLastUsedRegister(register);
+    }
+
+    /**
+     * Methode use to generate code that assign the result 
+     * saved in lastUsedRegister to this identifer
+     * @param compiler
+     */
+    @Override
+    protected void codeGenAssign(DecacCompiler compiler) {
+        DAddr adress = getExpDefinition().getOperand();
+        compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), adress));
     }
 }
