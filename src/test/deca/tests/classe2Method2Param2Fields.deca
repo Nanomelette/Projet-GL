@@ -1,0 +1,12 @@
+// classe pour l'addition de int et float.
+
+class A {
+	int i;
+	/*protected*/ String s;
+	float f(int i, float j) {
+		return i+j;
+	}
+	int f(int i, float j) {
+		return i+j;
+	}
+}

@@ -114,7 +114,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        Type verifType = this.verifyExpr(compiler, localEnv, currentClass);
+        Type verifType = verifyExpr(compiler, localEnv, currentClass);
         if(verifType.sameType(returnType)){
             throw new UnsupportedOperationException("same type");
         }
