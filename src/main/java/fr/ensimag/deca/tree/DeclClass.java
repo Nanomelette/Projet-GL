@@ -5,6 +5,8 @@ import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
+
 import java.io.PrintStream;
 
 /**
@@ -19,7 +21,6 @@ public class DeclClass extends AbstractDeclClass {
     private Identifier classeSup;
     private ListDeclField listDeclField;
     private ListDeclMethod listDeclMethod;
-    //private ListDeclMethod listDeclMethod;
 
     public DeclClass(Identifier classe, Identifier classeSup, ListDeclField listDeclField,
         ListDeclMethod listDeclMethod) {
@@ -47,14 +48,12 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-        //throw new UnsupportedOperationException("not yet implemented");
         this.verifyClass(compiler);
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        //throw new UnsupportedOperationException("not yet implemented");
         this.verifyClassMembers(compiler);
         this.listDeclField.verifyListField(compiler, this.classeSup, this.classe);
         this.listDeclMethod.verifyListMethod(compiler, this.classeSup);
@@ -74,6 +73,11 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void iterChildren(TreeFunction f) {
         throw new UnsupportedOperationException("Not yet supported");
+    }
+
+    @Override
+    protected void addToVTable(DecacCompiler compiler) {
+        // compiler.addInstruction(new LEA(classeSup., op2));
     }
 
 }
