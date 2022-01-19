@@ -78,6 +78,10 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void addToVTable(DecacCompiler compiler) {
         // compiler.addInstruction(new LEA(classeSup., op2));
+
+        for (AbstractDeclMethod aDeclMethod : listDeclMethod.getList()) {
+            aDeclMethod.addToVTable(compiler);
+        }
     }
 
 }
