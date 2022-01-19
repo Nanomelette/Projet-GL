@@ -45,7 +45,7 @@ public class Data {
     private Label io_error = new Label("io_error");
     private Label overflow_error = new Label("overflow_error");
     private Label zero_division = new Label("zero_division");
-    // private Label equals = new Label("code.Object.equals");
+    private Label equals = new Label("code.Object.equals");
 
     public Data() {};
 
@@ -165,14 +165,14 @@ public class Data {
         return freeStoragePointer;
     }
 
-    // public void newVTable(DecacCompiler compiler) {
-    //     compiler.addInstruction(null, "Code de la table des méthodes de Object");
-    //     compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
-    //     compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(1, Register.GB)));
-    //     compiler.addInstruction(new LOAD(new LabelOperand(equals), Register.R0));
-    //     compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(2, Register.GB)));
-    //     incrementGbOffset(1);
-    //     incrementFreeStoragePointer(1);
-    // }
+    public void newVTable(DecacCompiler compiler) {
+        compiler.addInstruction(null, "Code de la table des méthodes de Object");
+        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(1, Register.GB)));
+        compiler.addInstruction(new LOAD(new LabelOperand(equals), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(2, Register.GB)));
+        incrementGbOffset(1);
+        incrementFreeStoragePointer(1);
+    }
 
 }

@@ -17,4 +17,10 @@ public abstract class AbstractDeclMethod extends Tree {
      */
     protected abstract void verifyMethod(DecacCompiler compiler, AbstractIdentifier classeSup)
             throws ContextualError;
+
+    /**
+     * Pass 1 of [GenCode]. Add the method to the vtable.
+     * 
+     */
+    protected abstract void addToVTable(DecacCompiler compiler);
 }
