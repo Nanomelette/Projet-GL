@@ -54,5 +54,12 @@ public class MethodBodyAsm extends AbstractMethodBody {
         
     }
 
+
+    @Override
+    protected void codeGenMethodBody(DecacCompiler compiler) {
+        // TODO : split
+        
+    }
+
     
 }

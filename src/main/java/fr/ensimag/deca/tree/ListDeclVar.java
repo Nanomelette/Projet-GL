@@ -48,5 +48,17 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
                 return localEnv;
     }
 
+    public void codeGenListDeclVarGlob(DecacCompiler compiler) {
+        for (AbstractDeclVar declVar : getList()) {
+            declVar.codeGenDeclVarGlob(compiler);
+        }
+    }
+    public void codeGenListDeclVarLoc(DecacCompiler compiler) {
+        compiler.getData().restorelBOffset();
+        for (AbstractDeclVar declVar : getList()) {
+            declVar.codeGenDeclVarLoc(compiler);
+        }
+    }
+
 
 }

@@ -25,4 +25,6 @@ public abstract class AbstractDeclMethod extends Tree {
     protected abstract void addToVTable(DecacCompiler compiler, String debName);
 
     public abstract AbstractIdentifier getName();
+
+    protected abstract void codeGenDeclMethod(DecacCompiler compiler);
 }

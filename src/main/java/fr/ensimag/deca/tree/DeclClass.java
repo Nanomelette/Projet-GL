@@ -9,11 +9,13 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.LabelOperand;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.BSR;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -21,6 +23,7 @@ import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.RTS;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.instructions.SUBSP;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
 
 import java.io.PrintStream;
 import java.util.Iterator;
@@ -199,6 +202,10 @@ public class DeclClass extends AbstractDeclClass {
         // Codage de l'initialisation des champs
         
         compiler.addComment("Initialisation des champs de " + classe.getName().getName());
+
+        // Début de bloc
+        compiler.newBloc(); compiler.setToBlocProgram();
+
         compiler.addLabel(new Label("init." + classe.getName().getName()));
         compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         if (classeSup != null) {
@@ -215,9 +222,32 @@ public class DeclClass extends AbstractDeclClass {
         listDeclField.codeGenListDeclFieldSet(compiler);
         compiler.addInstruction(new RTS());
 
-        // TODO : TSTO (nb de registre utilisé + nb de var + nb de push)
+        // Fin de bloc
+        /**
+         * TODO : TSTO
+         * 
+         * nombre de registres sauvegardés en début de bloc = 
+         *          0
+         * nombre de variables du bloc =
+         *          0 <- Initialisation des champs donc pas de variables
+         * nombre maximal de temporaires nécessaires à l’évaluation des expressions =
+         *          compiler.getData().getRegisterCounterInBlock()
+         * nombre maximal de paramètres des méthodes appelées (chaque instruction BSR effectuant deux empilements) =
+         *          2 <- Il faut retenir le PC et l'objet
+         * 
+         */
+        compiler.addInstructionAtFirst(new BOV(new Label("pile_pleine")));
+        // On laisse ce +2 -2 pour l'instant pour suivre le calcul
+        compiler.addInstructionAtFirst(new TSTO(2 + compiler.getData().getFreeStoragePointer() - 2));
+        compiler.appendBlocInstructions();
+        compiler.getData().restoreData();
+        compiler.setToMainProgram();
         
-
         // Codage des méthodes
+
+        // C'est pour la structure mais comme on a restore avant on pourrait juste rester dans 
+        // le bloc.
+        listDeclMethod.codeGenListDeclMethod(compiler);
+
     }
 }

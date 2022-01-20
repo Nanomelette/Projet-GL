@@ -6,8 +6,11 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.LabelOperand;
 import fr.ensimag.ima.pseudocode.Register;
@@ -93,7 +96,52 @@ public class DeclMethod extends AbstractDeclMethod{
         return false;
     }
     
-    public void codeGenDeclMethode(DecacCompiler compiler) {
+    public void codeGenDeclMethod(DecacCompiler compiler) {
+        // Début de bloc
+        compiler.newBloc(); compiler.setToBlocProgram();
+
+        // Calcul de methodBody
+        /**
+         * TODO : le nmbre maximal de paramètres des méthodes appelees
+         */
+        methodBody.codeGenMethodBody(compiler);
+
+        // Restauration des registres
+        compiler.addLabel(new Label("fin." + name.getMethodDefinition().getLabel().toString()));
+        compiler.addComment("Restauration des registres");
+        compiler.getData().popUsedRegisters(compiler);
+        compiler.getData().setLastUsedRegister(Register.R0);
+        compiler.addInstruction(new RTS());
+
+        // Sauvegarde des registres
+        compiler.getData().pushUsedRegisters(compiler);
+        compiler.addCommentAtFirst("Sauvegarde des registres");
+
+        // TSTO
+        /**
+         * TODO : TSTO
+         * 
+         * nombre de registres sauvegardés en début de bloc = 
+         *          compiler.getData().getNumberOfUsedRegister()
+         * nombre de variables du bloc =
+         *          ?
+         * nombre maximal de temporaires nécessaires à l’évaluation des expressions =
+         *          compiler.getData().getMaxStackLength()
+         * nombre maximal de paramètres des méthodes appelées (chaque instruction BSR effectuant deux empilements) =
+         *          2 <- Il faut retenir le PC et l'objet
+         * 
+         */
+        compiler.addInstructionAtFirst(new BOV(new Label("stack_overflow_error")));
+        compiler.addInstructionAtFirst(
+            new TSTO(
+                compiler.getData().getNumberOfUsedRegister() + compiler.getData().getMaxStackLength() + ((MethodBody)methodBody).getNbrVarMethodBody()
+            )
+        );
+
+        // Fin de bloc 
+        compiler.appendBlocInstructions();
+        compiler.getData().restoreData();
+        compiler.setToMainProgram();
 
     }   
 }

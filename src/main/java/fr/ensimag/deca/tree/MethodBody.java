@@ -18,6 +18,10 @@ public class MethodBody extends AbstractMethodBody{
         this.inst = listInst;
     }
 
+    public int getNbrVarMethodBody() {
+        return var.size();
+    }
+
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         // TODO Auto-generated method stub
@@ -55,6 +59,12 @@ public class MethodBody extends AbstractMethodBody{
             AbstractIdentifier class1, Type return1) throws ContextualError {
         // TODO Auto-generated method stub
         
+    }
+
+    @Override
+    protected void codeGenMethodBody(DecacCompiler compiler) {
+        var.codeGenListDeclVarLoc(compiler);
+        inst.codeGenListInst(compiler);
     }
  
 }

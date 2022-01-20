@@ -98,25 +98,15 @@ public class DeclVar extends AbstractDeclVar {
         var.getExpDefinition().setOperand(address);
         compiler.getData().incrementGbOffset();
         initialization.codeGenInitVar(compiler, address);
-        // if (initialization instanceof Initialization) {
-        //     Initialization init = (Initialization) initialization;
-        //     init.getExpression().codeGenInst(compiler);
-        //     compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
-        // }
         compiler.getData().restoreData();
     }
 
     public void codeGenDeclVarLoc(DecacCompiler compiler) {
-        DAddr address = new RegisterOffset(compiler.getData().getlB(), Register.LB);
+        DAddr address = new RegisterOffset(compiler.getData().getlBOffset(), Register.LB);
         Identifier var = (Identifier) getVarName();
         var.getExpDefinition().setOperand(address);
-        compiler.getData().incrementLb();
+        // compiler.getData().incrementLb();
         initialization.codeGenInitVar(compiler, address);
-        // if (initialization instanceof Initialization) {
-        //     Initialization init = (Initialization) initialization;
-        //     init.getExpression().codeGenInst(compiler);
-        //     compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
-        // }
         compiler.getData().restoreData();
     }
 }

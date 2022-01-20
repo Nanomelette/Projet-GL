@@ -17,6 +17,8 @@ import fr.ensimag.ima.pseudocode.instructions.ADDSP;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
@@ -28,46 +30,54 @@ import fr.ensimag.deca.tree.DeclVar;
 import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.deca.tree.ListDeclVar;
 
-
 public class Data {
     private static final Logger LOG = Logger.getLogger(Data.class);
 
     private int maxRegister = 15;
-    // When storagePointer < maxRegister, the storage is in a register, 
+    // When storagePointer < maxRegister, the storage is in a register,
     // otherwise it is in the stack.
     private int freeStoragePointer = 2;
+    private int numberOfUsedRegister = 0;
     private int gBOffset = 1;
-    private int lB = 1;
+    private int lBOffset = 1;
     private int maxStackLength = 0;
     private GPRegister lastUsedRegister = GPRegister.getR(2);
 
     // Labels :
-    // private Label stack_overflow_error  = new Label("stack_overflow_error");
+    // private Label stack_overflow_error = new Label("stack_overflow_error");
     // private Label io_error = new Label("io_error");
     // private Label overflow_error = new Label("overflow_error");
     // private Label zero_division = new Label("zero_division");
     // private Label equals = new Label("code.Object.equals");
     private Labels labels = new Labels();
 
+    public Data() {
+    };
 
-    public Data() {};
-
-   public Labels getLabels() {
-       return labels;
-   }
-
-    public int getlB() {
-        return lB;
+    public int getMaxStackLength() {
+        return maxStackLength;
     }
 
-    public void incrementLb() {
-        lB++;
+    public int getNumberOfUsedRegister() {
+        return Math.min(maxRegister - 1, numberOfUsedRegister);
+    }
+
+    public Labels getLabels() {
+        return labels;
+    }
+
+    public int getlBOffset() {
+        return lBOffset;
+    }
+
+    public void incrementlBOffset() {
+        lBOffset++;
     }
 
     public void setMaxRegister(int maxRegister) {
         this.maxRegister = maxRegister;
     }
-    
+
     public boolean hasFreeRegister() {
         return (freeStoragePointer < maxRegister);
     }
@@ -78,6 +88,7 @@ public class Data {
 
     public GPRegister getFreeRegister(DecacCompiler compiler) {
         if (hasFreeRegister()) {
+            numberOfUsedRegister++;
             return GPRegister.getR(freeStoragePointer++);
         } else {
             GPRegister lastRegister = GPRegister.getR(maxRegister - 1);
@@ -98,6 +109,7 @@ public class Data {
     }
 
     public void incrementFreeStoragePointer(int... incrementList) {
+        numberOfUsedRegister++;
         freeStoragePointer++;
         for (int i : incrementList) {
             freeStoragePointer += i;
@@ -114,7 +126,7 @@ public class Data {
 
     public void restoreDataTo(int i) {
         freeStoragePointer = i;
-    } 
+    }
 
     public void setLastUsedRegister(GPRegister lastUsedRegister) {
         this.lastUsedRegister = lastUsedRegister;
@@ -122,15 +134,6 @@ public class Data {
 
     public GPRegister getLastUsedRegister() {
         return lastUsedRegister;
-    }
-
-    public void variableInit(ListDeclVar declVariables) {
-        for (AbstractDeclVar absDeclVar : declVariables.getList()) {
-            DAddr address = new RegisterOffset(gBOffset, Register.GB);
-            Identifier var = (Identifier)((DeclVar)absDeclVar).getVarName();
-            var.getExpDefinition().setOperand(address);
-            gBOffset++;
-        }
     }
 
     public void incrementGbOffset(int... incrementList) {
@@ -145,9 +148,9 @@ public class Data {
     }
 
     public void addHeader(DecacCompiler compiler) {
-        compiler.addInstructionAtFirst(new ADDSP(gBOffset-1));
+        compiler.addInstructionAtFirst(new ADDSP(gBOffset - 1));
         compiler.addInstructionAtFirst(new BOV(labels.stack_overflow_error));
-        compiler.addInstructionAtFirst(new TSTO(gBOffset+maxStackLength-1));
+        compiler.addInstructionAtFirst(new TSTO(gBOffset + maxStackLength - 1));
         compiler.addInstructionAtFirst(null, "start main program");
     }
 
@@ -176,7 +179,7 @@ public class Data {
             compiler.addInstruction(new WNL());
             compiler.addInstruction(new ERROR());
         }
-        
+
     }
 
     public int getFreeStoragePointer() {
@@ -198,4 +201,23 @@ public class Data {
         incrementFreeStoragePointer(1);
     }
 
+    public void popUsedRegisters(DecacCompiler compiler) {
+        int tmp = numberOfUsedRegister;
+        while (tmp > 0) {
+            compiler.addInstruction(new POP(Register.getR(2 + tmp)));
+            tmp--;
+        }
+    }
+
+    public void pushUsedRegisters(DecacCompiler compiler) {
+        int tmp = numberOfUsedRegister;
+        while (tmp > 2) {
+            compiler.addInstructionAtFirst(new POP(Register.getR(2 + tmp)));
+            tmp--;
+        }
+    }
+
+    public void restorelBOffset() {
+        lBOffset = 0;
+    }
 }

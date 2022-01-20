@@ -52,7 +52,12 @@ public class DecacCompiler {
     // private static final SymbolTable symbol_table = new SymbolTable();
     private Data data = new Data();
 
+    private Data dataBloc = new Data();
+
     public Data getData() {
+        if (writeInBloc) {
+            return dataBloc;
+        }
         return data;
     }
 
@@ -116,14 +121,22 @@ public class DecacCompiler {
      * fr.ensimag.ima.pseudocode.IMAProgram#add(fr.ensimag.ima.pseudocode.AbstractLine)
      */
     public void add(AbstractLine line) {
-        program.add(line);
+        if (writeInBloc) {
+            bloc.add(line);
+        } else {
+            program.add(line);
+        }
     }
 
     /**
      * @see fr.ensimag.ima.pseudocode.IMAProgram#addComment(java.lang.String)
      */
     public void addComment(String comment) {
-        program.addComment(comment);
+        if (writeInBloc) {
+            bloc.addComment(comment);
+        } else {
+            program.addComment(comment);
+        }
     }
 
     /**
@@ -131,7 +144,11 @@ public class DecacCompiler {
      * fr.ensimag.ima.pseudocode.IMAProgram#addLabel(fr.ensimag.ima.pseudocode.Label)
      */
     public void addLabel(Label label) {
-        program.addLabel(label);
+        if (writeInBloc) {
+            bloc.addLabel(label);
+        } else {
+            program.addLabel(label);
+        }
     }
 
     /**
@@ -139,7 +156,11 @@ public class DecacCompiler {
      * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
      */
     public void addInstruction(Instruction instruction) {
-        program.addInstruction(instruction);
+        if (writeInBloc) {
+            bloc.addInstruction(instruction);
+        } else {
+            program.addInstruction(instruction);
+        }
     }
 
     /**
@@ -148,7 +169,11 @@ public class DecacCompiler {
      * java.lang.String)
      */
     public void addInstruction(Instruction instruction, String comment) {
-        program.addInstruction(instruction, comment);
+        if (writeInBloc) {
+            bloc.addInstruction(instruction, comment);
+        } else {
+            program.addInstruction(instruction, comment);
+        }
     }
 
     /**
@@ -156,11 +181,31 @@ public class DecacCompiler {
      * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
      */
     public void addInstructionAtFirst(Instruction instruction) {
-        program.addFirst(instruction);
+        if (writeInBloc) {
+            bloc.addFirst(instruction);
+        } else {
+            program.addFirst(instruction);
+        }
     }
 
     public void addInstructionAtFirst(Instruction instruction, String comment) {
-        program.addFirst(instruction, comment);
+        if (writeInBloc) {
+            bloc.addFirst(instruction, comment);
+        } else {
+            program.addFirst(instruction, comment);
+        }
+    }
+
+    public void appendBlocInstructions() {
+        program.append(bloc);
+    }
+
+    public void addCommentAtFirst(String comment) {
+        if (writeInBloc) {
+            bloc.addFirst(null, comment);
+        } else {
+            program.addFirst(null, comment);
+        }
     }
 
     
@@ -181,6 +226,34 @@ public class DecacCompiler {
      * The main program. Every instruction generated will eventually end up here.
      */
     private final IMAProgram program = new IMAProgram();
+
+    /**
+     * The substiture program. Instructions generated in a bloc will be written
+     * in the bloc then appened to the main program.
+     */
+    private IMAProgram bloc = new IMAProgram();
+
+    /**
+     * A boolean to know where to write
+     */
+    private Boolean writeInBloc = false;
+
+    public void setWriteInBloc(Boolean writeInBloc) {
+        this.writeInBloc = writeInBloc;
+    }
+
+    public void setToMainProgram() {
+        this.writeInBloc = false;
+    }
+
+    public void setToBlocProgram() {
+        this.writeInBloc = true;
+    }
+
+    public void newBloc() {
+        dataBloc = new Data();
+        bloc = new IMAProgram();
+    }
  
 
     /**
@@ -256,7 +329,7 @@ public class DecacCompiler {
 
         // B
         prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
+        // assert(prog.checkAllDecorations());
         if (compilerOptions.getVerification()) {
             System.exit(0);
         }

@@ -54,10 +54,11 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        for (AbstractDeclVar absDeclVar : declVariables.getList()) {
-            DeclVar declVar = (DeclVar) absDeclVar;
-            declVar.codeGenDeclVarGlob(compiler);
-        }
+        // for (AbstractDeclVar absDeclVar : declVariables.getList()) {
+        //     DeclVar declVar = (DeclVar) absDeclVar;
+        //     declVar.codeGenDeclVarGlob(compiler);
+        // }
+        declVariables.codeGenListDeclVarGlob(compiler);
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
     }
