@@ -5,6 +5,7 @@ import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -13,16 +14,19 @@ public class DeclParam extends AbstractDeclParam{
     private AbstractIdentifier type;
     private AbstractIdentifier name;
 
-    public DeclParam(AbstractIdentifier tree, AbstractIdentifier tree2){
-        Validate.notNull(tree);
-        Validate.notNull(tree2);
-        this.type = tree;
-        this.name = tree2;
+    public DeclParam(AbstractIdentifier type, AbstractIdentifier name){
+        Validate.notNull(type);
+        Validate.notNull(name);
+        this.type = type;
+        this.name = name;
     }
 
     protected void verifyParam(DecacCompiler compiler)
             throws ContextualError{
-            throw new UnsupportedOperationException("not yet implemented");
+            Type varType = type.verifyType(compiler);
+            if (varType.isVoid()){
+                throw new ContextualError("type void", getLocation());
+            }
         }
 
     @Override

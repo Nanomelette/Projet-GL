@@ -2,7 +2,7 @@
 
 class A {
 	int i;
-	/*protected*/ String s;
+	protected String s;
 	float f(int i, float j) {
 		return i+j;
 	}

@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import org.apache.commons.lang.Validate;
+
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
@@ -11,6 +13,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.LabelOperand;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
@@ -58,7 +61,14 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-        this.verifyClass(compiler);
+        Symbol parent = this.classeSup.getName();
+        ClassType classType = (ClassType) compiler.searchSymbol(parent);
+        if (classType == null) {
+            throw new ContextualError("undefined super class", getLocation());
+        }
+        ClassDefinition classDefinition = classType.getDefinition();
+        ClassType type = new ClassType(this.classe.getName(), getLocation(), classDefinition);
+        compiler.GetEnvTypes().setEnvironmentType(this.classe.getName(), type, getLocation());
     }
 
     @Override
