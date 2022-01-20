@@ -602,31 +602,21 @@ class_extension returns[AbstractIdentifier tree]
         }
     ;
 
-class_body returns [ListDeclMethod listMeth, ListDeclFieldSet listField]
+class_body returns [ListDeclMethod listMeth, ListDeclField listField]
 @init{
     $listMeth = new ListDeclMethod();
-    $listField = new ListDeclFieldSet();
+    $listField = new ListDeclField();
     }
     : (m=decl_method {
         assert($m.tree != null);
         $listMeth.add($m.tree);
         }
-      | decl_field_set {
-        assert($decl_field_set.tree != null);
-        $listField.add($decl_field_set.tree);
-        }
+      | decl_field_set[$listField]
       )*
     ;
 
-decl_field_set returns [DeclFieldSet tree]
-    : v=visibility t=type list_decl_field SEMI {
-        assert($v.tree!=null);
-        assert($type.tree != null);
-        assert($list_decl_field.tree != null);
-        $tree = new DeclFieldSet($type.tree, $list_decl_field.tree, $visibility.tree);
-        setLocation($tree, $visibility.start);
-        }
-    ;
+decl_field_set[ListDeclField l]
+    : v = visibility t = type list_decl_field[$l, $v.tree, $t.tree] SEMI;
 
 visibility returns [Visibility tree]
     : /* epsilon */ {
@@ -637,21 +627,18 @@ visibility returns [Visibility tree]
         }
     ;
 
-list_decl_field returns [ListDeclField tree]
-@init{
-    $tree = new ListDeclField();
-    }
-    : dv1=decl_field{
-        $tree.add($dv1.tree);
-        setLocation($tree, $dv1.start);
-        }(COMMA dv2=decl_field{
-            $tree.add($dv2.tree);
-            setLocation($tree, $COMMA);
+list_decl_field[ListDeclField l, Visibility v, AbstractIdentifier t]
+    : dv1=decl_field[$v, $t]{
+        assert($dv1.tree!=null);
+        $l.add($dv1.tree);
+        }(COMMA dv2=decl_field[$v, $t] {
+            assert($dv2.tree!=null);
+            $l.add($dv2.tree);
         }
       )*
     ;
 
-decl_field returns [AbstractDeclField tree]
+decl_field[Visibility v, AbstractIdentifier t] returns [AbstractDeclField tree]
 @init {
     AbstractInitialization init = new NoInitialization();
 }
@@ -661,10 +648,11 @@ decl_field returns [AbstractDeclField tree]
       (EQUALS e=expr {
           assert($e.tree != null);
           init = new Initialization($e.tree);
-          setLocation(init, $EQUALS);
+          setLocation(init, $e.start);
         }
       )? {
-          $tree = new DeclField($i.tree, init);
+          assert(t != null);
+          $tree = new DeclField(v, t, $i.tree, init);
           setLocation($tree, $i.start);
         }
     ;

@@ -9,7 +9,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 public abstract class AbstractDeclFieldSet extends Tree {
 	
-	protected abstract EnvironmentExp verifyDeclFieldSet(DecacCompiler compiler,
+	protected abstract void verifyDeclFieldSet(DecacCompiler compiler,
             AbstractIdentifier superClass, AbstractIdentifier name)
             throws ContextualError;
 

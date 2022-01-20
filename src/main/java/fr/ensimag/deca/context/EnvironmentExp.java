@@ -34,6 +34,10 @@ public class EnvironmentExp {
         DictionnaryMap = new HashMap<Symbol,ExpDefinition>();
     }
 
+    public EnvironmentExp getParent() {
+        return this.parentEnvironment;
+    }
+
     public static class DoubleDefException extends Exception {
         private static final long serialVersionUID = -2733379901827316441L;
     }
