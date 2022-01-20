@@ -67,11 +67,11 @@ public class New extends AbstractExpr {
     
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        Label tas_plein = new Label("tas_plein");
+        Label heap_overflow = new Label("heap_overflow");
         Data data = compiler.getData();
         GPRegister register = data.getFreeRegister(compiler);
         compiler.addInstruction(new NEW(class_.getClassDefinition().getNumberOfFields(), register));
-        compiler.addInstruction(new BOV(tas_plein));
+        compiler.addInstruction(new BOV(heap_overflow));
         DAddr addr = class_.getClassDefinition().getAddressVTable(); 
         compiler.addInstruction(new LEA(addr, Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, register)));

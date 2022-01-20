@@ -31,10 +31,11 @@ public class ListExpr extends TreeList<AbstractExpr> {
     public void codeGenListExpr(DecacCompiler compiler) {
         int i = -1;
         for (AbstractExpr expr : getList()) {
+            GPRegister restoreRegister = compiler.getData().getLastUsedRegister();
             expr.codeGenInst(compiler);
             GPRegister register = compiler.getData().getLastUsedRegister();
             compiler.addInstruction(new STORE(register, new RegisterOffset(i, Register.SP)));
-            compiler.getData().restoreDataTo(register.getNumber());
+            compiler.getData().restoreDataTo(restoreRegister.getNumber());
             i--;
         }
     }

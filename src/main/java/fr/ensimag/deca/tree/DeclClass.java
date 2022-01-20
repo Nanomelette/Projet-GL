@@ -197,6 +197,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void codeGenDeclClass(DecacCompiler compiler) {
         // Codage de l'initialisation des champs
+        
         compiler.addComment("Initialisation des champs de " + classe.getName().getName());
         compiler.addLabel(new Label("init." + classe.getName().getName()));
         compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
@@ -213,6 +214,9 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addComment("Initialisation explicite des champs de " + classe.getName().getName());
         listDeclField.codeGenListDeclFieldSet(compiler);
         compiler.addInstruction(new RTS());
+
+        // TODO : TSTO (nb de registre utilisé + nb de var + nb de push)
+        
 
         // Codage des méthodes
     }

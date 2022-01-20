@@ -12,6 +12,8 @@ public class Labels {
     public final Label zero_division = new Label("zero_division");
     public final Label equals = new Label("code.Object.equals");
     public final Label null_dereference = new Label("null_dereference");
+    public final Label heap_overflow = new Label("heap_overflow");
+    
 
     private HashSet<Label> usedLabels = new HashSet<Label>();
 
@@ -22,6 +24,7 @@ public class Labels {
         addLabel(zero_division);
         addLabel(equals);
         addLabel(null_dereference);
+        addLabel(heap_overflow);
     }
 
     public void addLabel(Label label) {
