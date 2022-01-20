@@ -1,6 +1,8 @@
 package fr.ensimag.deca;
 
 import fr.ensimag.deca.codegen.Data;
+import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.context.Type;
@@ -21,6 +23,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ConcurrentModificationException;
+
+import javax.naming.ContextNotEmptyException;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -307,5 +312,20 @@ public class DecacCompiler {
     public EnvironmentExp GetEnvExp() {
         return Env_exp;
     }
+
+    public Type assignCompatible(DecacCompiler compiler, Type left, Type right){
+        if(left == null || right == null){
+            return null;
+        }
+        if(right.isInt() && left.isFloat()){
+            return right;
+        }
+        ClassType rightClassType = (ClassType) right;
+        if(rightClassType.isSubClassOf((ClassType) left)){
+            return right;
+        }
+        return null;
+    }
+
 
 }

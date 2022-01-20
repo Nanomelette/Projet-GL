@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
@@ -32,8 +33,18 @@ public class New extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        // TODO Auto-generated method stub
-        return null;
+        Type type = compiler.searchSymbol(this.class_.getName());
+        if(type == null){
+            throw new ContextualError("New class cannot be null", getLocation());
+        }
+        if(!type.isClass()){
+            throw new ContextualError("the type of the class must be a class", getLocation());
+        }
+        ClassType classType = (ClassType) type;
+        class_.setType(classType);
+        class_.setDefinition(classType.getDefinition());
+        setType(classType);
+        return classType;
     }
 
     @Override

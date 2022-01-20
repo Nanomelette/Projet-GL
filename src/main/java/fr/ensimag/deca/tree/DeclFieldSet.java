@@ -7,6 +7,7 @@ import org.apache.commons.lang.Validate;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class DeclFieldSet extends AbstractDeclFieldSet{
@@ -58,10 +59,13 @@ public class DeclFieldSet extends AbstractDeclFieldSet{
     }
 
     @Override
-    protected EnvironmentExp verifyDeclFieldSet(DecacCompiler compiler, AbstractIdentifier superClass,
+    protected void verifyDeclFieldSet(DecacCompiler compiler, AbstractIdentifier superClass,
             AbstractIdentifier name) throws ContextualError {
-        // TODO Auto-generated method stub
-        return null;
+                Type varType = this.type.verifyType(compiler);
+                if (varType.isVoid()) {
+                    throw new ContextualError("type void", getLocation());
+                }
+                
     }
 
     @Override

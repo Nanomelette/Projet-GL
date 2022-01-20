@@ -36,11 +36,11 @@ public class DeclClass extends AbstractDeclClass {
 
     private AbstractIdentifier classe;
     private AbstractIdentifier classeSup;
-    private ListDeclFieldSet listDeclField;
+    private ListDeclField listDeclField;
     private ListDeclMethod listDeclMethod;
 
-    public DeclClass(AbstractIdentifier tree, AbstractIdentifier tree2, ListDeclFieldSet listField,
-            ListDeclMethod listDeclMethod) {
+    public DeclClass(AbstractIdentifier tree, AbstractIdentifier tree2, ListDeclField listField,
+        ListDeclMethod listDeclMethod) {
         Validate.notNull(tree);
         Validate.notNull(tree2);
         Validate.notNull(listField);
@@ -66,6 +66,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         Symbol parent = this.classeSup.getName();
+        Validate.isTrue(compiler.searchSymbol(parent).isClass(), "not class extension");
         ClassType classType = (ClassType) compiler.searchSymbol(parent);
         if (classType == null) {
             throw new ContextualError("undefined super class", getLocation());
