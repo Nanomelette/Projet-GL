@@ -78,13 +78,7 @@ list_decl returns[ListDeclVar tree]
     ;
 
 decl_var_set[ListDeclVar l]
-    : type list_decl_var[$l,$type.tree] SEMI {
-        assert($type.tree != null);
-        assert($list_decl_var!= null);
-        $l = new DeclVar($type.tree, $list_decl_var);
-        setLocation($l, $type.tree);
-    }
-    ;
+    : type list_decl_var[$l,$type.tree] SEMI;
 
 list_decl_var[ListDeclVar l, AbstractIdentifier t]
     : dv1=decl_var[$t] {
