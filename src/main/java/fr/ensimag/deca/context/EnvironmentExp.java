@@ -34,6 +34,10 @@ public class EnvironmentExp {
         DictionnaryMap = new HashMap<Symbol,ExpDefinition>();
     }
 
+    public EnvironmentExp getParent() {
+        return this.parentEnvironment;
+    }
+
     public static class DoubleDefException extends Exception {
         private static final long serialVersionUID = -2733379901827316441L;
     }
@@ -76,5 +80,26 @@ public class EnvironmentExp {
     public HashMap<Symbol, ExpDefinition> getDictionnary(){
         return this.DictionnaryMap;
     }
+
+    public EnvironmentExp unionDisjointe(EnvironmentExp env2){
+        EnvironmentExp env3 = new EnvironmentExp(null);
+        //assert(env2 != null);
+        env3.getDictionnary().putAll(this.getDictionnary());
+        env3.getDictionnary().putAll(env2.getDictionnary());
+        return env3;
+    }
+
+    public EnvironmentExp empilement(EnvironmentExp env2){
+        EnvironmentExp env3 = new EnvironmentExp(null);
+        env3.getDictionnary().putAll(this.getDictionnary());
+        for(Symbol symbol : env2.getDictionnary().keySet()){
+            if(!env3.getDictionnary().containsKey(symbol)){
+                env3.DictionnaryMap.put(symbol, env2.get(symbol));
+            }
+        }
+        return env3;
+
+    }
+
 
 }

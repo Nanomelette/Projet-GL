@@ -11,15 +11,11 @@ import org.apache.commons.lang.Validate;
 
 public class Return extends AbstractInst {
 
-    private AbstractExpr condition;
-    
-    public AbstractExpr getCondition() {
-        return condition;
-    }
+    private AbstractExpr e;
 
     public Return(AbstractExpr condition) {
         Validate.notNull(condition);
-        this.condition = condition;
+        this.e = condition;
     }
 
 
@@ -32,26 +28,34 @@ public class Return extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-            Type verifType = condition.verifyExpr(compiler, localEnv, currentClass);
+
+            Type typeVoid = compiler.searchSymbol(compiler.getSymbolTable().create("void"));
+
+            if(returnType == typeVoid){
+                throw new ContextualError("return cannot return void type", getLocation());
+            }
+            Type typeE = e.verifyExpr(compiler, localEnv, currentClass);
+            Type type = compiler.assignCompatible(compiler, typeE, returnType);
+            e.setType(type);
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("return ");
-        getCondition().decompile(s);
+        e.decompile(s);
         s.println(";");
         s.indent();
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        condition.iter(f);
+        e.iter(f);
 
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        condition.prettyPrint(s, prefix, true);
+        e.prettyPrint(s, prefix, true);
     }
 
     

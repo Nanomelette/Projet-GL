@@ -21,16 +21,29 @@ public class Cast extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        // TODO Auto-generated method stub
-        return null;
+        Type type = this.type.verifyType(compiler);
+        Type expressionType = this.e.verifyExpr(compiler, localEnv, currentClass);
+        if(type.isVoid()){
+            throw new ContextualError("cannot cast void type", getLocation());
+        }
+        if(type == expressionType){
+            return type;
+        }
+        if(compiler.assignCompatible(compiler, type, expressionType)!= null){
+            return compiler.assignCompatible(compiler, type, expressionType);
+        }
+        if(compiler.assignCompatible(compiler, expressionType, type)!= null){
+            return compiler.assignCompatible(compiler, expressionType, type);
+        }
+        throw new ContextualError("impossible cast", getLocation());
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("(");
-        s.print(type.decompile());
+        type.decompile(s);
         s.print(") (");
-        s.print(e.decompile());
+        e.decompile(s);
         s.print(")");        
     }
 
