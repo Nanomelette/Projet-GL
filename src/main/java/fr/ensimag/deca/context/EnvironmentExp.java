@@ -77,4 +77,25 @@ public class EnvironmentExp {
         return this.DictionnaryMap;
     }
 
+    public EnvironmentExp unionDisjointe(EnvironmentExp env2){
+        EnvironmentExp env3 = new EnvironmentExp(null);
+        //assert(env2 != null);
+        env3.getDictionnary().putAll(this.getDictionnary());
+        env3.getDictionnary().putAll(env2.getDictionnary());
+        return env3;
+    }
+
+    public EnvironmentExp empilement(EnvironmentExp env2){
+        EnvironmentExp env3 = new EnvironmentExp(null);
+        env3.getDictionnary().putAll(this.getDictionnary());
+        for(Symbol symbol : env2.getDictionnary().keySet()){
+            if(!env3.getDictionnary().containsKey(symbol)){
+                env3.DictionnaryMap.put(symbol, env2.get(symbol));
+            }
+        }
+        return env3;
+
+    }
+
+
 }
