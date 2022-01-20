@@ -93,4 +93,7 @@ public class DeclMethod extends AbstractDeclMethod{
         return false;
     }
     
+    public void codeGenDeclMethode(DecacCompiler compiler) {
+
+    }   
 }

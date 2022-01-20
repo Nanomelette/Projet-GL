@@ -65,7 +65,7 @@ public class New extends AbstractExpr {
         compiler.addInstruction(new LEA(addr, Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, register)));
         compiler.addInstruction(new PUSH(register));
-        compiler.addInstruction(new BSR(new Label("init."+class_.getName())));
+        compiler.addInstruction(new BSR(new Label("init."+class_.getName().getName())));
         compiler.addInstruction(new POP(register));
         data.setLastUsedRegister(register);
     }

@@ -17,4 +17,11 @@ public abstract class AbstractDeclField extends Tree {
      */
     protected abstract void verifyField(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
             throws ContextualError;
+
+    /**
+     * Pass 2 of [GenCode]
+     */
+    protected abstract void codeGenDeclField(DecacCompiler compiler);
+
+    protected abstract void codeGenDeclFieldZero(DecacCompiler compiler);
 }

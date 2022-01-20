@@ -14,9 +14,13 @@ import fr.ensimag.ima.pseudocode.LabelOperand;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.instructions.BSR;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.SUBSP;
 
 import java.io.PrintStream;
 import java.util.Iterator;
@@ -36,7 +40,7 @@ public class DeclClass extends AbstractDeclClass {
     private ListDeclMethod listDeclMethod;
 
     public DeclClass(AbstractIdentifier tree, AbstractIdentifier tree2, ListDeclFieldSet listField,
-        ListDeclMethod listDeclMethod) {
+            ListDeclMethod listDeclMethod) {
         Validate.notNull(tree);
         Validate.notNull(tree2);
         Validate.notNull(listField);
@@ -78,12 +82,11 @@ public class DeclClass extends AbstractDeclClass {
         this.listDeclField.verifyListField(compiler, this.classeSup, this.classe);
         this.listDeclMethod.verifyListMethod(compiler, this.classeSup);
     }
-    
+
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
-
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
@@ -108,94 +111,108 @@ public class DeclClass extends AbstractDeclClass {
         // Initializationd de la VTable
         classe.getClassDefinition().setAddressVTable(adressClass);
         classe.getClassDefinition().initLabelVTable(
-            classeSup.getClassDefinition().getLabelVTable()
-            );
+                classeSup.getClassDefinition().getLabelVTable());
 
         compiler.addComment("Code de la table des méthode de " + classe.getName().getName());
         // On indique la classe de la méthode parente
         compiler.addInstruction(new LEA(addressClassSup, Register.R0));
         compiler.addInstruction(new STORE(Register.R0, adressClass));
         compiler.getData().incrementGbOffset();
-        
+
         // Methode Equals
         LabelOperand equalsOperand = new LabelOperand(compiler.getData().getLabels().equals);
-        // TODO : faire un get qui combine
-        compiler.getData().getLabels().addLabel(compiler.getData().getLabels().equals);
         compiler.addInstruction(new LOAD(equalsOperand, Register.R0), "Héritage de la méthode equals de Object");
-        compiler.addInstruction(new STORE(Register.R0, 
-                                    new RegisterOffset(
-                                        compiler.getData().getGbOffset(), Register.GB)
-                                    )
-                                );
+        compiler.addInstruction(new STORE(Register.R0,
+                new RegisterOffset(
+                        compiler.getData().getGbOffset(), Register.GB)));
         compiler.getData().incrementGbOffset();
 
         // Ajout des méthodes de la classe
         classe.getClassDefinition().initLabelVTable(
-            classeSup.getClassDefinition().getLabelVTable()
-        );
+                classeSup.getClassDefinition().getLabelVTable());
         for (AbstractDeclMethod aDeclMethod : listDeclMethod.getList()) {
             classe.getClassDefinition().addLabel(
-                aDeclMethod.getName().getMethodDefinition().getIndex(),
-                new Label(
-                    "code." + classe.getName().getName() + "." + aDeclMethod.getName().getName().getName()
-                    )
-                );
+                    aDeclMethod.getName().getMethodDefinition().getIndex(),
+                    new Label(
+                            "code." + classe.getName().getName() + "." + aDeclMethod.getName().getName().getName()));
             compiler.getData().incrementGbOffset();
         }
 
-        // On ajoute les méthodes de la classe mère, donc en faisant l'hypothèse que l'on réécrit moins de fonction
+        // On ajoute les méthodes de la classe mère, donc en faisant l'hypothèse que
+        // l'on réécrit moins de fonction
         // Iterator<Integer> it = classeSup.getClassDefinition().getKeys();
         // while (it.hasNext()) {
-        //     int index = it.next();
-        //     AbstractDeclMethod declmethod = classeSup.getClassDefinition().getLabel(index);
-        //     Map<Integer, AbstractDeclMethod> classeVTable = classe.getClassDefinition().getLabelVTable();
-        //     String debName;
-        //     if (classeVTable.containsValue(declmethod)) {
-        //         debName = "code." + classeSup.getName().getName();
-        //         classe.getClassDefinition().addLabel(, index);
-        //     } else {
-        //         debName = "code." + classe.getName().getName();
-        //         classe.getClassDefinition().addLabel(declmethod, index);
-        //     }
-        //     declmethod.addToVTable(compiler, debName);
+        // int index = it.next();
+        // AbstractDeclMethod declmethod =
+        // classeSup.getClassDefinition().getLabel(index);
+        // Map<Integer, AbstractDeclMethod> classeVTable =
+        // classe.getClassDefinition().getLabelVTable();
+        // String debName;
+        // if (classeVTable.containsValue(declmethod)) {
+        // debName = "code." + classeSup.getName().getName();
+        // classe.getClassDefinition().addLabel(, index);
+        // } else {
+        // debName = "code." + classe.getName().getName();
+        // classe.getClassDefinition().addLabel(declmethod, index);
+        // }
+        // declmethod.addToVTable(compiler, debName);
 
         // }
 
         // Version fonctionnel avec HashMap<Integer, AbstractDeclMethod>
         // for (int key = 0; key < classeSup.getClassDefinition().sizeVTable(); key++) {
-        //     AbstractDeclMethod declMethod = classeSup.getClassDefinition().getLabel(key);
-        //     Map<Integer, AbstractDeclMethod> classeVTable = classe.getClassDefinition().getLabelVTable();
-        //     String debName;
-        //     if (classeVTable.containsValue(declMethod)) {
-        //         debName = "code." + classeSup.getName().getName();
-        //         classe.getClassDefinition().addLabel(declMethod, key);
-        //     } else {
-        //         debName = "code." + classeSup.getName().getName();
-        //         classe.getClassDefinition().addLabel(declMethod, key);
-        //     }
-        //     declMethod.addToVTable(compiler, debName);
+        // AbstractDeclMethod declMethod = classeSup.getClassDefinition().getLabel(key);
+        // Map<Integer, AbstractDeclMethod> classeVTable =
+        // classe.getClassDefinition().getLabelVTable();
+        // String debName;
+        // if (classeVTable.containsValue(declMethod)) {
+        // debName = "code." + classeSup.getName().getName();
+        // classe.getClassDefinition().addLabel(declMethod, key);
+        // } else {
+        // debName = "code." + classeSup.getName().getName();
+        // classe.getClassDefinition().addLabel(declMethod, key);
+        // }
+        // declMethod.addToVTable(compiler, debName);
         // }
 
-        
-
-
-        
-
         // for (AbstractDeclMethod aDeclMethod : listDeclMethod.getList()) {
-        //     // Table des étiquettes
-        //     classe.getClassDefinition().addLabel(aDeclMethod);
-        //     // Gen du code
-        //     aDeclMethod.addToVTable(compiler, "code." + classe.getName().getName());
-        //     if (!classeSup.getName().getName().equals("Object")) {
-        //         int key = 2;
-        //         while (classeSup.getClassDefinition().hasKey(key)) {
-        //             if (!classe.getClassDefinition().hasKey(key)) {
-        //                 classe.getClassDefinition().addLabel(
-        //                     classeSup.getClassDefinition().getLabel(key)
-        //                     );
-        //                 }
-        //                 key++;
-        //             }
-        //         }
+        // // Table des étiquettes
+        // classe.getClassDefinition().addLabel(aDeclMethod);
+        // // Gen du code
+        // aDeclMethod.addToVTable(compiler, "code." + classe.getName().getName());
+        // if (!classeSup.getName().getName().equals("Object")) {
+        // int key = 2;
+        // while (classeSup.getClassDefinition().hasKey(key)) {
+        // if (!classe.getClassDefinition().hasKey(key)) {
+        // classe.getClassDefinition().addLabel(
+        // classeSup.getClassDefinition().getLabel(key)
+        // );
+        // }
+        // key++;
+        // }
+        // }
+    }
+
+    @Override
+    protected void codeGenDeclClass(DecacCompiler compiler) {
+        // Codage de l'initialisation des champs
+        compiler.addComment("Initialisation des champs de " + classe.getName().getName());
+        compiler.addLabel(new Label("init." + classe.getName().getName()));
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
+        if (classeSup != null) {
+            // Initialiser les nouveaux champs à zero
+            listDeclField.codeGenListDeclFieldSetZero(compiler);
+            // Init les champs parents
+            compiler.addComment("Appel de l'initialisation des champs hérités de " + classeSup.getName().getName());
+            compiler.addInstruction(new PUSH(Register.R1), "Empile l'objet à initialiser");
+            compiler.addInstruction(new BSR(new Label("init." + classeSup.getName().getName())),
+                    "Appel de l’initialisation de la super-classe");
+            compiler.addInstruction(new SUBSP(1), "On remet la pile dans son état initial");
         }
+        compiler.addComment("Initialisation explicite des champs de " + classe.getName().getName());
+        listDeclField.codeGenListDeclFieldSet(compiler);
+        compiler.addInstruction(new RTS());
+
+        // Codage des méthodes
+    }
 }

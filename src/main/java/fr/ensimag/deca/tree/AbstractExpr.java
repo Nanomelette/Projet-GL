@@ -194,7 +194,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {}
 
-    protected void codeGenAssign(DecacCompiler compiler) {
+    protected void codeGenAssign(DecacCompiler compiler, Register register) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 

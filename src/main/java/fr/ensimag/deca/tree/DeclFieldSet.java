@@ -83,4 +83,17 @@ public class DeclFieldSet extends AbstractDeclFieldSet{
         
     }
 
+    @Override
+    public void codeGenDeclFieldSet(DecacCompiler compiler) {
+        for (AbstractDeclField field : declField.getList()) {
+            field.codeGenDeclField(compiler);
+        }
+    }
+
+    @Override
+    public void codeGenDeclFieldSetZero(DecacCompiler compiler) {
+        for (AbstractDeclField field : declField.getList()) {
+            field.codeGenDeclFieldZero(compiler);
+        }
+    }
 }

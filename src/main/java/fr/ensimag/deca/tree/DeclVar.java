@@ -97,11 +97,12 @@ public class DeclVar extends AbstractDeclVar {
         Identifier var = (Identifier) getVarName();
         var.getExpDefinition().setOperand(address);
         compiler.getData().incrementGbOffset();
-        if (initialization instanceof Initialization) {
-            Initialization init = (Initialization) initialization;
-            init.getExpression().codeGenInst(compiler);
-            compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
-        }
+        initialization.codeGenInitVar(compiler, address);
+        // if (initialization instanceof Initialization) {
+        //     Initialization init = (Initialization) initialization;
+        //     init.getExpression().codeGenInst(compiler);
+        //     compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
+        // }
         compiler.getData().restoreData();
     }
 
@@ -110,11 +111,12 @@ public class DeclVar extends AbstractDeclVar {
         Identifier var = (Identifier) getVarName();
         var.getExpDefinition().setOperand(address);
         compiler.getData().incrementLb();
-        if (initialization instanceof Initialization) {
-            Initialization init = (Initialization) initialization;
-            init.getExpression().codeGenInst(compiler);
-            compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
-        }
+        initialization.codeGenInitVar(compiler, address);
+        // if (initialization instanceof Initialization) {
+        //     Initialization init = (Initialization) initialization;
+        //     init.getExpression().codeGenInst(compiler);
+        //     compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
+        // }
         compiler.getData().restoreData();
     }
 }

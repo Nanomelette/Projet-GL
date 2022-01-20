@@ -94,25 +94,24 @@ public class MethodCall extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Data data = compiler.getData();
+        obj.codeGenInst(compiler);
+        
+        // On calcul l'emplacement de la méthode
+        Register addresseClassRegister = data.getLastUsedRegister();
+        DAddr addr = new RegisterOffset(0, addresseClassRegister);
+
         // On reserve la place pour les parametres
         compiler.addInstruction(new ADDSP(param.size() + 1));
         GPRegister register = data.getFreeRegister(compiler);
-        DAddr addr = (DAddr) getDVal(); // TODO : Adresse de la table des methodes de A et non getDVal
+        data.decrementFreeStoragePointer();
+
         // On empile le parametre implicite
         compiler.addInstruction(new LOAD(addr, register));
         compiler.addInstruction(new STORE(register, new RegisterOffset(0, Register.SP)));
-        data.decrementFreeStoragePointer();
+
         // On empile les autres parametres
-        Iterator<AbstractExpr> iterator = param.getList().iterator();
-        int i = -1;
-        while (iterator.hasNext()) {
-            // Même pb que plus haut ? Liberer les registres utilisez pour les calculs ?
-            AbstractExpr expr = iterator.next();
-            expr.codeGenInst(compiler);
-            register = data.getLastUsedRegister();
-            compiler.addInstruction(new STORE(register, new RegisterOffset(i, Register.SP)));
-            i--;
-        }
+        param.codeGenListExpr(compiler);
+        
         register = data.getFreeRegister(compiler);
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), register));
         compiler.addInstruction(new CMP(new NullOperand(), register));
@@ -120,16 +119,10 @@ public class MethodCall extends AbstractExpr {
         // On recupere l'adresse de la table des méthodes
         compiler.addInstruction(new LOAD(new RegisterOffset(0, register), register));
         // On saute à la méthode
-        int k = 1; // TODO : k est l'indice de la méthode appelée dans la table des méthode de la classe concernée
-        compiler.addInstruction(new BSR(new RegisterOffset(k, register)));
+        compiler.addInstruction(new BSR(new RegisterOffset(meth.getMethodDefinition().getIndex(), register)));
         // On dépile nos parametres
         compiler.addInstruction(new SUBSP(param.size() + 1));
         // Le resultat de la méthode est stocké dans R0
         data.setLastUsedRegister(Register.R0);
-    }
-    
-    @Override
-    protected void codeGenSelect(DecacCompiler compiler) {
-        super.codeGenInst(compiler);
     }
 }

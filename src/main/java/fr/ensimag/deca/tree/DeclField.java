@@ -6,6 +6,11 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+
 import java.io.PrintStream;
 import java.io.ObjectInputStream.GetField;
 
@@ -54,6 +59,20 @@ public class DeclField extends AbstractDeclField {
     protected void iterChildren(TreeFunction f) {
         // TODO Auto-generated method stub
         
+    }
+
+    @Override
+    protected void codeGenDeclField(DecacCompiler compiler) {
+        compiler.addComment("Initialisation du champ " + field.getName().getName());
+        init.codeGenInitField(compiler);
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(field.getFieldDefinition().getIndex(), Register.R1)));
+    }
+
+    @Override
+    protected void codeGenDeclFieldZero(DecacCompiler compiler) {
+        compiler.addComment("Initialisation du champ " + field.getName().getName() + "à zero");
+        compiler.addInstruction(new LOAD(0, Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(field.getFieldDefinition().getIndex(), Register.R1)));
     }
     
 }

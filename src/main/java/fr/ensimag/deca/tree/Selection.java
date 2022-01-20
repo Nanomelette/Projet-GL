@@ -12,8 +12,12 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 public class Selection extends AbstractLValue{
 
@@ -62,23 +66,23 @@ public class Selection extends AbstractLValue{
         compiler.addInstruction(new CMP(new NullOperand(), objRegister));
         compiler.addInstruction(new BEQ(new Label("null_dereference")));
         // On récupère l'offset du champ concerné
-        
+        compiler.addInstruction(new LOAD(new RegisterOffset(field.getFieldDefinition().getIndex(), objRegister), objRegister));
     }
 
     @Override
     protected void codeGenSelect(DecacCompiler compiler) {
+        codeGenInst(compiler);
+    }
+
+    @Override
+    protected void codeGenAssign(DecacCompiler compiler, Register register) {
         Data data = compiler.getData();
         obj.codeGenSelect(compiler);
         // On met dans objRegister l'adresse de l'obj en partie gauche
         GPRegister objRegister = data.getLastUsedRegister();
         compiler.addInstruction(new CMP(new NullOperand(), objRegister));
         compiler.addInstruction(new BEQ(new Label("null_dereference")));
-    }
-
-    @Override
-    protected void codeGenAssign(DecacCompiler compiler) {
-        codeGenInst(compiler);
-
+        compiler.addInstruction(new STORE(register, new RegisterOffset(field.getFieldDefinition().getIndex(), compiler.getData().getLastUsedRegister())));
     }
     
 }

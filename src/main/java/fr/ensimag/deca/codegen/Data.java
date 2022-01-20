@@ -112,6 +112,10 @@ public class Data {
         freeStoragePointer = 2;
     }
 
+    public void restoreDataTo(int i) {
+        freeStoragePointer = i;
+    } 
+
     public void setLastUsedRegister(GPRegister lastUsedRegister) {
         this.lastUsedRegister = lastUsedRegister;
     }
@@ -142,9 +146,7 @@ public class Data {
 
     public void addHeader(DecacCompiler compiler) {
         compiler.addInstructionAtFirst(new ADDSP(gBOffset-1));
-        // TODO : Gérer message d'erreur
         compiler.addInstructionAtFirst(new BOV(labels.stack_overflow_error));
-        labels.addLabel(labels.stack_overflow_error);
         compiler.addInstructionAtFirst(new TSTO(gBOffset+maxStackLength-1));
         compiler.addInstructionAtFirst(null, "start main program");
     }

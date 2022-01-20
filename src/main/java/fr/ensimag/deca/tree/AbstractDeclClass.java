@@ -39,4 +39,8 @@ public abstract class AbstractDeclClass extends Tree {
      */
     protected abstract void addToVTable(DecacCompiler compiler);
 
+    /**
+     * Pass 2 of [GenCode] for class declarations
+     */
+    protected abstract void codeGenDeclClass(DecacCompiler compiler);
 }

@@ -268,11 +268,6 @@ public class DecacCompiler {
         } catch (FileNotFoundException e) {
             throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
         }
-        // Ecriture de l'header
-        data.addHeader(this);
-        // Ecriture des Labels
-        data.addBottom(this);
-        
 
         LOG.info("Writing assembler file ...");
 

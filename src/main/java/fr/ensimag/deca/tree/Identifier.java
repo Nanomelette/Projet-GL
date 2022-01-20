@@ -18,6 +18,7 @@ import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
@@ -282,8 +283,8 @@ public class Identifier extends AbstractIdentifier {
      * @param compiler
      */
     @Override
-    protected void codeGenAssign(DecacCompiler compiler) {
+    protected void codeGenAssign(DecacCompiler compiler, Register register) {
         DAddr adress = getExpDefinition().getOperand();
-        compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), adress));
+        compiler.addInstruction(new STORE(register, adress));
     }
 }
