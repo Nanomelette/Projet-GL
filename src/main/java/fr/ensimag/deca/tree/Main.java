@@ -63,7 +63,9 @@ public class Main extends AbstractMain {
         compiler.addComment("    Déclaration des variables globales    ");
         compiler.addComment("------------------------------------------");
         declVariables.codeGenListDeclVarGlob(compiler);
-        compiler.addComment("Beginning of main instructions:");
+        compiler.addComment("------------------------------------------");
+        compiler.addComment("      Début des instructions du main      ");
+        compiler.addComment("------------------------------------------");
         insts.codeGenListInst(compiler);
     }
     

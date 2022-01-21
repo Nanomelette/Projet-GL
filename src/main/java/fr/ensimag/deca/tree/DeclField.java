@@ -120,7 +120,7 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     protected void codeGenDeclFieldZero(DecacCompiler compiler) {
-        compiler.addComment("Initialisation du champ " + field.getName().getName() + "à zero");
+        compiler.addComment("Initialisation du champ " + field.getName().getName() + " à zero");
         compiler.addInstruction(new LOAD(0, Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(field.getFieldDefinition().getIndex(), Register.R1)));
     }

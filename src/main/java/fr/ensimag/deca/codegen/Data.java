@@ -173,6 +173,10 @@ public class Data {
         // compiler.addInstruction(new WSTR("Error: zero_division."));
         // compiler.addInstruction(new WNL());
         // compiler.addInstruction(new ERROR());
+
+        compiler.addComment("------------------------------------------");
+        compiler.addComment("            Messages d'erreurs            ");
+        compiler.addComment("------------------------------------------");
         Iterator<Label> it = labels.getUsedLabels();
         while (it.hasNext()) {
             Label label = it.next();

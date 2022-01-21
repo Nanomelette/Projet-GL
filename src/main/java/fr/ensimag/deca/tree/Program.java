@@ -58,6 +58,9 @@ public class Program extends AbstractProgram {
         // Ecriture des messages d'erreur
         compiler.getData().addBottom(compiler);
         
+        compiler.addComment("------------------------------------------");
+        compiler.addComment("            Codage des méthodes           ");
+        compiler.addComment("------------------------------------------");
         classes.codeGenListDeclClass(compiler);
         
         // Ecriture de l'header
