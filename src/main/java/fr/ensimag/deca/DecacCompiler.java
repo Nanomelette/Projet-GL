@@ -83,6 +83,7 @@ public class DecacCompiler {
         this.source = source;
         if (compilerOptions != null) {
             this.data.setMaxRegister(compilerOptions.getMaxRegister());
+            this.dataBloc.setMaxRegister(compilerOptions.getMaxRegister());
         }
         this.symbolTable = new SymbolTable();
         this.env_Types = new EnvironmentType(this);
@@ -252,6 +253,7 @@ public class DecacCompiler {
 
     public void newBloc() {
         dataBloc = new Data();
+        dataBloc.setMaxRegister(compilerOptions.getMaxRegister());
         bloc = new IMAProgram();
     }
  
