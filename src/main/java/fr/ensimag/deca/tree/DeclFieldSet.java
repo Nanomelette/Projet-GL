@@ -36,12 +36,13 @@ public class DeclFieldSet extends AbstractDeclFieldSet{
     
     @Override
     public void decompile(IndentPrintStream s) {
-    	if ( ! this.getVisibility().name().equals("PUBLIC"))
-    	s.print(this.getVisibility().name().toLowerCase());
+    	if ( !this.getVisibility().name().equals("PUBLIC")) {
+    	    s.print(this.getVisibility().name().toLowerCase());
+        }
     	s.print(" ");
-    	s.print (this.getType().decompile());
+    	this.getType().decompile();
     	s.print(" ");
-    	s.print (this.getDeclField().decompile());
+    	this.getDeclField().decompile();
     	s.println(";");	
     }
 
@@ -77,8 +78,7 @@ public class DeclFieldSet extends AbstractDeclFieldSet{
 
     @Override
     public Visibility getVisibility() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.visibility;
     }
 
     @Override

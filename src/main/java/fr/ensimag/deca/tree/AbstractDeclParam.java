@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.Type;
 
 /**
  * Param declaration.
@@ -15,6 +16,6 @@ public abstract class AbstractDeclParam extends Tree {
      * Pass 2 of [SyntaxeContextuelle]. Verify that the param declaration is OK
      * without looking at its content.
      */
-    protected abstract void verifyParam(DecacCompiler compiler)
+    protected abstract Type verifyParam(DecacCompiler compiler)
             throws ContextualError;
 }

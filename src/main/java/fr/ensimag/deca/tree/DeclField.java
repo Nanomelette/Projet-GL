@@ -62,7 +62,7 @@ public class DeclField extends AbstractDeclField {
             if (envExpSup.equals(envExp.getParent())) {
                 ExpDefinition ExpDef = envExpSup.get(fieldName);
                 if (ExpDef != null) {
-                    Validate.isTrue(ExpDef.isField(), "field must be a field in classeSup");
+                    Validate.isTrue(ExpDef.isField(), fieldName.getName() + " isn't a field");
                     FieldDefinition fieldDef = (FieldDefinition) ExpDef;
                     index = fieldDef.getIndex() + 1;
                 }
@@ -86,7 +86,11 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        s.print(" ");
+    	this.field.decompile();
+    	s.print(" ");
+    	this.init.decompile();
+    	s.println(";");	
     }
 
     @Override
@@ -98,8 +102,9 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO Auto-generated method stub
-        
+        type.iter(f);
+        field.iter(f);
+        init.iter(f);
     }
     
 }
