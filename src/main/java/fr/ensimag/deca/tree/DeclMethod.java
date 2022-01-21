@@ -14,10 +14,13 @@ import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.RTS;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.instructions.TSTO;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.LabelOperand;
 import fr.ensimag.ima.pseudocode.Register;
@@ -151,6 +154,10 @@ public class DeclMethod extends AbstractDeclMethod{
     public void codeGenDeclMethod(DecacCompiler compiler) {
         // Début de bloc
         compiler.newBloc(); compiler.setToBlocProgram();
+        Label labelReturn = new Label(
+            "fin." + name.getMethodDefinition().getLabel().toString()
+        );
+        compiler.getData().setLabelReturn(labelReturn);
 
         // Calcul de methodBody
         /**
@@ -158,8 +165,16 @@ public class DeclMethod extends AbstractDeclMethod{
          */
         methodBody.codeGenMethodBody(compiler);
 
+        compiler.addInstruction(
+            new WSTR(
+                "Error: method " + labelReturn.toString() + " needs a return"
+            )
+        );
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+
         // Restauration des registres
-        compiler.addLabel(new Label("fin." + name.getMethodDefinition().getLabel().toString()));
+        compiler.addLabel(labelReturn);
         compiler.addComment("Restauration des registres");
         compiler.getData().popUsedRegisters(compiler);
         compiler.getData().setLastUsedRegister(Register.R0);
@@ -186,7 +201,9 @@ public class DeclMethod extends AbstractDeclMethod{
         compiler.addInstructionAtFirst(new BOV(new Label("stack_overflow_error")));
         compiler.addInstructionAtFirst(
             new TSTO(
-                compiler.getData().getNumberOfUsedRegister() + compiler.getData().getMaxStackLength() + ((MethodBody)methodBody).getNbrVarMethodBody()
+                compiler.getData().getNumberOfUsedRegister() +
+                compiler.getData().getMaxStackLength() +
+                ((MethodBody)methodBody).getNbrVarMethodBody()
             )
         );
 

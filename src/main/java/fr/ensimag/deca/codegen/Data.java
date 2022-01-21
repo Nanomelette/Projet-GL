@@ -43,6 +43,8 @@ public class Data {
     private int maxStackLength = 0;
     private GPRegister lastUsedRegister = GPRegister.getR(2);
 
+    private Label labelReturn;
+
     // Labels :
     // private Label stack_overflow_error = new Label("stack_overflow_error");
     // private Label io_error = new Label("io_error");
@@ -219,5 +221,13 @@ public class Data {
 
     public void restorelBOffset() {
         lBOffset = 0;
+    }
+
+    public void setLabelReturn(Label labelReturn) {
+        this.labelReturn = labelReturn;
+    }
+
+    public Label getLabelReturn() {
+        return labelReturn;
     }
 }

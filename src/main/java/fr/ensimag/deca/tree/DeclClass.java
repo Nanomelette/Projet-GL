@@ -241,7 +241,7 @@ public class DeclClass extends AbstractDeclClass {
          *          2 <- Il faut retenir le PC et l'objet
          * 
          */
-        compiler.addInstructionAtFirst(new BOV(new Label("pile_pleine")));
+        compiler.addInstructionAtFirst(new BOV(new Label("stack_overflow_error")));
         // On laisse ce +2 -2 pour l'instant pour suivre le calcul
         compiler.addInstructionAtFirst(new TSTO(2 + compiler.getData().getFreeStoragePointer() - 2));
         compiler.appendBlocInstructions();

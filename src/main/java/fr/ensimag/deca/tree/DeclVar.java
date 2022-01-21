@@ -93,6 +93,7 @@ public class DeclVar extends AbstractDeclVar {
     }
 
     public void codeGenDeclVarGlob(DecacCompiler compiler) {
+        compiler.getData().restoreData();
         DAddr address = new RegisterOffset(compiler.getData().getGbOffset(), Register.GB);
         Identifier var = (Identifier) getVarName();
         var.getExpDefinition().setOperand(address);

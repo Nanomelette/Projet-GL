@@ -58,6 +58,10 @@ public class Main extends AbstractMain {
         //     DeclVar declVar = (DeclVar) absDeclVar;
         //     declVar.codeGenDeclVarGlob(compiler);
         // }
+
+        compiler.addComment("------------------------------------------");
+        compiler.addComment("    Déclaration des variables globales    ");
+        compiler.addComment("------------------------------------------");
         declVariables.codeGenListDeclVarGlob(compiler);
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
