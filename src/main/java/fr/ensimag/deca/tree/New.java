@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import static org.mockito.Mockito.inOrder;
+
 import java.io.PrintStream;
 
 import fr.ensimag.deca.DecacCompiler;
@@ -70,7 +72,13 @@ public class New extends AbstractExpr {
         Label heap_overflow = new Label("heap_overflow");
         Data data = compiler.getData();
         GPRegister register = data.getFreeRegister(compiler);
-        compiler.addInstruction(new NEW(class_.getClassDefinition().getNumberOfFields(), register));
+        ClassDefinition classDef = class_.getClassDefinition();
+        int nbOfField = classDef.getNumberOfFields();
+        while (classDef.getSuperClass() != null) {
+            classDef = classDef.getSuperClass();
+            nbOfField += classDef.getNumberOfFields();
+        }
+        compiler.addInstruction(new NEW(nbOfField, register));
         compiler.addInstruction(new BOV(heap_overflow));
         DAddr addr = class_.getClassDefinition().getAddressVTable(); 
         compiler.addInstruction(new LEA(addr, Register.R0));

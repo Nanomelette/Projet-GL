@@ -227,6 +227,15 @@ public class DeclClass extends AbstractDeclClass {
         listDeclField.codeGenListDeclFieldSet(compiler);
         compiler.addInstruction(new RTS());
 
+        // Restauration des registres
+        compiler.addComment("Restauration des registres");
+        System.out.println(compiler.getData().getNumberOfUsedRegister());
+        compiler.getData().popUsedRegisters(compiler);
+
+        // Sauvegarde des registres
+        compiler.getData().pushUsedRegisters(compiler);
+        compiler.addCommentAtFirst("Sauvegarde des registres");
+
         // Fin de bloc
         /**
          * TODO : TSTO

@@ -210,15 +210,15 @@ public class Data {
     public void popUsedRegisters(DecacCompiler compiler) {
         int tmp = numberOfUsedRegister;
         while (tmp > 0) {
-            compiler.addInstruction(new POP(Register.getR(2 + tmp)));
+            compiler.addInstruction(new POP(Register.getR(1 + tmp)));
             tmp--;
         }
     }
 
     public void pushUsedRegisters(DecacCompiler compiler) {
         int tmp = numberOfUsedRegister;
-        while (tmp > 2) {
-            compiler.addInstructionAtFirst(new POP(Register.getR(2 + tmp)));
+        while (tmp > 0) {
+            compiler.addInstructionAtFirst(new PUSH(Register.getR(1 + tmp)));
             tmp--;
         }
     }
