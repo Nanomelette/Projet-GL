@@ -5,7 +5,9 @@ import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -21,19 +23,23 @@ public class DeclParam extends AbstractDeclParam{
         this.name = name;
     }
 
-    protected void verifyParam(DecacCompiler compiler)
+    protected Type verifyParam(DecacCompiler compiler)
             throws ContextualError{
-            Type varType = type.verifyType(compiler);
-            if (varType.isVoid()){
-                throw new ContextualError("type void", getLocation());
+            Type paramType = type.verifyType(compiler);
+            if (paramType.isVoid()){
+                throw new ContextualError("type void", type.getLocation());
             }
+            ExpDefinition newDef= new VariableDefinition(paramType, name.getLocation());
+            name.setDefinition(newDef);
+            name.setType(paramType);
+            return paramType;
         }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(type.decompile());
+        type.decompile();
         s.print(" ");
-        s.print(name.decompile());
+        name.decompile();
         
     }
 

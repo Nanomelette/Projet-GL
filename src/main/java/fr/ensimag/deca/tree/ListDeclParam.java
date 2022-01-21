@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
 
@@ -25,15 +26,12 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
     /**
      * Pass 2 of [SyntaxeContextuelle]
      */
-    void verifyListParam(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("verify listParam: start");
-
+    Signature verifyListParam(DecacCompiler compiler) throws ContextualError {
+        Signature signature = new Signature();
         for(AbstractDeclParam c : this.getList()){
-            c.verifyParam(compiler);
+            signature.add(c.verifyParam(compiler));
         }
-
-        //throw new UnsupportedOperationException("not yet implemented");
-        LOG.debug("verify listParam: end");
+        return signature;
     }
 
 }

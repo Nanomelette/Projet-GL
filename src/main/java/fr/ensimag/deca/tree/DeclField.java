@@ -66,14 +66,14 @@ public class DeclField extends AbstractDeclField {
             if (envExpSup.equals(envExp.getParent())) {
                 ExpDefinition ExpDef = envExpSup.get(fieldName);
                 if (ExpDef != null) {
-                    Validate.isTrue(ExpDef.isField(), "field must be a field in classeSup");
+                    Validate.isTrue(ExpDef.isField(), fieldName.getName() + " isn't a field");
                     FieldDefinition fieldDef = (FieldDefinition) ExpDef;
                     index = fieldDef.getIndex() + 1;
                 }
             }
             Type fType = type.verifyType(compiler);
             if (fType.isVoid()){
-                throw new ContextualError("type void", getLocation());
+                throw new ContextualError("type void", this.type.getLocation());
             }
             try {
                 FieldDefinition newDef= new FieldDefinition(fType, field.getLocation(), v, null, index);
@@ -83,14 +83,18 @@ public class DeclField extends AbstractDeclField {
                 init.verifyInitialization(compiler, fType, envExp , def);
             } catch (EnvironmentExp.DoubleDefException e) {
                 String message = "can't defined field identifier several times in a class";
-                throw new ContextualError(message, getLocation());
+                throw new ContextualError(message, field.getLocation());
             }
         }
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        s.print(" ");
+    	this.field.decompile();
+    	s.print(" ");
+    	this.init.decompile();
+    	s.println(";");	
     }
 
     @Override
@@ -102,8 +106,9 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO Auto-generated method stub
-        
+        type.iter(f);
+        field.iter(f);
+        init.iter(f);
     }
 
     @Override

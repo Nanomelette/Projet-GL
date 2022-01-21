@@ -1,0 +1,7 @@
+// classe pas très utile, dont le type retourné est A.
+
+class A {
+}
+class B {
+	A f(int x, float y) {}
+}

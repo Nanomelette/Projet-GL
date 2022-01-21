@@ -187,7 +187,6 @@ public class Identifier extends AbstractIdentifier {
             return compiler.GetEnvExp().get(symb).getType();
         }
         else {
-            System.out.println("error: " + this.name);
             throw new ContextualError("identifier not defined", getLocation());
         }
         //throw new UnsupportedOperationException("not yet implemented");
@@ -199,8 +198,6 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-            System.out.println("symbol: " + this.name);
-            compiler.GetEnvTypes().affiche();
             Type type = compiler.searchSymbol(this.name);
             if ( type == null )
                 throw new ContextualError("Identifier-type error", this.getLocation());

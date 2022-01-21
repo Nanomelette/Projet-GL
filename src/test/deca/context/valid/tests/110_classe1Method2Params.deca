@@ -1,0 +1,5 @@
+// classe pas très utile, une seule méthode avec deux paramètres de types différents.
+
+class A {
+	int f(int x, float y) {}
+}

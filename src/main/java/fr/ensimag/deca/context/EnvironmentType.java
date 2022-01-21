@@ -79,12 +79,4 @@ public class EnvironmentType {
         return env_Type.get(create);
         
     }
-
-    public void affiche() {
-        for (Symbol s : env_Type.keySet()) {
-            System.out.print(s + " : ");
-            System.out.print(get(s) + "\n");
-        }
-    }
-
 }

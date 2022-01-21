@@ -57,12 +57,12 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("class ");
-        s.print(classe.decompile());
+        classe.decompile();
         s.print(" extends ");
-        s.print(classeSup.decompile());
+        classeSup.decompile();
         s.print("{");
-        s.print(listDeclField.decompile());
-        s.print(listDeclMethod.decompile());
+        listDeclField.decompile();
+        listDeclMethod.decompile();
         s.print("}");
     }
 
@@ -72,19 +72,21 @@ public class DeclClass extends AbstractDeclClass {
         Validate.isTrue(compiler.searchSymbol(parent).isClass(), "not class extension");
         ClassType classType = (ClassType) compiler.searchSymbol(parent);
         if (classType == null) {
-            throw new ContextualError("undefined super class", getLocation());
+            throw new ContextualError("undefined super class", this.getLocation());
         }
-        ClassDefinition classDefinition = classType.getDefinition();
-        ClassType type = new ClassType(this.classe.getName(), getLocation(), classDefinition);
-        compiler.GetEnvTypes().setEnvironmentType(this.classe.getName(), type, getLocation());
+        ClassDefinition classSupDef = classType.getDefinition();
+        classeSup.setDefinition(classSupDef);
+        ClassType type = new ClassType(this.classe.getName(), this.classe.getLocation(), classSupDef);
+        this.classe.setDefinition(type.getDefinition());
+        this.classe.setType(type);
+        compiler.GetEnvTypes().setEnvironmentType(this.classe.getName(), type, this.classe.getLocation());
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        this.verifyClassMembers(compiler);
         this.listDeclField.verifyListField(compiler, this.classeSup, this.classe);
-        this.listDeclMethod.verifyListMethod(compiler, this.classeSup);
+        this.listDeclMethod.verifyListMethod(compiler, this.classeSup, this.classe);
     }
 
     @Override
@@ -104,7 +106,10 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet supported");
+        classe.iter(f);
+        classeSup.iter(f);
+        listDeclField.iter(f);
+        listDeclMethod.iter(f);
     }
 
     @Override
