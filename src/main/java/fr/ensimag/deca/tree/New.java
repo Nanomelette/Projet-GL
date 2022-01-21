@@ -78,7 +78,7 @@ public class New extends AbstractExpr {
             classDef = classDef.getSuperClass();
             nbOfField += classDef.getNumberOfFields();
         }
-        compiler.addInstruction(new NEW(nbOfField, register));
+        compiler.addInstruction(new NEW(nbOfField+1, register));
         compiler.addInstruction(new BOV(heap_overflow));
         DAddr addr = class_.getClassDefinition().getAddressVTable(); 
         compiler.addInstruction(new LEA(addr, Register.R0));
