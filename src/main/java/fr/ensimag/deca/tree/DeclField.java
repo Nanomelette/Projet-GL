@@ -69,7 +69,7 @@ public class DeclField extends AbstractDeclField {
             }
             Type fType = type.verifyType(compiler);
             if (fType.isVoid()){
-                throw new ContextualError("type void", getLocation());
+                throw new ContextualError("type void", this.type.getLocation());
             }
             try {
                 FieldDefinition newDef= new FieldDefinition(fType, field.getLocation(), v, null, index);
@@ -79,7 +79,7 @@ public class DeclField extends AbstractDeclField {
                 init.verifyInitialization(compiler, fType, envExp , def);
             } catch (EnvironmentExp.DoubleDefException e) {
                 String message = "can't defined field identifier several times in a class";
-                throw new ContextualError(message, getLocation());
+                throw new ContextualError(message, field.getLocation());
             }
         }
     }

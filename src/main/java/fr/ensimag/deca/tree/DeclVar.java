@@ -51,7 +51,7 @@ public class DeclVar extends AbstractDeclVar {
 
                 Type varType = type.verifyType(compiler);
                 if (varType.isVoid()){
-                    throw new ContextualError("type void", getLocation());
+                    throw new ContextualError("type void", type.getLocation());
                 }       
                 try {
                     ExpDefinition varDefinition= new VariableDefinition(varType, varName.getLocation());
@@ -61,7 +61,7 @@ public class DeclVar extends AbstractDeclVar {
                     initialization.verifyInitialization(compiler, varName.getType(), localEnv , currentClass);
                 } catch (EnvironmentExp.DoubleDefException e) {
                     String message = "L'identificateur ne peut etre defini plus qu'une fois";
-                    throw new ContextualError(message, getLocation());
+                    throw new ContextualError(message, varName.getLocation());
                 }
 
 

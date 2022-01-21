@@ -3,5 +3,5 @@
 class A {
 }
 class B {
-	A f(int x, float y);
+	A f(int x, float y) {}
 }

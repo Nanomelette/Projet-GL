@@ -27,7 +27,7 @@ public class DeclParam extends AbstractDeclParam{
             throws ContextualError{
             Type paramType = type.verifyType(compiler);
             if (paramType.isVoid()){
-                throw new ContextualError("type void", getLocation());
+                throw new ContextualError("type void", type.getLocation());
             }
             ExpDefinition newDef= new VariableDefinition(paramType, name.getLocation());
             name.setDefinition(newDef);
