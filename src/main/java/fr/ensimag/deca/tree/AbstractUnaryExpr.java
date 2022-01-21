@@ -38,9 +38,9 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         s.print("(");
         operand.decompile(s);
         s.print(")");
-        s.print("(");
-        s.print(operand.decompile());
-        s.print(")");
+        // s.print("(");
+        // s.print(operand.decompile());
+        // s.print(")");
     }
 
     @Override
