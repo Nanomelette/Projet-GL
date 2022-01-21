@@ -39,8 +39,6 @@ public class Initialization extends AbstractInitialization {
         if(this.expression.getType() == null && t.isClass()){
             this.expression.setType(t);
         }
-        
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
 
@@ -50,7 +48,6 @@ public class Initialization extends AbstractInitialization {
             s.print(" = ");
             s.print(this.getExpression().decompile());
         }
-        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

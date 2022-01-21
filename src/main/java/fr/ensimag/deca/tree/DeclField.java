@@ -62,7 +62,7 @@ public class DeclField extends AbstractDeclField {
                 ExpDefinition ExpDef = envExpSup.get(fieldName);
                 if (ExpDef != null) {
                     Validate.isTrue(ExpDef.isField(), fieldName.getName() + " isn't a field");
-                    FieldDefinition fieldDef = (FieldDefinition) ExpDef;
+                    Validate.isTrue(compiler.subType(compiler, this.type.getType(), ExpDef.getType()), "Incompatible extension of field"+this.field.getName());
                 }
             }
             Type fType = type.verifyType(compiler);

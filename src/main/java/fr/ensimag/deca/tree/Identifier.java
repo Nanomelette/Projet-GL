@@ -178,13 +178,13 @@ public class Identifier extends AbstractIdentifier {
             ClassDefinition currentClass) throws ContextualError {
     
         Symbol symb = (Symbol)compiler.getSymbolTable().create(this.name.getName());
-        if (compiler.GetEnvExp().get(symb) != null) {
-            setDefinition(compiler.GetEnvExp().get(symb));
-            setType(compiler.GetEnvExp().get(symb).getType());
-            return compiler.GetEnvExp().get(symb).getType();
+        if (localEnv.get(symb) != null) {
+            setDefinition(localEnv.get(symb));
+            setType(localEnv.get(symb).getType());
+            return localEnv.get(symb).getType();
         }
         else {
-            throw new ContextualError("identifier not defined", getLocation());
+            throw new ContextualError(this.getName()+": identifier not defined", getLocation());
         }
         //throw new UnsupportedOperationException("not yet implemented");
     }

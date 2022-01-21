@@ -45,7 +45,9 @@ public class MethodBody extends AbstractMethodBody{
     }
 
     @Override
-    protected void verifyMethodBody(DecacCompiler compiler) throws ContextualError {
+    protected void verifyMethodBody(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType) throws ContextualError {
+        this.var.verifyListDeclVariable(compiler, localEnv, currentClass);
+        this.inst.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
  
 }

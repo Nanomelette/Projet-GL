@@ -799,6 +799,7 @@ public class DecaParser extends AbstractDecaParser {
 
 				            assert(((InstContext)_localctx).expr.tree != null);
 				            ((InstContext)_localctx).tree =  new Return(((InstContext)_localctx).expr.tree);
+				            setLocation(_localctx.tree, (((InstContext)_localctx).expr!=null?(((InstContext)_localctx).expr.start):null));
 				        
 				}
 				break;
@@ -1625,6 +1626,8 @@ public class DecaParser extends AbstractDecaParser {
 
 						                      assert(((Inequality_exprContext)_localctx).e1.tree != null);
 						                      assert(((Inequality_exprContext)_localctx).type.tree != null);
+						                      ((Inequality_exprContext)_localctx).tree =  new InstanceOf(((Inequality_exprContext)_localctx).e1.tree, ((Inequality_exprContext)_localctx).type.tree);
+						                      setLocation(_localctx.tree, (((Inequality_exprContext)_localctx).e1!=null?(((Inequality_exprContext)_localctx).e1.start):null));
 						                  
 
 						                  
@@ -2089,6 +2092,7 @@ public class DecaParser extends AbstractDecaParser {
 
 						                      // we matched "e1.i(args)"
 						                      assert(((Select_exprContext)_localctx).args.tree != null);
+						                      assert(((Select_exprContext)_localctx).e1.tree!=null);
 						                      ((Select_exprContext)_localctx).tree =  new MethodCall(((Select_exprContext)_localctx).e1.tree, ((Select_exprContext)_localctx).i.tree, ((Select_exprContext)_localctx).args.tree);
 						                      setLocation(_localctx.tree, (((Select_exprContext)_localctx).args!=null?(((Select_exprContext)_localctx).args.start):null));
 						                  
@@ -2202,7 +2206,7 @@ public class DecaParser extends AbstractDecaParser {
 
 				            assert(((Primary_exprContext)_localctx).args.tree != null);
 				            assert(((Primary_exprContext)_localctx).m.tree != null);
-				            ((Primary_exprContext)_localctx).tree =  new MethodCall(_localctx.tree, ((Primary_exprContext)_localctx).m.tree, ((Primary_exprContext)_localctx).args.tree);
+				            ((Primary_exprContext)_localctx).tree =  new MethodCall(t, ((Primary_exprContext)_localctx).m.tree, ((Primary_exprContext)_localctx).args.tree);
 				            setLocation(_localctx.tree, (((Primary_exprContext)_localctx).m!=null?(((Primary_exprContext)_localctx).m.start):null));
 				            
 				        
