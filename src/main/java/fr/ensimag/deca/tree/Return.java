@@ -29,8 +29,6 @@ public class Return extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
 
-            Type typeVoid = compiler.searchSymbol(compiler.getSymbolTable().create("void"));
-
             if(returnType.isVoid()){
                 throw new ContextualError("return cannot return void type", getLocation());
             }

@@ -186,7 +186,6 @@ public class Identifier extends AbstractIdentifier {
         else {
             throw new ContextualError(this.getName()+": identifier not defined", getLocation());
         }
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**
@@ -203,7 +202,6 @@ public class Identifier extends AbstractIdentifier {
                 setType(type);
             }
                 return type ;
-        //throw new UnsupportedOperationException("not yet implemented");
     }
     
     
