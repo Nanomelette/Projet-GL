@@ -93,6 +93,7 @@ public class DeclVar extends AbstractDeclVar {
     }
 
     public void codeGenDeclVarGlob(DecacCompiler compiler) {
+        compiler.addComment("Déclaration de la variable globale : " + varName.getName().getName());
         compiler.getData().restoreData();
         DAddr address = new RegisterOffset(compiler.getData().getGbOffset(), Register.GB);
         Identifier var = (Identifier) getVarName();
@@ -103,6 +104,7 @@ public class DeclVar extends AbstractDeclVar {
     }
 
     public void codeGenDeclVarLoc(DecacCompiler compiler) {
+        compiler.addComment("Déclaration de la variable locale : " + varName.getName().getName());
         DAddr address = new RegisterOffset(compiler.getData().getlBOffset(), Register.LB);
         Identifier var = (Identifier) getVarName();
         var.getExpDefinition().setOperand(address);
