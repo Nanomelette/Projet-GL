@@ -22,7 +22,7 @@
         println(1*(1+1*(1-1*(1+1*(1+1)))));
     } else if (readInt() == 1) {
             print("Le résultat de l'expression booléenne : ");
-            println(((true && true) || false) && !(false && (!true || !false && true)));
+            // println(((true && true) || false) && !(false && (!true || !false && true)));
         }  else {
         print("Aucun des deux cas");
     }
