@@ -37,6 +37,7 @@ public class DeclMethod extends AbstractDeclMethod{
     protected void verifyMethod(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
             throws ContextualError{
         Symbol method = this.name.getName();
+        Type mType = this.type.verifyType(compiler);
         EnvironmentType env_Types = compiler.GetEnvTypes();
         Symbol symbSup = classeSup.getName();
         ClassType classTypeSup = (ClassType) env_Types.getType(symbSup);
@@ -51,31 +52,32 @@ public class DeclMethod extends AbstractDeclMethod{
                 MethodDefinition methodDef = (MethodDefinition) ExpDef;
                 index = methodDef.getIndex();
                 Type typeSup = methodDef.getType();
-                if (compiler.subType(compiler, this.type.getType(), typeSup)) {
+                if (compiler.subType(compiler, mType, typeSup)) {
                     Signature sig = methodDef.getSignature();
-                    if (sig.equals(sig2)) {
-                        throw new ContextualError(method.getName()+"must have same signature", getLocation());
+                    if (!sig.sameSignature(sig2)) {
+                        System.out.println(sig);
+                        System.out.println(sig2);
+                        throw new ContextualError(method.getName()+"must have same signature", this.getLocation());
                     }
                 } else {
-                    throw new ContextualError(method.getName()+"must have same type", getLocation());
+                    throw new ContextualError(method.getName()+"must have same type", this.getLocation());
                 }
             }
             try {
                 Symbol symb = classe.getName();
-                Type mType = this.type.verifyType(compiler);
                 ClassType classType = (ClassType) env_Types.getType(symb);
                 ClassDefinition classDef = classType.getDefinition();
                 EnvironmentExp envExp = classDef.getMembers();
-                MethodDefinition newDef = new MethodDefinition(mType, getLocation(), sig2, index);
+                MethodDefinition newDef = new MethodDefinition(mType, name.getLocation(), sig2, index);
                 name.setDefinition(newDef);
                 name.setType(mType);
                 envExp.declare(method, newDef);
             } catch (EnvironmentExp.DoubleDefException e) {
                 String message = "can't defined method identifier several times in a class";
-                throw new ContextualError(message, getLocation());
+                throw new ContextualError(message, name.getLocation());
             }
         } else {
-            throw new ContextualError(symbSup.getName()+"can't have null type", getLocation());
+            throw new ContextualError(symbSup.getName()+"can't have null type", classeSup.getLocation());
         }
     }
 

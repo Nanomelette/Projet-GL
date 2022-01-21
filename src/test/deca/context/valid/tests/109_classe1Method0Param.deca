@@ -1,5 +1,5 @@
 // classe pas très utile, une seule méthode sans paramètre.
 
 class A {
-	int f();
+	int f() {}
 }

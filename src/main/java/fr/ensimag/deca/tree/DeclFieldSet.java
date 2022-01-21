@@ -64,7 +64,7 @@ public class DeclFieldSet extends AbstractDeclFieldSet{
             AbstractIdentifier name) throws ContextualError {
                 Type varType = this.type.verifyType(compiler);
                 if (varType.isVoid()) {
-                    throw new ContextualError("type void", getLocation());
+                    throw new ContextualError("type void", this.type.getLocation());
                 }
                 
     }

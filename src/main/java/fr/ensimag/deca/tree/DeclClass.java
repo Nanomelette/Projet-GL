@@ -55,14 +55,14 @@ public class DeclClass extends AbstractDeclClass {
         Validate.isTrue(compiler.searchSymbol(parent).isClass(), "not class extension");
         ClassType classType = (ClassType) compiler.searchSymbol(parent);
         if (classType == null) {
-            throw new ContextualError("undefined super class", getLocation());
+            throw new ContextualError("undefined super class", this.getLocation());
         }
         ClassDefinition classSupDef = classType.getDefinition();
         classeSup.setDefinition(classSupDef);
-        ClassType type = new ClassType(this.classe.getName(), getLocation(), classSupDef);
+        ClassType type = new ClassType(this.classe.getName(), this.classe.getLocation(), classSupDef);
         this.classe.setDefinition(type.getDefinition());
         this.classe.setType(type);
-        compiler.GetEnvTypes().setEnvironmentType(this.classe.getName(), type, getLocation());
+        compiler.GetEnvTypes().setEnvironmentType(this.classe.getName(), type, this.classe.getLocation());
     }
 
     @Override
