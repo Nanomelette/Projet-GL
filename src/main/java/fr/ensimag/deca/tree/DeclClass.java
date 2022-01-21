@@ -213,7 +213,7 @@ public class DeclClass extends AbstractDeclClass {
 
         compiler.addLabel(new Label("init." + classe.getName().getName()));
         compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
-        if (classeSup != null) {
+        if (!classeSup.getName().getName().equals("Object")) {
             // Initialiser les nouveaux champs à zero
             listDeclField.codeGenListDeclFieldSetZero(compiler);
             // Init les champs parents
