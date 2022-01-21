@@ -98,10 +98,14 @@ public class Cast extends AbstractExpr {
                 isInstanceOf(compiler, doCast);
                 compiler.addLabel(doCast);
                 // On cast
-                compiler.addInstruction(new BRA(new Label("cast_error")));
+                if (!(compiler.getCompilerOptions().getNoCheck())) {
+                    compiler.addInstruction(new BRA(new Label("cast_error")));
+                }
             }
         } else {
-            compiler.addInstruction(new BRA(new Label("cast_error")));
+            if (!(compiler.getCompilerOptions().getNoCheck())) { 
+                compiler.addInstruction(new BRA(new Label("cast_error")));
+            }
         }
     }
 }

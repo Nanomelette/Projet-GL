@@ -30,7 +30,9 @@ public class Divide extends AbstractOpArith {
         } else {
             compiler.addInstruction(new QUO(op1, op2)); // Cas des entiers
         }
-        compiler.addInstruction(new BOV(new Label("zero_division")));
+        if (!(compiler.getCompilerOptions().getNoCheck())) {
+            compiler.addInstruction(new BOV(new Label("zero_division")));
+        }
         compiler.getData().setLastUsedRegister(op2);
     }
 

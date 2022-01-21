@@ -3,6 +3,7 @@ package fr.ensimag.deca.codegen;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 
 public class Labels {
@@ -19,12 +20,12 @@ public class Labels {
 
     public Labels() {
         addLabel(stack_overflow_error);
-        addLabel(io_error);
         addLabel(overflow_error);
+        addLabel(heap_overflow);
         addLabel(zero_division);
         addLabel(null_dereference);
-        addLabel(heap_overflow);
         addLabel(cast_error);
+        addLabel(io_error);
     }
 
     public void addLabel(Label label) {

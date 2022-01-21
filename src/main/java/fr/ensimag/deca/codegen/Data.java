@@ -1,9 +1,7 @@
 package fr.ensimag.deca.codegen;
 
 import java.util.Iterator;
-import java.util.Optional;
 
-import org.antlr.v4.runtime.misc.ObjectEqualityComparator;
 import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
@@ -23,12 +21,6 @@ import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.instructions.TSTO;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.deca.tree.AbstractDeclClass;
-import fr.ensimag.deca.tree.AbstractDeclVar;
-import fr.ensimag.deca.tree.DeclVar;
-import fr.ensimag.deca.tree.Identifier;
-import fr.ensimag.deca.tree.ListDeclVar;
 
 public class Data {
     private static final Logger LOG = Logger.getLogger(Data.class);
@@ -45,12 +37,6 @@ public class Data {
 
     private Label labelReturn;
 
-    // Labels :
-    // private Label stack_overflow_error = new Label("stack_overflow_error");
-    // private Label io_error = new Label("io_error");
-    // private Label overflow_error = new Label("overflow_error");
-    // private Label zero_division = new Label("zero_division");
-    // private Label equals = new Label("code.Object.equals");
     private Labels labels = new Labels();
 
     public Data() {
@@ -150,42 +136,34 @@ public class Data {
     }
 
     public void addHeader(DecacCompiler compiler) {
-        compiler.addInstructionAtFirst(new ADDSP(gBOffset - 1));
-        compiler.addInstructionAtFirst(new BOV(labels.stack_overflow_error));
-        compiler.addInstructionAtFirst(new TSTO(gBOffset + maxStackLength - 1));
+        if (!(compiler.getCompilerOptions().getNoCheck())) {
+            compiler.addInstructionAtFirst(new ADDSP(gBOffset - 1));
+            compiler.addInstructionAtFirst(new BOV(labels.stack_overflow_error));
+            compiler.addInstructionAtFirst(new TSTO(gBOffset + maxStackLength - 1));
+        }
         compiler.addInstructionAtFirst(null, "start main program");
     }
 
     public void addBottom(DecacCompiler compiler) {
-        // compiler.addLabel(overflow_error);
-        // compiler.addInstruction(new WSTR("Error: overflow_error."));
-        // compiler.addInstruction(new WNL());
-        // compiler.addInstruction(new ERROR());
-        // compiler.addLabel(stack_overflow_error);
-        // compiler.addInstruction(new WSTR("Error: full stack."));
-        // compiler.addInstruction(new WNL());
-        // compiler.addInstruction(new ERROR());
-        // compiler.addLabel(io_error);
-        // compiler.addInstruction(new WSTR("Error: io_error."));
-        // compiler.addInstruction(new WNL());
-        // compiler.addInstruction(new ERROR());
-        // compiler.addLabel(zero_division);
-        // compiler.addInstruction(new WSTR("Error: zero_division."));
-        // compiler.addInstruction(new WNL());
-        // compiler.addInstruction(new ERROR());
-
         compiler.addComment("------------------------------------------");
         compiler.addComment("            Messages d'erreurs            ");
         compiler.addComment("------------------------------------------");
-        Iterator<Label> it = labels.getUsedLabels();
-        while (it.hasNext()) {
-            Label label = it.next();
+        if (!(compiler.getCompilerOptions().getNoCheck())) {
+            Iterator<Label> it = labels.getUsedLabels();
+            while (it.hasNext()) {
+                Label label = it.next();
+                compiler.addLabel(label);
+                compiler.addInstruction(new WSTR("Error: " + label.toString()));
+                compiler.addInstruction(new WNL());
+                compiler.addInstruction(new ERROR());
+            }
+        } else {
+            Label label = labels.io_error;
             compiler.addLabel(label);
             compiler.addInstruction(new WSTR("Error: " + label.toString()));
             compiler.addInstruction(new WNL());
             compiler.addInstruction(new ERROR());
         }
-
     }
 
     public int getFreeStoragePointer() {

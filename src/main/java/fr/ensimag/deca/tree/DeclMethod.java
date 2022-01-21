@@ -168,11 +168,13 @@ public class DeclMethod extends AbstractDeclMethod{
          */
         methodBody.codeGenMethodBody(compiler);
 
-        compiler.addInstruction(
-            new WSTR(
-                "Error: method " + labelReturn.toString() + " needs a return"
-            )
-        );
+        if (!(compiler.getCompilerOptions().getNoCheck())) {
+            compiler.addInstruction(
+                new WSTR(
+                    "Error: method " + labelReturn.toString() + " needs a return"
+                )
+            );
+        }
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
 
@@ -201,14 +203,16 @@ public class DeclMethod extends AbstractDeclMethod{
          *          2 <- Il faut retenir le PC et l'objet
          * 
          */
-        compiler.addInstructionAtFirst(new BOV(new Label("stack_overflow_error")));
-        compiler.addInstructionAtFirst(
-            new TSTO(
-                compiler.getData().getNumberOfUsedRegister() +
-                compiler.getData().getMaxStackLength() +
-                ((MethodBody)methodBody).getNbrVarMethodBody()
-            )
-        );
+        if (!(compiler.getCompilerOptions().getNoCheck())) {
+            compiler.addInstructionAtFirst(new BOV(new Label("stack_overflow_error")));
+            compiler.addInstructionAtFirst(
+                new TSTO(
+                    compiler.getData().getNumberOfUsedRegister() +
+                    compiler.getData().getMaxStackLength() +
+                    ((MethodBody)methodBody).getNbrVarMethodBody()
+                )
+            );
+        }
 
         // Fin de bloc 
         compiler.appendBlocInstructions();

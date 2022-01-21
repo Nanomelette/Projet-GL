@@ -114,8 +114,10 @@ public class MethodCall extends AbstractExpr {
         
         register = data.getFreeRegister(compiler);
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), register));
-        compiler.addInstruction(new CMP(new NullOperand(), register));
-        compiler.addInstruction(new BEQ(new Label("null_dereference")));
+        if (!(compiler.getCompilerOptions().getNoCheck())) {
+            compiler.addInstruction(new CMP(new NullOperand(), register));
+            compiler.addInstruction(new BEQ(new Label("null_dereference")));
+        }
         // On recupere l'adresse de la table des méthodes
         compiler.addInstruction(new LOAD(new RegisterOffset(0, register), register));
         // On saute à la méthode
