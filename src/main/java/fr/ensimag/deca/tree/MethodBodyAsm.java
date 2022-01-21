@@ -49,7 +49,6 @@ public class MethodBodyAsm extends AbstractMethodBody {
         
     }
 
-<<<<<<< HEAD
 
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler) {
@@ -57,7 +56,13 @@ public class MethodBodyAsm extends AbstractMethodBody {
         
     }
 
+
+    @Override
+    public void verifyClassBody(DecacCompiler compiler, EnvironmentExp members, EnvironmentExp envExpParams,
+            AbstractIdentifier class1, Type return1) throws ContextualError {
+        // TODO Auto-generated method stub
+        
+    }
+
     
-=======
->>>>>>> 7e1d70716712076000c03fc566745f5649feafa5
 }
