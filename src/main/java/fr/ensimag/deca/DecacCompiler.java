@@ -154,6 +154,18 @@ public class DecacCompiler {
 
     /**
      * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addLabelAtFirst(fr.ensimag.ima.pseudocode.Label)
+     */
+    public void addLabelAtFirst(Label label) {
+        if (writeInBloc) {
+            bloc.addLabelAtFirst(label);
+        } else {
+            program.addLabelAtFirst(label);
+        }
+    }
+
+    /**
+     * @see
      * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
      */
     public void addInstruction(Instruction instruction) {

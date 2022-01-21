@@ -211,7 +211,6 @@ public class DeclClass extends AbstractDeclClass {
         // Début de bloc
         compiler.newBloc(); compiler.setToBlocProgram();
 
-        compiler.addLabel(new Label("init." + classe.getName().getName()));
         compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         if (!classeSup.getName().getName().equals("Object")) {
             // Initialiser les nouveaux champs à zero
@@ -229,7 +228,6 @@ public class DeclClass extends AbstractDeclClass {
 
         // Restauration des registres
         compiler.addComment("Restauration des registres");
-        System.out.println(compiler.getData().getNumberOfUsedRegister());
         compiler.getData().popUsedRegisters(compiler);
 
         // Sauvegarde des registres
@@ -253,6 +251,7 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addInstructionAtFirst(new BOV(new Label("stack_overflow_error")));
         // On laisse ce +2 -2 pour l'instant pour suivre le calcul
         compiler.addInstructionAtFirst(new TSTO(2 + compiler.getData().getFreeStoragePointer() - 2));
+        compiler.addLabelAtFirst(new Label("init." + classe.getName().getName()));
         compiler.appendBlocInstructions();
         compiler.getData().restoreData();
         compiler.setToMainProgram();

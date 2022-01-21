@@ -1,0 +1,19 @@
+class A {
+    protected int x = 1 + 1;
+}
+
+class B extends A {
+    int x = 5;
+    int y = 0;
+}
+
+{
+    A a = new A();
+    B b = new B();
+
+    if (b instanceof a) {
+        println("ok");
+    } else {
+        println("pas ok");
+    }
+}   

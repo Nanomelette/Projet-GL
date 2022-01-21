@@ -13,5 +13,5 @@ do
     # test_lex "$i"
     # test_synt "$i"
     cd $SOURCE_DECA
-    decac "$i"
+    ./decac "$i"
 done
