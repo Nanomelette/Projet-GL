@@ -10,16 +10,22 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import net.bytebuddy.utility.dispatcher.JavaDispatcher.Instance;
 
-public class InstanceOf extends AbstractExpr{
-
+public class InstanceOf extends AbstractExpr {
 
     private AbstractExpr e;
     private AbstractIdentifier type;
 
-
-    public InstanceOf(AbstractExpr e, AbstractIdentifier type){
+    public InstanceOf(AbstractExpr e, AbstractIdentifier type) {
         super();
         Validate.notNull(e);
         Validate.notNull(type);
@@ -32,7 +38,7 @@ public class InstanceOf extends AbstractExpr{
             throws ContextualError {
         Type type1 = this.e.verifyExpr(compiler, localEnv, currentClass);
         Type type2 = this.type.verifyType(compiler);
-        if((type1 == null || type1.isClass()) && type2.isClass()){
+        if ((type1 == null || type1.isClass()) && type2.isClass()) {
             return compiler.searchSymbol(compiler.getSymbolTable().create("boolean"));
         }
         throw new ContextualError("Incorrect types", getLocation());
@@ -55,7 +61,51 @@ public class InstanceOf extends AbstractExpr{
     @Override
     protected void iterChildren(TreeFunction f) {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
+    private void isInstanceOf(DecacCompiler compiler) {
+        e.codeGenInst(compiler);
+        Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
+        // register contient l'adresse de l'objet à tester dans le tas
+        GPRegister register = compiler.getData().getLastUsedRegister();
+        ClassDefinition typeCible = type.getClassDefinition();
+        compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
+        compiler.addInstruction(new BEQ(true_instanceof));
+        while (typeCible.getSuperClass() != null) {
+            typeCible = typeCible.getSuperClass();
+            compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
+            compiler.addInstruction(new BEQ(true_instanceof));
+        }
+    }
+
+    @Override
+    protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
+        Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
+        Label end_instanceof = new Label("end.instanceof."+compiler.getNLabel());
+        isInstanceOf(compiler);
+        compiler.addInstruction(new BRA(end_instanceof));
+        compiler.addLabel(true_instanceof);
+        if (b) {
+            compiler.addInstruction(new BRA(E));
+        }
+        compiler.addLabel(end_instanceof);
+        compiler.incrNLabel();
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
+        Label end_instanceof = new Label("end.instanceof."+compiler.getNLabel());
+        isInstanceOf(compiler);
+        GPRegister resultRegister = compiler.getData().getFreeRegister(compiler);
+        compiler.addInstruction(new LOAD(0, resultRegister));
+        compiler.addInstruction(new BRA(end_instanceof));
+        compiler.addLabel(true_instanceof);
+        compiler.addInstruction(new LOAD(1, resultRegister));
+        compiler.getData().setLastUsedRegister(resultRegister);
+        compiler.addLabel(end_instanceof);
+        compiler.incrNLabel();
+    }
+
 }
