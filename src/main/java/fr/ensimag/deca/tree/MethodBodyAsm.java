@@ -12,6 +12,9 @@ import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.StringType;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.AbstractLine;
+import fr.ensimag.ima.pseudocode.InlinePortion;
+import fr.ensimag.ima.pseudocode.Line;
 
 
 public class MethodBodyAsm extends AbstractMethodBody {
@@ -52,8 +55,7 @@ public class MethodBodyAsm extends AbstractMethodBody {
 
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler) {
-        // TODO : split
-        
+        compiler.add(new InlinePortion(code.toString()));
     }
 
 
