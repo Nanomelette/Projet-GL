@@ -18,22 +18,22 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2022
  */
 public class While extends AbstractInst {
-    private AbstractExpr condition;
-    private ListInst body;
+    private AbstractExpr cond;
+    private ListInst inst;
 
     public AbstractExpr getCondition() {
-        return condition;
+        return cond;
     }
 
-    public ListInst getBody() {
-        return body;
+    public ListInst getInst() {
+        return inst;
     }
 
     public While(AbstractExpr condition, ListInst body) {
         Validate.notNull(condition);
         Validate.notNull(body);
-        this.condition = condition;
-        this.body = body;
+        this.cond = condition;
+        this.inst = body;
     }
 
     @Override
@@ -43,9 +43,9 @@ public class While extends AbstractInst {
         Label E_Start = new Label("E_Start."+n);
         compiler.addInstruction(new BRA(E_Cond));
         compiler.addLabel(E_Start);
-        body.codeGenListInst(compiler);
+        inst.codeGenListInst(compiler);
         compiler.addLabel(E_Cond);
-        condition.codeBoolean(true, E_Start, compiler);
+        cond.codeBoolean(true, E_Start, compiler);
         compiler.incrNLabel();
     }
 
@@ -53,9 +53,9 @@ public class While extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-                Type type = this.condition.verifyExpr(compiler, localEnv, currentClass);
-                this.condition.setType(type);
-                this.body.verifyListInst(compiler, localEnv, currentClass, returnType);
+                Type type = this.cond.verifyExpr(compiler, localEnv, currentClass);
+                this.cond.setType(type);
+                this.inst.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
 
     @Override
@@ -64,20 +64,20 @@ public class While extends AbstractInst {
         getCondition().decompile(s);
         s.println(") {");
         s.indent();
-        getBody().decompile(s);
+        getInst().decompile(s);
         s.unindent();
         s.print("}");
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        condition.iter(f);
-        body.iter(f);
+        cond.iter(f);
+        inst.iter(f);
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        condition.prettyPrint(s, prefix, false);
-        body.prettyPrint(s, prefix, true);
+        cond.prettyPrint(s, prefix, false);
+        inst.prettyPrint(s, prefix, true);
     }
 }
