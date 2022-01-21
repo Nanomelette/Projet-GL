@@ -10,9 +10,10 @@ public class Labels {
     public final Label io_error = new Label("io_error");
     public final Label overflow_error = new Label("overflow_error");
     public final Label zero_division = new Label("zero_division");
-    public final Label equals = new Label("code.Object.equals");
+    public final Label equals = new Label("code.Object.equals"); // TODO
     public final Label null_dereference = new Label("null_dereference");
     public final Label heap_overflow = new Label("heap_overflow");
+    public final Label cast_error = new Label("cast_error");
     
 
     private HashSet<Label> usedLabels = new HashSet<Label>();
@@ -25,6 +26,7 @@ public class Labels {
         addLabel(equals);
         addLabel(null_dereference);
         addLabel(heap_overflow);
+        addLabel(cast_error);
     }
 
     public void addLabel(Label label) {

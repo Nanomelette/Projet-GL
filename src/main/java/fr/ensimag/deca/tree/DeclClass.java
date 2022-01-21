@@ -211,7 +211,7 @@ public class DeclClass extends AbstractDeclClass {
         // Début de bloc
         compiler.newBloc(); compiler.setToBlocProgram();
 
-        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
+        // compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         if (!classeSup.getName().getName().equals("Object")) {
             // Initialiser les nouveaux champs à zero
             listDeclField.codeGenListDeclFieldSetZero(compiler);
