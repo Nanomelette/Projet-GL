@@ -9,7 +9,7 @@
 
 {
         int i = 1;
-        int j = 2;
+        float j = 2;
         int k;
         k = i - j;
         println("Valeur: ", k);

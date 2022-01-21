@@ -42,7 +42,6 @@ public class DeclMethod extends AbstractDeclMethod{
         Symbol symbSup = classeSup.getName();
         ClassType classTypeSup = (ClassType) env_Types.getType(symbSup);
         Signature sig2 = this.listDeclParam.verifyListParam(compiler);
-        int index = 1;
         if (classTypeSup != null) {
             ClassDefinition classDefSup = classTypeSup.getDefinition();
             EnvironmentExp envExpSup = classDefSup.getMembers();
@@ -50,13 +49,10 @@ public class DeclMethod extends AbstractDeclMethod{
             if (ExpDef != null) {
                 Validate.isTrue(ExpDef.isMethod(), method.getName() + " isn't a method");
                 MethodDefinition methodDef = (MethodDefinition) ExpDef;
-                index = methodDef.getIndex();
                 Type typeSup = methodDef.getType();
                 if (compiler.subType(compiler, mType, typeSup)) {
                     Signature sig = methodDef.getSignature();
                     if (!sig.sameSignature(sig2)) {
-                        System.out.println(sig);
-                        System.out.println(sig2);
                         throw new ContextualError(method.getName()+"must have same signature", this.getLocation());
                     }
                 } else {
@@ -68,10 +64,12 @@ public class DeclMethod extends AbstractDeclMethod{
                 ClassType classType = (ClassType) env_Types.getType(symb);
                 ClassDefinition classDef = classType.getDefinition();
                 EnvironmentExp envExp = classDef.getMembers();
+                int index = classDefSup.getNumberOfFields() + classDef.getNumberOfFields() + 1;
                 MethodDefinition newDef = new MethodDefinition(mType, name.getLocation(), sig2, index);
                 name.setDefinition(newDef);
                 name.setType(mType);
                 envExp.declare(method, newDef);
+                classDef.incNumberOfMethods();
             } catch (EnvironmentExp.DoubleDefException e) {
                 String message = "can't defined method identifier several times in a class";
                 throw new ContextualError(message, name.getLocation());
@@ -80,6 +78,11 @@ public class DeclMethod extends AbstractDeclMethod{
             throw new ContextualError(symbSup.getName()+"can't have null type", classeSup.getLocation());
         }
     }
+
+    protected void verifyMethodBody(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
+            throws ContextualError{
+                this.methodBody.verifyMethodBody(compiler);
+            }
 
     @Override
     public void decompile(IndentPrintStream s) {

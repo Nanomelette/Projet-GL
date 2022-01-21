@@ -49,7 +49,6 @@ public class Main extends AbstractMain {
         insts.verifyListInst(compiler,localEnv,null,compiler.searchSymbol(symbVoid));
 
         LOG.debug("verify Main: end");
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

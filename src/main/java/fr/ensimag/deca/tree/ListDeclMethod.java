@@ -31,9 +31,14 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         for(AbstractDeclMethod c : this.getList()){
             c.verifyMethod(compiler, classeSup, classe);
         }
-
-        //throw new UnsupportedOperationException("not yet implemented");
         LOG.debug("verify listMethod: end");
+    }
+
+    void verifyListMethodBody(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe) throws ContextualError {
+
+        for(AbstractDeclMethod c : this.getList()){
+            c.verifyMethodBody(compiler, classeSup, classe);
+        }
     }
 
 }
