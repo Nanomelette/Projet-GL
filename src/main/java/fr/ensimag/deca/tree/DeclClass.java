@@ -243,7 +243,7 @@ public class DeclClass extends AbstractDeclClass {
          * nombre de variables du bloc =
          *          0 <- Initialisation des champs donc pas de variables
          * nombre maximal de temporaires nécessaires à l’évaluation des expressions =
-         *          compiler.getData().getRegisterCounterInBlock()
+         *          compiler.getData().getFreeStoragePointer() - 2
          * nombre maximal de paramètres des méthodes appelées (chaque instruction BSR effectuant deux empilements) =
          *          2 <- Il faut retenir le PC et l'objet
          * 
