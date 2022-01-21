@@ -120,8 +120,7 @@ public class CompilerOptions {
                                     debug += 1;
                                 }
                             } else if (args[i].charAt(1) == 'P') {
-                                // P option : parallel
-                                // TODO
+                                parallel = true;
                             } else if (args[i].charAt(1) == 't') {
                                 tree = true;
                             } else {
