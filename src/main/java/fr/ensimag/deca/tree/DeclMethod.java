@@ -86,8 +86,9 @@ public class DeclMethod extends AbstractDeclMethod{
                 ClassDefinition currentClass = classe.getClassDefinition();
                 EnvironmentExp EnvExpClass = currentClass.getMembers();
                 MethodDefinition nameDef = name.getMethodDefinition();
-                EnvironmentExp localEnv = nameDef.getMembers().empilement(EnvExpClass);
-                this.listDeclParam.verifyListDeclParam(compiler, localEnv);
+                EnvironmentExp localEnvInit = nameDef.getMembers();
+                this.listDeclParam.verifyListDeclParam(compiler, localEnvInit);
+                EnvironmentExp localEnv = localEnvInit.empilement(EnvExpClass);
                 this.methodBody.verifyMethodBody(compiler, localEnv, currentClass, this.type.getType());
             }
 
