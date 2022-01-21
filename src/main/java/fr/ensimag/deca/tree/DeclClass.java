@@ -15,12 +15,16 @@ import fr.ensimag.ima.pseudocode.LabelOperand;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.BSR;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.RTS;
+import fr.ensimag.ima.pseudocode.instructions.SEQ;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.instructions.SUBSP;
 import fr.ensimag.ima.pseudocode.instructions.TSTO;
@@ -129,7 +133,7 @@ public class DeclClass extends AbstractDeclClass {
         compiler.getData().incrementGbOffset();
 
         // Methode Equals
-        LabelOperand equalsOperand = new LabelOperand(compiler.getData().getLabels().equals);
+        LabelOperand equalsOperand = new LabelOperand(new Label("code.Object.equals"));
         compiler.addInstruction(new LOAD(equalsOperand, Register.R0), "Héritage de la méthode equals de Object");
         compiler.addInstruction(new STORE(Register.R0,
                 new RegisterOffset(
@@ -202,11 +206,44 @@ public class DeclClass extends AbstractDeclClass {
         // }
     }
 
+    private void codeGenInitClass(DecacCompiler compiler) {
+        compiler.addLabel(
+            new Label("code.Object.equals")
+        );
+        compiler.addInstruction(
+            new LOAD(
+                new RegisterOffset(-2, Register.LB),
+                Register.R0
+            )
+        );
+        compiler.addInstruction(
+            new LOAD(
+                new RegisterOffset(-3, Register.LB),
+                Register.R1
+            )
+        );
+        compiler.addInstruction(
+            new CMP(Register.R0, Register.R1)
+        );
+
+        compiler.addInstruction(
+            new SEQ(Register.R0)
+        );
+        compiler.getData().setLastUsedRegister(Register.R0);
+        compiler.addInstruction(
+            new RTS()
+        );
+
+
+
+    }
+
     @Override
     protected void codeGenDeclClass(DecacCompiler compiler) {
         // Codage de l'initialisation des champs
-        
-        compiler.addComment("Initialisation des champs de " + classe.getName().getName());
+        if (listDeclField.size() != 0) {
+            compiler.addComment("Initialisation des champs de " + classe.getName().getName());
+        }
 
         // Début de bloc
         compiler.newBloc(); compiler.setToBlocProgram();
@@ -222,17 +259,23 @@ public class DeclClass extends AbstractDeclClass {
                     "Appel de l’initialisation de la super-classe");
             compiler.addInstruction(new SUBSP(1), "On remet la pile dans son état initial");
         }
-        compiler.addComment("Initialisation explicite des champs de " + classe.getName().getName());
+        if (listDeclField.size() != 0) {
+            compiler.addComment("Initialisation explicite des champs de " + classe.getName().getName());
+        }
         listDeclField.codeGenListDeclFieldSet(compiler);
         compiler.addInstruction(new RTS());
 
         // Restauration des registres
-        compiler.addComment("Restauration des registres");
+        if (compiler.getData().getNumberOfUsedRegister() != 0) {
+            compiler.addComment("Restauration des registres");
+        }
         compiler.getData().popUsedRegisters(compiler);
 
         // Sauvegarde des registres
         compiler.getData().pushUsedRegisters(compiler);
-        compiler.addCommentAtFirst("Sauvegarde des registres");
+        if (compiler.getData().getNumberOfUsedRegister() != 0) {
+            compiler.addCommentAtFirst("Sauvegarde des registres");
+        }
 
         // Fin de bloc
         /**
@@ -243,7 +286,7 @@ public class DeclClass extends AbstractDeclClass {
          * nombre de variables du bloc =
          *          0 <- Initialisation des champs donc pas de variables
          * nombre maximal de temporaires nécessaires à l’évaluation des expressions =
-         *          compiler.getData().getRegisterCounterInBlock()
+         *          compiler.getData().getFreeStoragePointer() - 2
          * nombre maximal de paramètres des méthodes appelées (chaque instruction BSR effectuant deux empilements) =
          *          2 <- Il faut retenir le PC et l'objet
          * 
@@ -257,10 +300,12 @@ public class DeclClass extends AbstractDeclClass {
         compiler.setToMainProgram();
         
         // Codage des méthodes
-
-        // C'est pour la structure mais comme on a restore avant on pourrait juste rester dans 
-        // le bloc.
+        // Ajout de l'etiquette de code.Object.equals
+        codeGenInitClass(compiler);
         listDeclMethod.codeGenListDeclMethod(compiler);
+
+        
+
 
     }
 }

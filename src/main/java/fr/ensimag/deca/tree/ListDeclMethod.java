@@ -36,6 +36,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     }
 
     public void codeGenListDeclMethod(DecacCompiler compiler) {
+        // TODO : Ecriture du code.Object.equals ? 
         for (AbstractDeclMethod declMethod : getList()) {
             declMethod.codeGenDeclMethod(compiler);
         }

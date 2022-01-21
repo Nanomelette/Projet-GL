@@ -197,10 +197,10 @@ public class Data {
         compiler.addComment("   Construction des tables des méthodes   ");
         compiler.addComment("------------------------------------------");
         compiler.addComment("Code de la table des méthodes de Object");
+        Label equals = new Label("code.Object.equals");
         compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(1, Register.GB)));
-        compiler.addInstruction(new LOAD(new LabelOperand(labels.equals), Register.R0));
-        labels.addLabel(labels.equals);
+        compiler.addInstruction(new LOAD(new LabelOperand(equals), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(2, Register.GB)));
         // Faire la table des étiquettes de Object.
         incrementGbOffset(1);
