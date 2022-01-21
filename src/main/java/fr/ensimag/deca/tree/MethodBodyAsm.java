@@ -9,6 +9,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Signature;
+import fr.ensimag.deca.context.StringType;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
@@ -17,14 +18,14 @@ public class MethodBodyAsm extends AbstractMethodBody {
     private StringLiteral code;
 
     public MethodBodyAsm(StringLiteral string){
-        this.code= string;
+        this.code = string;
     }
 
 
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("asm(");
-        s.print(code.decompile());
+        code.decompile();
         s.print(");");
     }
 
@@ -42,17 +43,10 @@ public class MethodBodyAsm extends AbstractMethodBody {
 
     @Override
     protected void verifyMethodBody(DecacCompiler compiler) throws ContextualError {
-        // TODO Auto-generated method stub
+        
+        Type type = new StringType(compiler.getSymbolTable().create("String"));
+        this.code.setType(type);
         
     }
 
-
-    @Override
-    public void verifyClassBody(DecacCompiler compiler, EnvironmentExp members, EnvironmentExp envExpParams,
-            AbstractIdentifier class1, Type return1) throws ContextualError {
-        // TODO Auto-generated method stub
-        
-    }
-
-    
 }

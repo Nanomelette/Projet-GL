@@ -20,7 +20,4 @@ public abstract class AbstractMethodBody extends Tree {
 
 	protected abstract void verifyMethodBody(DecacCompiler compiler)
             throws ContextualError;
-
-	public abstract void verifyClassBody(DecacCompiler compiler, EnvironmentExp members, EnvironmentExp envExpParams, 
-										 AbstractIdentifier class1, Type return1) throws ContextualError ;
 }

@@ -53,7 +53,6 @@ public class DeclField extends AbstractDeclField {
         ClassType classTypeSup = (ClassType) env_Types.getType(symbSup);
         Symbol symb = classe.getName();
         ClassType defType = (ClassType) env_Types.getType(symb);
-        int index = 1;
         if (classTypeSup != null && defType != null) {
             ClassDefinition classDefSup = classTypeSup.getDefinition();
             EnvironmentExp envExpSup = classDefSup.getMembers();
@@ -64,7 +63,6 @@ public class DeclField extends AbstractDeclField {
                 if (ExpDef != null) {
                     Validate.isTrue(ExpDef.isField(), fieldName.getName() + " isn't a field");
                     FieldDefinition fieldDef = (FieldDefinition) ExpDef;
-                    index = fieldDef.getIndex() + 1;
                 }
             }
             Type fType = type.verifyType(compiler);
@@ -72,10 +70,12 @@ public class DeclField extends AbstractDeclField {
                 throw new ContextualError("type void", this.type.getLocation());
             }
             try {
+                int index = classDefSup.getNumberOfFields() + def.getNumberOfFields() + 1;
                 FieldDefinition newDef= new FieldDefinition(fType, field.getLocation(), v, null, index);
                 field.setDefinition(newDef);
                 field.setType(fType);
                 envExp.declare(fieldName, newDef);
+                def.incNumberOfFields();
                 init.verifyInitialization(compiler, fType, envExp , def);
             } catch (EnvironmentExp.DoubleDefException e) {
                 String message = "can't defined field identifier several times in a class";

@@ -46,15 +46,6 @@ public class MethodBody extends AbstractMethodBody{
 
     @Override
     protected void verifyMethodBody(DecacCompiler compiler) throws ContextualError {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void verifyClassBody(DecacCompiler compiler, EnvironmentExp members, EnvironmentExp envExpParams,
-            AbstractIdentifier class1, Type return1) throws ContextualError {
-        // TODO Auto-generated method stub
-        
     }
  
 }
