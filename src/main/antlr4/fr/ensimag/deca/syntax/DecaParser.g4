@@ -339,6 +339,8 @@ inequality_expr returns[AbstractExpr tree]
     | e1=inequality_expr INSTANCEOF type {
             assert($e1.tree != null);
             assert($type.tree != null);
+            $tree = new InstanceOf($e1.tree, $type.tree);
+            setLocation($tree, $e1.start);
         
 
         }
@@ -428,6 +430,7 @@ select_expr returns[AbstractExpr tree]
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
             assert($args.tree != null);
+            assert($e1.tree!=null);
             $tree = new MethodCall($e1.tree, $i.tree, $args.tree);
             setLocation($tree, $args.start);
         }
@@ -451,7 +454,7 @@ primary_expr returns[AbstractExpr tree]
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
-            $tree = new MethodCall($tree, $m.tree, $args.tree);
+            $tree = new MethodCall(t, $m.tree, $args.tree);
             setLocation($tree, $m.start);
             
         }
