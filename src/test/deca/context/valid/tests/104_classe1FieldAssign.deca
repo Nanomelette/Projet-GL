@@ -1,0 +1,5 @@
+// classe pas très utile avec un seul champ initialisé.
+
+class A {
+	float i = 1;
+}

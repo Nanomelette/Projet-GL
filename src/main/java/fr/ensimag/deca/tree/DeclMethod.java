@@ -1,11 +1,20 @@
 package fr.ensimag.deca.tree;
 
 import org.apache.commons.lang.Validate;
+
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.EnvironmentType;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.deca.context.Signature;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
+
 import java.io.PrintStream;
 
 public class DeclMethod extends AbstractDeclMethod{
@@ -25,10 +34,50 @@ public class DeclMethod extends AbstractDeclMethod{
         this.methodBody = methodBody;
     }
 
-    protected void verifyMethod(DecacCompiler compiler, AbstractIdentifier classeSup)
+    protected void verifyMethod(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
             throws ContextualError{
-                throw new UnsupportedOperationException("not yet implemented");
+        Symbol method = this.name.getName();
+        EnvironmentType env_Types = compiler.GetEnvTypes();
+        Symbol symbSup = classeSup.getName();
+        ClassType classTypeSup = (ClassType) env_Types.getType(symbSup);
+        Signature sig2 = this.listDeclParam.verifyListParam(compiler);
+        int index = 1;
+        if (classTypeSup != null) {
+            ClassDefinition classDefSup = classTypeSup.getDefinition();
+            EnvironmentExp envExpSup = classDefSup.getMembers();
+            ExpDefinition ExpDef = envExpSup.get(method);
+            if (ExpDef != null) {
+                Validate.isTrue(ExpDef.isMethod(), method.getName() + " isn't a method");
+                MethodDefinition methodDef = (MethodDefinition) ExpDef;
+                index = methodDef.getIndex();
+                Type typeSup = methodDef.getType();
+                if (compiler.subType(compiler, this.type.getType(), typeSup)) {
+                    Signature sig = methodDef.getSignature();
+                    if (sig.equals(sig2)) {
+                        throw new ContextualError(method.getName()+"must have same signature", getLocation());
+                    }
+                } else {
+                    throw new ContextualError(method.getName()+"must have same type", getLocation());
+                }
+            }
+            try {
+                Symbol symb = classe.getName();
+                Type mType = this.type.verifyType(compiler);
+                ClassType classType = (ClassType) env_Types.getType(symb);
+                ClassDefinition classDef = classType.getDefinition();
+                EnvironmentExp envExp = classDef.getMembers();
+                MethodDefinition newDef = new MethodDefinition(mType, getLocation(), sig2, index);
+                name.setDefinition(newDef);
+                name.setType(mType);
+                envExp.declare(method, newDef);
+            } catch (EnvironmentExp.DoubleDefException e) {
+                String message = "can't defined method identifier several times in a class";
+                throw new ContextualError(message, getLocation());
+            }
+        } else {
+            throw new ContextualError(symbSup.getName()+"can't have null type", getLocation());
         }
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -52,7 +101,9 @@ public class DeclMethod extends AbstractDeclMethod{
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO Auto-generated method stub
+        type.iter(f);
+        name.iter(f);
+        listDeclParam.iter(f);
         
     }
     

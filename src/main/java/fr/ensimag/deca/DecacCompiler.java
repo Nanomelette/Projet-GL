@@ -329,5 +329,15 @@ public class DecacCompiler {
         return null;
     }
 
+    public boolean subType(DecacCompiler compiler, Type type, Type typeSup){
+        if (type.sameType(typeSup)) {
+            return true;
+        }
+        if (type.isClass() && typeSup.isClass()) {
+            ClassType subClassType = (ClassType) type;
+            return subClassType.isSubClassOf((ClassType) typeSup);
+        }
+        return false;
+    }
 
 }
