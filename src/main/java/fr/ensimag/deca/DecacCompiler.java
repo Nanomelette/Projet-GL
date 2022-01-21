@@ -335,6 +335,9 @@ public class DecacCompiler {
     }
 
     public boolean subType(DecacCompiler compiler, Type type, Type typeSup){
+        if (type == null) {
+            return false;
+        }
         if (type.sameType(typeSup)) {
             return true;
         }

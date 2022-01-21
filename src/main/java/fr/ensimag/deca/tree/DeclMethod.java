@@ -34,6 +34,7 @@ public class DeclMethod extends AbstractDeclMethod{
         this.methodBody = methodBody;
     }
 
+    @Override
     protected void verifyMethod(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
             throws ContextualError{
         Symbol method = this.name.getName();
@@ -79,6 +80,7 @@ public class DeclMethod extends AbstractDeclMethod{
         }
     }
 
+    @Override
     protected void verifyMethodBody(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
             throws ContextualError{
                 ClassDefinition currentClass = classe.getClassDefinition();

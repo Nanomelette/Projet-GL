@@ -30,10 +30,7 @@ public class MethodCall extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        //System.out.println("EnvType = " + compiler.GetEnvTypes().getEnvironmentType().toString());
-        //System.out.println("SymbolTaable = "+ compiler.getSymbolTable().getMap().toString());
         Type type = this.obj.verifyExpr(compiler, localEnv, currentClass);
-                System.out.println(type);
         ClassType classType = (ClassType) type ;
         ClassDefinition classDef = classType.getDefinition();
         EnvironmentExp env = classDef.getMembers();
@@ -42,6 +39,10 @@ public class MethodCall extends AbstractExpr {
         this.meth.setType(methodDef.getType());
         this.meth.setDefinition(methodDef);
         this.setType(methodDef.getType());
+        Signature sig = this.param.verifyListExp(compiler, localEnv, currentClass);
+        if (!methodDef.getSignature().sameSignature(sig)) {
+            throw new ContextualError(this.meth.getName()+": unmatched signature", this.getLocation());
+        }
         return methodDef.getType();
     }
 
@@ -68,7 +69,9 @@ public class MethodCall extends AbstractExpr {
     protected void iterChildren(TreeFunction f) {
         obj.iter(f);
         meth.iter(f);
-        param.iter(f);
+        for (AbstractExpr i : param.getList()) {
+            i.iter(f);
+        }
         
     }
     

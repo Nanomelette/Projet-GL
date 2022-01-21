@@ -62,7 +62,6 @@ public class DeclField extends AbstractDeclField {
                 ExpDefinition ExpDef = envExpSup.get(fieldName);
                 if (ExpDef != null) {
                     Validate.isTrue(ExpDef.isField(), fieldName.getName() + " isn't a field");
-                    Validate.isTrue(compiler.subType(compiler, this.type.getType(), ExpDef.getType()), "Incompatible extension of field"+this.field.getName());
                 }
             }
             Type fType = type.verifyType(compiler);
@@ -80,6 +79,29 @@ public class DeclField extends AbstractDeclField {
             } catch (EnvironmentExp.DoubleDefException e) {
                 String message = "can't defined field identifier several times in a class";
                 throw new ContextualError(message, field.getLocation());
+            }
+        }
+    }
+
+    @Override
+    public void verifyFieldBody(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
+    throws ContextualError {
+        Symbol fieldName = this.field.getName();
+        EnvironmentType env_Types = compiler.GetEnvTypes();
+        Symbol symbSup = classeSup.getName();
+        ClassType classTypeSup = (ClassType) env_Types.getType(symbSup);
+        Symbol symb = classe.getName();
+        ClassType defType = (ClassType) env_Types.getType(symb);
+        if (classTypeSup != null && defType != null) {
+            ClassDefinition classDefSup = classTypeSup.getDefinition();
+            EnvironmentExp envExpSup = classDefSup.getMembers();
+            ClassDefinition def = defType.getDefinition();
+            EnvironmentExp envExp = def.getMembers();
+            if (envExpSup.equals(envExp.getParent())) {
+                ExpDefinition ExpDef = envExpSup.get(fieldName);
+                if (ExpDef != null) {
+                    Validate.isTrue(compiler.subType(compiler, this.type.getType(), ExpDef.getType()), "Incompatible extension of field "+this.field.getName());
+                }
             }
         }
     }

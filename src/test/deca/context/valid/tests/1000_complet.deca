@@ -13,8 +13,8 @@ class A {
         return x;
     }
 
-    void setX(){
-        this.x = x;
+    void setX(int y){
+        this.x = y;
     }
 }
 {
