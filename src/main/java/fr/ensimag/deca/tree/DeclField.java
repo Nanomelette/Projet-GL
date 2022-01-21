@@ -87,9 +87,9 @@ public class DeclField extends AbstractDeclField {
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(" ");
-    	this.field.decompile();
+    	this.field.decompile(s);
     	s.print(" ");
-    	this.init.decompile();
+    	this.init.decompile(s);
     	s.println(";");	
     }
 

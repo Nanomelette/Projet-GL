@@ -68,9 +68,7 @@ public class MethodCall extends AbstractExpr {
     protected void iterChildren(TreeFunction f) {
         obj.iter(f);
         meth.iter(f);
-        for (AbstractExpr i : param.getList()) {
-            i.iter(f);
-        }
+        param.iter(f);
         
     }
     

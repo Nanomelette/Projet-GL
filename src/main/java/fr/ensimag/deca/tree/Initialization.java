@@ -46,7 +46,7 @@ public class Initialization extends AbstractInitialization {
     public void decompile(IndentPrintStream s) {
         if(this.getExpression()!=null){
             s.print(" = ");
-            s.print(this.getExpression().decompile());
+            this.getExpression().decompile(s);
         }
     }
 
@@ -58,6 +58,6 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        expression.prettyPrint(s, prefix, true);
+        expression.prettyPrint(s, prefix, false);
     }
 }

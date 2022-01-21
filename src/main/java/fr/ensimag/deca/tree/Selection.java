@@ -91,15 +91,15 @@ public class Selection extends AbstractLValue{
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        obj.prettyPrint(s, prefix, false);
-        field.prettyPrint(s, prefix, false);
+        this.obj.prettyPrint(s, prefix, false);
+        this.field.prettyPrint(s, prefix, false);
         
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        obj.iter(f);
-        field.iter(f);
+        this.obj.iter(f);
+        this.field.iter(f);
         
     }
     
