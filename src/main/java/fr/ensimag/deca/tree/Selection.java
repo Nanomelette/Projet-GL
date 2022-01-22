@@ -123,6 +123,7 @@ public class Selection extends AbstractLValue{
         compiler.addInstruction(new BEQ(new Label("null_dereference")));
         // On récupère l'offset du champ concerné
         compiler.addInstruction(new LOAD(new RegisterOffset(field.getFieldDefinition().getIndex(), objRegister), objRegister));
+        
     }
 
     @Override

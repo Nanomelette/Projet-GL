@@ -4,6 +4,7 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -268,7 +269,7 @@ public class Identifier extends AbstractIdentifier {
     protected void codeGenSelect(DecacCompiler compiler) {
         Data data = compiler.getData();
         GPRegister register = data.getFreeRegister(compiler);
-        compiler.addInstruction(new LOAD(getClassDefinition().getAddressVTable(), register));
+        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), register));
         data.setLastUsedRegister(register);
     } 
 

@@ -1,11 +1,15 @@
-class A {
-    int x = 1, y = x;
+//
+//
+//
+//
+//  x:1
+//
 
-    int getX() {
-        return x;
-    }
+class A {
+    int x = 1;
 }
 
 {
     A a = new A();
+    println("x:",a.x);
 }
