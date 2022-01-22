@@ -108,7 +108,7 @@ public class MethodCall extends AbstractExpr {
         data.decrementFreeStoragePointer();
 
         // On empile le parametre implicite
-        compiler.addInstruction(new LOAD(addr, register));
+        compiler.addInstruction(new LOAD(addresseClassRegister, register));
         compiler.addInstruction(new STORE(register, new RegisterOffset(0, Register.SP)));
 
         // On empile les autres parametres
