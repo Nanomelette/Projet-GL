@@ -302,15 +302,17 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     protected void codeGenAssign(DecacCompiler compiler, Register register) {
-        GPRegister tmpRegister = compiler.getData().getFreeRegister(compiler);
         if (getDefinition().isField()) {
+            GPRegister tmpRegister = compiler.getData().getFreeRegister(compiler);
+            // compiler.getData().decrementFreeStoragePointer();
             compiler.addInstruction(
                 new LOAD(new RegisterOffset(-2, Register.LB), tmpRegister));
             compiler.addInstruction(
                 new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), tmpRegister), tmpRegister));
             compiler.addInstruction(new STORE(register, new RegisterOffset(0, tmpRegister)));
         } else if (getDefinition().isParam()) {
-
+            int offset = getParamDefinition().getIndex() + 2;
+            compiler.addInstruction(new STORE(register, new RegisterOffset(-offset, Register.LB)));
         } else {
             DAddr adress = getExpDefinition().getOperand();
             compiler.addInstruction(new STORE(register, adress));
