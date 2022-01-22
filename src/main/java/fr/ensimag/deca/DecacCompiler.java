@@ -343,6 +343,11 @@ public class DecacCompiler {
             System.exit(0);
         }
 
+        if (compilerOptions.getDecoTree()) {
+            prog.prettyPrint(System.out);
+            System.exit(0);
+        }
+
         // C
         prog.codeGenProgram(this);
         addComment("end main program");
