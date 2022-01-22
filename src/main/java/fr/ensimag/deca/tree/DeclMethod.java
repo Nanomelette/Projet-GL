@@ -225,6 +225,7 @@ public class DeclMethod extends AbstractDeclMethod{
                 )
             );
         }
+        compiler.addLabelAtFirst(new Label("code."+name.getMethodDefinition().getLabel().toString()));
 
         // Fin de bloc 
         compiler.appendBlocInstructions();

@@ -47,7 +47,7 @@ public class DeclClass extends AbstractDeclClass {
     private ListDeclMethod listDeclMethod;
 
     public DeclClass(AbstractIdentifier tree, AbstractIdentifier tree2, ListDeclField listField,
-        ListDeclMethod listDeclMethod) {
+            ListDeclMethod listDeclMethod) {
         Validate.notNull(tree);
         Validate.notNull(tree2);
         Validate.notNull(listField);
@@ -144,10 +144,13 @@ public class DeclClass extends AbstractDeclClass {
         classe.getClassDefinition().initLabelVTable(
                 classeSup.getClassDefinition().getLabelVTable());
         for (AbstractDeclMethod aDeclMethod : listDeclMethod.getList()) {
+            Label codeLabel = new Label(
+                    "code." + classe.getName().getName() + "." + aDeclMethod.getName().getName().getName());
             classe.getClassDefinition().addLabel(
-                    aDeclMethod.getName().getMethodDefinition().getIndex(),
-                    new Label(
-                            "code." + classe.getName().getName() + "." + aDeclMethod.getName().getName().getName()));
+                    aDeclMethod.getName().getMethodDefinition().getIndex(), codeLabel);
+            compiler.addInstruction(new LOAD(new LabelOperand(codeLabel), Register.R0));
+            compiler.addInstruction(
+                    new STORE(Register.R0, new RegisterOffset(compiler.getData().getGbOffset(), Register.GB)));
             compiler.getData().incrementGbOffset();
         }
 
@@ -208,33 +211,23 @@ public class DeclClass extends AbstractDeclClass {
 
     private void codeGenInitClass(DecacCompiler compiler) {
         compiler.addLabel(
-            new Label("code.Object.equals")
-        );
+                new Label("code.Object.equals"));
         compiler.addInstruction(
-            new LOAD(
-                new RegisterOffset(-2, Register.LB),
-                Register.R0
-            )
-        );
+                new LOAD(
+                        new RegisterOffset(-2, Register.LB),
+                        Register.R0));
         compiler.addInstruction(
-            new LOAD(
-                new RegisterOffset(-3, Register.LB),
-                Register.R1
-            )
-        );
+                new LOAD(
+                        new RegisterOffset(-3, Register.LB),
+                        Register.R1));
         compiler.addInstruction(
-            new CMP(Register.R0, Register.R1)
-        );
+                new CMP(Register.R0, Register.R1));
 
         compiler.addInstruction(
-            new SEQ(Register.R0)
-        );
+                new SEQ(Register.R0));
         compiler.getData().setLastUsedRegister(Register.R0);
         compiler.addInstruction(
-            new RTS()
-        );
-
-
+                new RTS());
 
     }
 
@@ -246,9 +239,11 @@ public class DeclClass extends AbstractDeclClass {
         }
 
         // Début de bloc
-        compiler.newBloc(); compiler.setToBlocProgram();
+        compiler.newBloc();
+        compiler.setToBlocProgram();
 
-        // compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
+        // compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB),
+        // Register.R1));
         if (!classeSup.getName().getName().equals("Object")) {
             // Initialiser les nouveaux champs à zero
             listDeclField.codeGenListDeclFieldSetZero(compiler);
@@ -281,14 +276,15 @@ public class DeclClass extends AbstractDeclClass {
         /**
          * TODO : TSTO
          * 
-         * nombre de registres sauvegardés en début de bloc = 
-         *          0
+         * nombre de registres sauvegardés en début de bloc =
+         * 0
          * nombre de variables du bloc =
-         *          0 <- Initialisation des champs donc pas de variables
+         * 0 <- Initialisation des champs donc pas de variables
          * nombre maximal de temporaires nécessaires à l’évaluation des expressions =
-         *          compiler.getData().getFreeStoragePointer() - 2
-         * nombre maximal de paramètres des méthodes appelées (chaque instruction BSR effectuant deux empilements) =
-         *          2 <- Il faut retenir le PC et l'objet
+         * compiler.getData().getFreeStoragePointer() - 2
+         * nombre maximal de paramètres des méthodes appelées (chaque instruction BSR
+         * effectuant deux empilements) =
+         * 2 <- Il faut retenir le PC et l'objet
          * 
          */
         if (!(compiler.getCompilerOptions().getNoCheck())) {
@@ -300,14 +296,11 @@ public class DeclClass extends AbstractDeclClass {
         compiler.appendBlocInstructions();
         compiler.getData().restoreData();
         compiler.setToMainProgram();
-        
+
         // Codage des méthodes
         // Ajout de l'etiquette de code.Object.equals
         codeGenInitClass(compiler);
         listDeclMethod.codeGenListDeclMethod(compiler);
-
-        
-
 
     }
 }
