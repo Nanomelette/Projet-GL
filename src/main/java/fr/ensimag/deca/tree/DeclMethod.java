@@ -73,7 +73,7 @@ public class DeclMethod extends AbstractDeclMethod{
                 name.setType(mType);
                 envExp.declare(method, newDef);
                 classDef.incNumberOfMethods();
-                Label label = new Label(symb.getName() + method.getName());
+                Label label = new Label(symb.getName() +"."+ method.getName());
                 System.out.println(label);
                 newDef.setLabel(label);
             } catch (EnvironmentExp.DoubleDefException e) {
