@@ -163,6 +163,17 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
+    public ParamDefinition getParamDefinition() {
+        try {
+            return (ParamDefinition) definition;
+        } catch (ClassCastException e) {
+            throw new DecacInternalError(
+                    "Identifier "
+                            + getName()
+                            + " is not a parameter identifier, you can't call getParamDefinition on it");
+        }
+    }
+
     @Override
     public void setDefinition(Definition definition) {
         this.definition = definition;
@@ -268,8 +279,9 @@ public class Identifier extends AbstractIdentifier {
             compiler.addInstruction(
                 new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), register), register));
         } else if (getDefinition().isParam()) {
+            int offset = getParamDefinition().getIndex() + 2;
             compiler.addInstruction(new LOAD(
-                new RegisterOffset(-3, Register.LB), register)); // TODO
+                new RegisterOffset(-offset, Register.LB), register));
         } else {
             compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), register));
         }
