@@ -79,7 +79,7 @@ public class DeclMethod extends AbstractDeclMethod{
                 ClassType classType = (ClassType) env_Types.getType(symb);
                 ClassDefinition classDef = classType.getDefinition();
                 EnvironmentExp envExp = classDef.getMembers();
-                int index = classDefSup.getNumberOfMethods() + classDef.getNumberOfMethods() + 1;
+                int index = classDefSup.getNumberOfMethods() + classDef.getNumberOfMethods() + 2;
                 MethodDefinition newDef = new MethodDefinition(mType, name.getLocation(), sig2, index);
                 Label label = new Label(symb.getName() +"."+ method.getName());
                 newDef.setLabel(label);
