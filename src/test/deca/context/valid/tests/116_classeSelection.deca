@@ -5,7 +5,12 @@
 //    cree le 01/01/2022
 
 class A {
-	A f() {
-		return new A();
+	int f(int x) {
+		return x;
 	}
+}
+
+{
+	A a = new A();
+	print(a.f(1));
 }

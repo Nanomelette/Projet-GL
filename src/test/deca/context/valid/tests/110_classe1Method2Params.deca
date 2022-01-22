@@ -1,4 +1,8 @@
-// classe pas très utile, une seule méthode avec deux paramètres de types différents.
+// Description:
+//    Programme minimaliste: une classe pas très utile, une seule méthode avec deux paramètres de types différents.
+//
+// Historique:
+//    cree le 01/01/2022
 
 class A {
 	int f(int x, float y) {

@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DAddr;
@@ -91,6 +92,19 @@ public class DeclClass extends AbstractDeclClass {
             throws ContextualError {
         this.listDeclField.verifyListField(compiler, this.classeSup, this.classe);
         this.listDeclMethod.verifyListMethod(compiler, this.classeSup, this.classe);
+        Symbol symb = this.classe.getName();
+        ClassType classType = (ClassType) compiler.GetEnvTypes().getType(symb);
+        ClassDefinition classDef = classType.getDefinition();
+        EnvironmentExp envExp = classDef.getMembers();
+        Symbol symbSup = this.classeSup.getName();
+        ClassType classTypeSup = (ClassType) compiler.GetEnvTypes().getType(symbSup);
+        ClassDefinition classDefSup = classTypeSup.getDefinition();
+        EnvironmentExp envExpSup = classDefSup.getMembers();
+        for (Symbol s : envExpSup.getDictionnary().keySet()) {
+            try {
+                envExp.declare(s, envExpSup.get(s));
+            } catch (EnvironmentExp.DoubleDefException e) {}
+        }
     }
 
     @Override

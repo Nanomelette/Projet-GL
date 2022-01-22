@@ -1,4 +1,8 @@
-// classe pas très utile, vérifie que chaque classe a son environnement propre.
+// Description:
+//    Programme minimaliste: une classe pas très utile, vérifie que chaque classe a son environnement propre.
+//
+// Historique:
+//    cree le 01/01/2022
 
 class A {
 	int i, j = 1;

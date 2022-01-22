@@ -1,4 +1,8 @@
-// classe pas très utile, vérifie si les méthodes héritées ont même type, mêmes paramètres.
+// Description:
+//    Programme minimaliste: une classe pas très utile, vérifie si les méthodes héritées ont même type, mêmes paramètres.
+//
+// Historique:
+//    cree le 01/01/2022
 
 class A {
 	int f(int x, float y) {

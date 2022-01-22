@@ -1,4 +1,8 @@
-// classe pas très utile avec un seul champ non initialisé.
+// Description:
+//    Programme minimaliste: une classe avec un seul champ non initialisé.
+//
+// Historique:
+//    cree le 01/01/2022
 
 class A {
 	int i;

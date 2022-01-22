@@ -1,3 +1,7 @@
-// classe pas utile du tout, c'est vide ;{
+// Description:
+//    Programme minimaliste: une classe pas utile du tout, c'est vide ;{
+//
+// Historique:
+//    cree le 01/01/2022
 
 class A {}

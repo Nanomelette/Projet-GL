@@ -1,5 +1,5 @@
 // Description:
-//    Programme minimaliste utilisant println et une affectation.
+//    Programme minimaliste utilisant une affectation nécessitant un ConvFloat.
 //
 // Resultats:
 //    Valeur: null
