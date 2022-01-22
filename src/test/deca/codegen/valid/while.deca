@@ -1,5 +1,14 @@
+//
+//
+//
+//
+// 0123456789
+
 {
-    while (readInt() == 3) {
-        println("Test");
+    int i = 0;
+
+    while (i < 10) {
+        print(i);
+        i = i + 1;
     }
 }

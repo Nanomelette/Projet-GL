@@ -67,12 +67,12 @@ public class Initialization extends AbstractInitialization {
     }
 
     @Override
-    protected void codeGenInitField(DecacCompiler compiler) {
+    protected void codeGenInitField(DecacCompiler compiler, Type type) {
         expression.codeGenInst(compiler);
         compiler.addInstruction(new LOAD(compiler.getData().getLastUsedRegister(), Register.R0));
     }
 
-    protected void codeGenInitVar(DecacCompiler compiler, DAddr address) {
+    protected void codeGenInitVar(DecacCompiler compiler, DAddr address, Type type) {
         expression.codeGenInst(compiler);
         compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
     };

@@ -167,60 +167,6 @@ public class DeclClass extends AbstractDeclClass {
                     new STORE(Register.R0, new RegisterOffset(compiler.getData().getGbOffset(), Register.GB)));
             compiler.getData().incrementGbOffset();
         }
-
-        // On ajoute les méthodes de la classe mère, donc en faisant l'hypothèse que
-        // l'on réécrit moins de fonction
-        // Iterator<Integer> it = classeSup.getClassDefinition().getKeys();
-        // while (it.hasNext()) {
-        // int index = it.next();
-        // AbstractDeclMethod declmethod =
-        // classeSup.getClassDefinition().getLabel(index);
-        // Map<Integer, AbstractDeclMethod> classeVTable =
-        // classe.getClassDefinition().getLabelVTable();
-        // String debName;
-        // if (classeVTable.containsValue(declmethod)) {
-        // debName = "code." + classeSup.getName().getName();
-        // classe.getClassDefinition().addLabel(, index);
-        // } else {
-        // debName = "code." + classe.getName().getName();
-        // classe.getClassDefinition().addLabel(declmethod, index);
-        // }
-        // declmethod.addToVTable(compiler, debName);
-
-        // }
-
-        // Version fonctionnel avec HashMap<Integer, AbstractDeclMethod>
-        // for (int key = 0; key < classeSup.getClassDefinition().sizeVTable(); key++) {
-        // AbstractDeclMethod declMethod = classeSup.getClassDefinition().getLabel(key);
-        // Map<Integer, AbstractDeclMethod> classeVTable =
-        // classe.getClassDefinition().getLabelVTable();
-        // String debName;
-        // if (classeVTable.containsValue(declMethod)) {
-        // debName = "code." + classeSup.getName().getName();
-        // classe.getClassDefinition().addLabel(declMethod, key);
-        // } else {
-        // debName = "code." + classeSup.getName().getName();
-        // classe.getClassDefinition().addLabel(declMethod, key);
-        // }
-        // declMethod.addToVTable(compiler, debName);
-        // }
-
-        // for (AbstractDeclMethod aDeclMethod : listDeclMethod.getList()) {
-        // // Table des étiquettes
-        // classe.getClassDefinition().addLabel(aDeclMethod);
-        // // Gen du code
-        // aDeclMethod.addToVTable(compiler, "code." + classe.getName().getName());
-        // if (!classeSup.getName().getName().equals("Object")) {
-        // int key = 2;
-        // while (classeSup.getClassDefinition().hasKey(key)) {
-        // if (!classe.getClassDefinition().hasKey(key)) {
-        // classe.getClassDefinition().addLabel(
-        // classeSup.getClassDefinition().getLabel(key)
-        // );
-        // }
-        // key++;
-        // }
-        // }
     }
 
     private void codeGenInitClass(DecacCompiler compiler) {
