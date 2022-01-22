@@ -74,7 +74,6 @@ public class DeclMethod extends AbstractDeclMethod{
                 envExp.declare(method, newDef);
                 classDef.incNumberOfMethods();
                 Label label = new Label(symb.getName() +"."+ method.getName());
-                System.out.println(label);
                 newDef.setLabel(label);
             } catch (EnvironmentExp.DoubleDefException e) {
                 String message = "can't defined method identifier several times in a class";
