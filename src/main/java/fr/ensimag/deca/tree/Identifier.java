@@ -10,6 +10,7 @@ import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.deca.context.ParamDefinition;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -266,6 +267,9 @@ public class Identifier extends AbstractIdentifier {
                 new LOAD(new RegisterOffset(-2, Register.LB), register));
             compiler.addInstruction(
                 new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), register), register));
+        } else if (getDefinition().isParam()) {
+            compiler.addInstruction(new LOAD(
+                new RegisterOffset(-3, Register.LB), register)); // TODO
         } else {
             compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), register));
         }
@@ -281,14 +285,26 @@ public class Identifier extends AbstractIdentifier {
     }
 
     /**
-     * Methode use to generate code that assign the result
+     * Methode used to generate code that assign the result
      * saved in lastUsedRegister to this identifer
      * 
      * @param compiler
      */
     @Override
     protected void codeGenAssign(DecacCompiler compiler, Register register) {
-        DAddr adress = getExpDefinition().getOperand();
-        compiler.addInstruction(new STORE(register, adress));
+        GPRegister tmpRegister = compiler.getData().getFreeRegister(compiler);
+        if (getDefinition().isField()) {
+            compiler.addInstruction(
+                new LOAD(new RegisterOffset(-2, Register.LB), tmpRegister));
+            compiler.addInstruction(
+                new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), tmpRegister), tmpRegister));
+            compiler.addInstruction(new STORE(register, new RegisterOffset(0, tmpRegister)));
+        } else if (getDefinition().isParam()) {
+
+        } else {
+            DAddr adress = getExpDefinition().getOperand();
+            compiler.addInstruction(new STORE(register, adress));
+        }
+        
     }
 }
