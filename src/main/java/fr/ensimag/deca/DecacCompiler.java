@@ -345,7 +345,6 @@ public class DecacCompiler {
         prog.verifyProgram(this);
         assert(prog.checkAllDecorations());
         if (compilerOptions.getVerification()) {
-            prog.prettyPrint(System.out);
             System.exit(0);
         }
 
