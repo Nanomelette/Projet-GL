@@ -37,7 +37,8 @@ public class DeclParam extends AbstractDeclParam{
     protected void verifyDeclParam(DecacCompiler compiler, EnvironmentExp localEnv, int index)
             throws ContextualError{
             try {
-                ParamDefinition newDef = new ParamDefinition(type.getType(), name.getLocation(), index);
+                ParamDefinition newDef = new ParamDefinition(type.getType(), name.getLocation());
+                newDef.setIndex(index);
                 name.setDefinition(newDef);
                 name.setType(type.getType());
                 localEnv.declare(name.getName(), newDef);
