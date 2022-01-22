@@ -18,4 +18,6 @@ public abstract class AbstractMethodBody extends Tree {
     protected abstract void codeGenMethodBody(DecacCompiler compiler);
 	
 	public abstract void decompile(IndentPrintStream s);
+
+    public abstract int getNbrVarMethodBody();
 }

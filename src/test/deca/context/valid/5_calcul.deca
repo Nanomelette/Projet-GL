@@ -2,15 +2,15 @@
 //    Programme minimaliste traitant une différence et un println.
 //
 // Resultats:
-//    Valeur: -1
+// Valeur: -1.00000e+00
 //
 // Historique:
 //    cree le 01/01/2022
 
 {
         int i = 1;
-        float j = 2;
-        int k;
+        int j = 2;
+        float k; 
         k = i - j;
         println("Valeur: ", k);
 }

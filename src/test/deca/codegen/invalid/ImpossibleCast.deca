@@ -8,5 +8,4 @@ class B extends A {}
 class C extends B {}
 {
     A a;
-    print(a.getX());
 }

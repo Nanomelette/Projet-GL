@@ -18,6 +18,7 @@ public class MethodBody extends AbstractMethodBody{
         this.inst = listInst;
     }
 
+    @Override
     public int getNbrVarMethodBody() {
         return var.size();
     }
