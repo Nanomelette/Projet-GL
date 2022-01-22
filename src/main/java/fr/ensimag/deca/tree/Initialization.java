@@ -39,8 +39,6 @@ public class Initialization extends AbstractInitialization {
         if(this.expression.getType() == null && t.isClass()){
             this.expression.setType(t);
         }
-        
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
 
@@ -48,9 +46,8 @@ public class Initialization extends AbstractInitialization {
     public void decompile(IndentPrintStream s) {
         if(this.getExpression()!=null){
             s.print(" = ");
-            s.print(this.getExpression().decompile());
+            this.getExpression().decompile(s);
         }
-        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
@@ -61,6 +58,6 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        expression.prettyPrint(s, prefix, true);
+        expression.prettyPrint(s, prefix, false);
     }
 }

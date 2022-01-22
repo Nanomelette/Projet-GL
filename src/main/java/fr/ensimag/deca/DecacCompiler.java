@@ -322,14 +322,22 @@ public class DecacCompiler {
         if(right.isInt() && left.isFloat()){
             return right;
         }
-        ClassType rightClassType = (ClassType) right;
-        if(rightClassType.isSubClassOf((ClassType) left)){
+        if (right.sameType(left)) {
             return right;
+        }
+        if (right.isClass() && left.isClass()) {
+            ClassType rightClassType = (ClassType) right;
+            if(rightClassType.isSubClassOf((ClassType) left)){
+                return right;
+            }
         }
         return null;
     }
 
     public boolean subType(DecacCompiler compiler, Type type, Type typeSup){
+        if (type == null) {
+            return false;
+        }
         if (type.sameType(typeSup)) {
             return true;
         }

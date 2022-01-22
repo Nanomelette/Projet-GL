@@ -40,6 +40,7 @@ public class MethodDefinition extends ExpDefinition {
     }
 
     private final Signature signature;
+    private final EnvironmentExp members;
     private Label label;
     
     /**
@@ -53,10 +54,15 @@ public class MethodDefinition extends ExpDefinition {
         super(type, location);
         this.signature = signature;
         this.index = index;
+        this.members = new EnvironmentExp(null);
     }
 
     public Signature getSignature() {
         return signature;
+    }
+
+    public EnvironmentExp getMembers() {
+        return members;
     }
 
     @Override

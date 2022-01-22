@@ -62,7 +62,6 @@ public class DeclField extends AbstractDeclField {
                 ExpDefinition ExpDef = envExpSup.get(fieldName);
                 if (ExpDef != null) {
                     Validate.isTrue(ExpDef.isField(), fieldName.getName() + " isn't a field");
-                    FieldDefinition fieldDef = (FieldDefinition) ExpDef;
                 }
             }
             Type fType = type.verifyType(compiler);
@@ -85,16 +84,40 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
+    public void verifyFieldBody(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
+    throws ContextualError {
+        Symbol fieldName = this.field.getName();
+        EnvironmentType env_Types = compiler.GetEnvTypes();
+        Symbol symbSup = classeSup.getName();
+        ClassType classTypeSup = (ClassType) env_Types.getType(symbSup);
+        Symbol symb = classe.getName();
+        ClassType defType = (ClassType) env_Types.getType(symb);
+        if (classTypeSup != null && defType != null) {
+            ClassDefinition classDefSup = classTypeSup.getDefinition();
+            EnvironmentExp envExpSup = classDefSup.getMembers();
+            ClassDefinition def = defType.getDefinition();
+            EnvironmentExp envExp = def.getMembers();
+            if (envExpSup.equals(envExp.getParent())) {
+                ExpDefinition ExpDef = envExpSup.get(fieldName);
+                if (ExpDef != null) {
+                    Validate.isTrue(compiler.subType(compiler, this.type.getType(), ExpDef.getType()), "Incompatible extension of field "+this.field.getName());
+                }
+            }
+        }
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(" ");
-    	this.field.decompile();
+    	this.field.decompile(s);
     	s.print(" ");
-    	this.init.decompile();
+    	this.init.decompile(s);
     	s.println(";");	
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
+        this.type.prettyPrint(s, prefix, false);
         this.field.prettyPrint(s, prefix, false);
         this.init.prettyPrint(s, prefix, true);
         

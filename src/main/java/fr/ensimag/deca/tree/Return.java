@@ -29,13 +29,14 @@ public class Return extends AbstractInst {
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
 
-            Type typeVoid = compiler.searchSymbol(compiler.getSymbolTable().create("void"));
-
-            if(returnType == typeVoid){
+            if(returnType.isVoid()){
                 throw new ContextualError("return cannot return void type", getLocation());
             }
             Type typeE = e.verifyExpr(compiler, localEnv, currentClass);
             Type type = compiler.assignCompatible(compiler, typeE, returnType);
+            if (type == null) {
+                throw new ContextualError("unexpected return type", e.getLocation());
+            }
             e.setType(type);
     }
 

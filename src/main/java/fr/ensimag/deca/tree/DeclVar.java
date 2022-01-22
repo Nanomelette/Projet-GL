@@ -57,7 +57,7 @@ public class DeclVar extends AbstractDeclVar {
                     ExpDefinition varDefinition= new VariableDefinition(varType, varName.getLocation());
                     varName.setDefinition(varDefinition);
                     varName.setType(varType);
-                    compiler.GetEnvExp().declare(varName.getName(),varDefinition);
+                    localEnv.declare(varName.getName(),varDefinition);
                     initialization.verifyInitialization(compiler, varName.getType(), localEnv , currentClass);
                 } catch (EnvironmentExp.DoubleDefException e) {
                     String message = "L'identificateur ne peut etre defini plus qu'une fois";
