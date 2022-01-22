@@ -2,7 +2,7 @@
 
 for i in $@
 do
-    echo "$i"
+    # echo "$i"
     decac -p "$i" > tmp_test_1.deca
     decac -p tmp_test_1.deca > tmp_test_2.deca
     decac -p tmp_test_2.deca > tmp_test_3.deca
