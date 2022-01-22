@@ -79,14 +79,14 @@ public class DeclMethod extends AbstractDeclMethod{
                 ClassType classType = (ClassType) env_Types.getType(symb);
                 ClassDefinition classDef = classType.getDefinition();
                 EnvironmentExp envExp = classDef.getMembers();
-                int index = classDefSup.getNumberOfFields() + classDef.getNumberOfFields() + 1;
+                int index = classDefSup.getNumberOfMethods() + classDef.getNumberOfMethods() + 2;
                 MethodDefinition newDef = new MethodDefinition(mType, name.getLocation(), sig2, index);
+                Label label = new Label(symb.getName() +"."+ method.getName());
+                newDef.setLabel(label);
                 name.setDefinition(newDef);
                 name.setType(mType);
                 envExp.declare(method, newDef);
                 classDef.incNumberOfMethods();
-                Label label = new Label(symb.getName() +"."+ method.getName());
-                newDef.setLabel(label);
             } catch (EnvironmentExp.DoubleDefException e) {
                 String message = "can't defined method identifier several times in a class";
                 throw new ContextualError(message, name.getLocation());

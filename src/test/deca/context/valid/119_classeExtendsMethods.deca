@@ -1,0 +1,21 @@
+// Description:
+//    Programme minimaliste: une classe et un Main vérifiant que x est défini pour B.
+//
+// Résultats:
+//
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	int f(int x) {
+		return 2*x;
+	}
+}
+
+class B extends A {
+}
+
+{
+	B b = new B();
+	print(b.f(5));
+}

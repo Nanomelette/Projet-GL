@@ -1,4 +1,8 @@
-// classe pas très utile avec 2 champs, partiellement initialisés.
+// Description:
+//    Programme minimaliste: une classe pas très utile avec 2 champs, partiellement initialisés.
+//
+// Historique:
+//    cree le 01/01/2022
 
 class A {
 	int i, j = 1;

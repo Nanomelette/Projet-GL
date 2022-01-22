@@ -1,4 +1,8 @@
-// classe pas très utile, dont le type retourné est A.
+// Description:
+//    Programme minimaliste: une classe pas très utile, dont le type retourné est A.
+//
+// Historique:
+//    cree le 01/01/2022
 
 class A {
 }
