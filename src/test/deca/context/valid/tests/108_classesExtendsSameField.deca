@@ -4,5 +4,5 @@ class A {
 	int i, j = 1;
 }
 class B extends A {
-	int i = 2, j = 3;
+	int i, j = 3;
 }

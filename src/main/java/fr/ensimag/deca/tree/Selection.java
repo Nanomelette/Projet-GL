@@ -37,6 +37,7 @@ public class Selection extends AbstractLValue{
             throws ContextualError {
 
         Type type = this.obj.verifyExpr(compiler, localEnv, currentClass);
+        ClassType currentType = (ClassType) type;
         ClassType classType;
         if(type.isClass()){
             classType = (ClassType) type;
@@ -70,8 +71,8 @@ public class Selection extends AbstractLValue{
             else{
                 throw new ContextualError("Type is not a class", getLocation());
             }
-            if (classType.isSubClassOf(currentClass.getType())){
-                if(currentClass.getType().isSubClassOf(pclassType)){
+            if (classType.isSubClassOf(currentType)){
+                if(currentType.isSubClassOf(pclassType)){
                     setType(fieldDef.getType());
                     this.field.setDefinition(fieldDef);
                     this.obj.setType(fieldDef.getType());
@@ -93,22 +94,22 @@ public class Selection extends AbstractLValue{
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(obj.decompile());
+        obj.decompile(s);
         s.print(".");
-        s.print(field.decompile());        
+        field.decompile(s);        
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        obj.prettyPrint(s, prefix, false);
-        field.prettyPrint(s, prefix, false);
+        this.obj.prettyPrint(s, prefix, false);
+        this.field.prettyPrint(s, prefix, false);
         
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        obj.iter(f);
-        field.iter(f);
+        this.obj.iter(f);
+        this.field.iter(f);
         
     }
 

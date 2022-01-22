@@ -40,7 +40,6 @@ public class BooleanLiteral extends AbstractExpr {
             Type type = new BooleanType(compiler.getSymbolTable().create("boolean"));
             this.setType(type);
             return type;
-            //throw new UnsupportedOperationException("not yet implemented");
     }
 
 

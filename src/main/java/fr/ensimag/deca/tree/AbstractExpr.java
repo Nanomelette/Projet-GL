@@ -115,11 +115,9 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        Type verifType = verifyExpr(compiler, localEnv, currentClass);
-        if(verifType.sameType(returnType)){
-            throw new UnsupportedOperationException("same type");
-        }
-        //throw new UnsupportedOperationException("not yet implemented");
+        Type type = this.verifyExpr(compiler, localEnv, currentClass);
+        this.setType(type);
+        
     }
 
     /**
@@ -136,8 +134,7 @@ public abstract class AbstractExpr extends AbstractInst {
             ClassDefinition currentClass) throws ContextualError {
     	setType(verifyExpr(compiler, localEnv, currentClass));	
 	 	if (!(this.verifyExpr(compiler, localEnv, currentClass).getName().getName().equals("boolean")))
-		    	throw new ContextualError ( "condition type must be boolean",this.getLocation());        
-        //throw new UnsupportedOperationException("not yet implemented");
+		    	throw new ContextualError ( "condition type must be boolean",this.getLocation());
     }
 
     /**

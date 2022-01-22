@@ -80,8 +80,14 @@ public class Main extends AbstractMain {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        declVariables.iter(f);
-        insts.iter(f);
+        for(AbstractDeclVar var : declVariables.getList()){
+            var.iter(f);
+        }
+        for(AbstractInst inst : insts.getList()){
+            inst.iter(f);
+        }
+        //declVariables.iter(f);
+        //insts.iter(f);
     }
  
     @Override

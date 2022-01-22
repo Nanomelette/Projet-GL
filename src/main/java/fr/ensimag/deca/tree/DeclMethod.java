@@ -46,6 +46,7 @@ public class DeclMethod extends AbstractDeclMethod{
         this.methodBody = methodBody;
     }
 
+    @Override
     protected void verifyMethod(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
             throws ContextualError{
         Symbol method = this.name.getName();
@@ -65,10 +66,10 @@ public class DeclMethod extends AbstractDeclMethod{
                 if (compiler.subType(compiler, mType, typeSup)) {
                     Signature sig = methodDef.getSignature();
                     if (!sig.sameSignature(sig2)) {
-                        throw new ContextualError(method.getName()+"must have same signature", this.getLocation());
+                        throw new ContextualError(method.getName()+" must have same signature", this.getLocation());
                     }
                 } else {
-                    throw new ContextualError(method.getName()+"must have same type", this.getLocation());
+                    throw new ContextualError(method.getName()+" must have same type", this.getLocation());
                 }
             }
             try {
@@ -87,24 +88,31 @@ public class DeclMethod extends AbstractDeclMethod{
                 throw new ContextualError(message, name.getLocation());
             }
         } else {
-            throw new ContextualError(symbSup.getName()+"can't have null type", classeSup.getLocation());
+            throw new ContextualError(symbSup.getName()+" can't have null type", classeSup.getLocation());
         }
     }
 
+    @Override
     protected void verifyMethodBody(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
             throws ContextualError{
-                this.methodBody.verifyMethodBody(compiler);
+                ClassDefinition currentClass = classe.getClassDefinition();
+                EnvironmentExp EnvExpClass = currentClass.getMembers();
+                MethodDefinition nameDef = name.getMethodDefinition();
+                EnvironmentExp localEnvInit = nameDef.getMembers();
+                this.listDeclParam.verifyListDeclParam(compiler, localEnvInit);
+                EnvironmentExp localEnv = localEnvInit.empilement(EnvExpClass);
+                this.methodBody.verifyMethodBody(compiler, localEnv, currentClass, this.type.getType());
             }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(type.decompile());
+        type.decompile(s);
         s.print(" ");
-        s.print(name.decompile());
+        name.decompile(s);
         s.print("(");
-        s.print(listDeclParam.decompile());
+        listDeclParam.decompile(s);
         s.print(")");
-        s.print(methodBody.decompile());
+        methodBody.decompile(s);
     }
 
     @Override

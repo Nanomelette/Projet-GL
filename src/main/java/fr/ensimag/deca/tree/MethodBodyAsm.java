@@ -45,10 +45,9 @@ public class MethodBodyAsm extends AbstractMethodBody {
 
 
     @Override
-    protected void verifyMethodBody(DecacCompiler compiler) throws ContextualError {
+    protected void verifyMethodBody(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType) throws ContextualError {
         
-        Type type = new StringType(compiler.getSymbolTable().create("String"));
-        this.code.setType(type);
+        this.code.setType(this.code.verifyExpr(compiler, localEnv, currentClass));
         
     }
 

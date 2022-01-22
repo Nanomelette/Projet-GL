@@ -47,7 +47,6 @@ public abstract class AbstractPrint extends AbstractInst {
 				throw new ContextualError("Print contextual Error", expr.getLocation()) ;
 			}
 		}
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

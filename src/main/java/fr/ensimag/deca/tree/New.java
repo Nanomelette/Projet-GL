@@ -52,7 +52,7 @@ public class New extends AbstractExpr {
     @Override
     public void decompile(IndentPrintStream s) {     
         s.print("new");
-        s.print(class_.decompile());
+        class_.decompile(s);
         s.print("()");
     }
 
