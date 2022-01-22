@@ -10,15 +10,12 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import net.bytebuddy.utility.dispatcher.JavaDispatcher.Instance;
 
 public class InstanceOf extends AbstractExpr {
 

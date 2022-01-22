@@ -1,6 +1,5 @@
 package fr.ensimag.deca.context;
 
-import fr.ensimag.deca.tree.AbstractDeclMethod;
 import fr.ensimag.deca.tree.Location;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Label;
@@ -10,8 +9,6 @@ import fr.ensimag.ima.pseudocode.RegisterOffset;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import javax.swing.AbstractCellEditor;
 
 import org.apache.commons.lang.Validate;
 

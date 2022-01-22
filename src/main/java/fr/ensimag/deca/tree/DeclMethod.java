@@ -26,7 +26,7 @@ import fr.ensimag.ima.pseudocode.LabelOperand;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.ima.pseudocode.Label;
+
 
 import java.io.PrintStream;
 

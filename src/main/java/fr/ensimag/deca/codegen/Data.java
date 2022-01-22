@@ -1,9 +1,6 @@
 package fr.ensimag.deca.codegen;
 
 import java.util.Iterator;
-
-import org.apache.log4j.Logger;
-
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
@@ -23,7 +20,6 @@ import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 public class Data {
-    private static final Logger LOG = Logger.getLogger(Data.class);
 
     private int maxRegister = 15;
     // When storagePointer < maxRegister, the storage is in a register,

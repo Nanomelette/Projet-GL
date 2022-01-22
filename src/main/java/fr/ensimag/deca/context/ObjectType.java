@@ -1,7 +1,6 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable;
-import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 public class ObjectType extends Type {
 

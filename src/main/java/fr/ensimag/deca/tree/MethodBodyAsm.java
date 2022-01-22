@@ -4,17 +4,11 @@ import java.io.PrintStream;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.Signature;
-import fr.ensimag.deca.context.StringType;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.InlinePortion;
-import fr.ensimag.ima.pseudocode.Line;
 
 
 public class MethodBodyAsm extends AbstractMethodBody {

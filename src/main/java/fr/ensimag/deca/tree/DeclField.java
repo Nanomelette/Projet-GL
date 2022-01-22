@@ -15,11 +15,7 @@ import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.deca.tree.Visibility;
-
 import java.io.PrintStream;
-import java.io.ObjectInputStream.GetField;
-
 import org.apache.commons.lang.Validate;
 
 public class DeclField extends AbstractDeclField {

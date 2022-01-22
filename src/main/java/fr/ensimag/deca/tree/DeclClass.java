@@ -7,18 +7,14 @@ import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.LabelOperand;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
-import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.BSR;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
@@ -29,10 +25,7 @@ import fr.ensimag.ima.pseudocode.instructions.SEQ;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.instructions.SUBSP;
 import fr.ensimag.ima.pseudocode.instructions.TSTO;
-
 import java.io.PrintStream;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).

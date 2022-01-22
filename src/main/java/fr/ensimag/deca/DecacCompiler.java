@@ -2,7 +2,6 @@ package fr.ensimag.deca;
 
 import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.context.ClassType;
-import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.context.Type;
@@ -23,10 +22,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ConcurrentModificationException;
-
-import javax.naming.ContextNotEmptyException;
-
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
