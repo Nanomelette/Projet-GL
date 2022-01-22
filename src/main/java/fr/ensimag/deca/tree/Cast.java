@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
@@ -80,7 +81,8 @@ public class Cast extends AbstractExpr {
     private void isInstanceOf(DecacCompiler compiler, Label doCast) {
         // register contient l'adresse de l'objet à tester dans le tas
         GPRegister register = compiler.getData().getLastUsedRegister();
-        ClassDefinition typeCible = type.getClassDefinition();
+        ClassType classType = (ClassType)type.getType();
+        ClassDefinition typeCible = classType.getDefinition();
         compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
         compiler.addInstruction(new BEQ(doCast));
         while (typeCible.getSuperClass() != null) {

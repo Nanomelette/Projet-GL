@@ -81,7 +81,9 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        arguments.iter(f);
+        for (AbstractExpr i : arguments.getList()) {
+            i.iter(f);
+        }
     }
 
     @Override
