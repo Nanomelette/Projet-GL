@@ -72,7 +72,11 @@ public class EnvironmentType {
     }
     
     public Type getType(Symbol s){
-    	return this.env_Type.get(s).getType();
+    	TypeDefinition typeDef = this.env_Type.get(s);
+        if (typeDef == null) {
+            return null;
+        }
+        return typeDef.getType();
     }
 
     public TypeDefinition get(Symbol create) {
