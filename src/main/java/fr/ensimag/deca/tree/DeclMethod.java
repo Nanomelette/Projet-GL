@@ -14,6 +14,7 @@ import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.Label;
 
 import java.io.PrintStream;
 
@@ -37,6 +38,7 @@ public class DeclMethod extends AbstractDeclMethod{
     @Override
     protected void verifyMethod(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
             throws ContextualError{
+        
         Symbol method = this.name.getName();
         Type mType = this.type.verifyType(compiler);
         EnvironmentType env_Types = compiler.GetEnvTypes();
@@ -71,6 +73,9 @@ public class DeclMethod extends AbstractDeclMethod{
                 name.setType(mType);
                 envExp.declare(method, newDef);
                 classDef.incNumberOfMethods();
+                Label label = new Label(symb.getName() + method.getName());
+                System.out.println(label);
+                newDef.setLabel(label);
             } catch (EnvironmentExp.DoubleDefException e) {
                 String message = "can't defined method identifier several times in a class";
                 throw new ContextualError(message, name.getLocation());
