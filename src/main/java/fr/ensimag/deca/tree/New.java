@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import static org.mockito.Mockito.inOrder;
 
 import java.io.PrintStream;
 
