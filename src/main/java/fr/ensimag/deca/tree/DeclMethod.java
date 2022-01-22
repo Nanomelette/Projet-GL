@@ -223,7 +223,7 @@ public class DeclMethod extends AbstractDeclMethod{
                 new TSTO(
                     compiler.getData().getNumberOfUsedRegister() +
                     compiler.getData().getMaxStackLength() +
-                    ((MethodBody)methodBody).getNbrVarMethodBody()
+                    ((AbstractMethodBody)methodBody).getNbrVarMethodBody()
                 )
             );
         }

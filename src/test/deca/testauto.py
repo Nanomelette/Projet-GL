@@ -9,15 +9,16 @@ print("3. La verification de la sortie VS la sortie attendue est implémentée p
 
 #Lancement des fichiers situés dans invalid
 
-files = glob.glob('/home/antoine/Projet_GL/src/test/deca/**/invalid/*.deca',
+files = glob.glob('./src/test/deca/**/invalid/*.deca',
                    recursive = True)
+
 for file in files:
     print("Fichier en cours de compilation invalid : " + file)
     subprocess.run(['decac',file])
 
 #Lancement des fichiers situés dans valid
 
-files = glob.glob('/home/antoine/Projet_GL/src/test/deca/**/valid/*.deca',
+files = glob.glob('./src/test/deca/**/valid/*.deca',
                    recursive = True)
 for file in files:
     print("Fichier en cours de compilation valid : " + file)
@@ -25,13 +26,13 @@ for file in files:
 
 
 #On lance ensuite les tests des .ass qui sont dans valid
-files = glob.glob('/home/antoine/Projet_GL/src/test/deca/**/valid/*.ass',
+files = glob.glob('./src/test/deca/**/valid/*.ass',
                    recursive = True)
 for file in files:
     print("Fichier en cours d'execution : " + file)
 
     #if listant tous les fichiers spéciaux qui nécssitent des inputs pour être testés
-    if file == '/home/antoine/Projet_GL/src/test/deca/codegen/valid/ReadFloat.ass' :
+    if file == './src/test/deca/codegen/valid/ReadFloat.ass' :
         print ("Test avec un Float : ")
         cmd = subprocess.run(['ima',file], input='1.0', text=True)
         print (cmd)
@@ -42,11 +43,11 @@ for file in files:
 
 
 #On lance ensuite les tests des .ass qui sont dans invalid
-files = glob.glob('/home/antoine/Projet_GL/src/test/deca/**/invalid/*.ass',
+files = glob.glob('./src/test/deca/**/invalid/*.ass',
                    recursive = True)
 for file in files:
     print("Fichier en cours d'execution : " + file)
-    if file == '/home/antoine/Projet_GL/src/test/deca/codegen/valid/ReadFloat.ass' :
+    if file == './src/test/deca/codegen/valid/ReadFloat.ass' :
         print ("Test avec un Float : ")
         subprocess.run(['ima',file], input='1.0', text=True)
 

@@ -64,6 +64,10 @@ public class MethodBodyAsm extends AbstractMethodBody {
     protected void codeGenSaveRestore(DecacCompiler compiler) {
         // Nothing to do
     }
+    
+    public int getNbrVarMethodBody() {
+        return 0;
+    }
 
     
 }
