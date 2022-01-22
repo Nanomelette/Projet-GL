@@ -1,0 +1,10 @@
+// Description:
+//    Erreur du 11.1 : Division entière par zéro
+//
+// Resultats:
+// Error: zero_division   
+
+{
+    int num = (1+1*(1+1*(1+1)))/(2-2);
+
+}

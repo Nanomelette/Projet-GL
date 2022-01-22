@@ -1,0 +1,11 @@
+// Description:
+//    Erreur du 11.1 : débordement arithmétique flottant
+//
+// Resultats:
+// Error: overflow_error
+
+{
+    float num = 100000000000000000000000000000.0;
+    float denom = 0.0000000000000000000000000000001;
+    float res = num / denom;
+}
