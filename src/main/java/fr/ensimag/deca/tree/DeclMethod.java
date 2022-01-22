@@ -180,28 +180,22 @@ public class DeclMethod extends AbstractDeclMethod{
          */
         methodBody.codeGenMethodBody(compiler);
 
-        if (!(compiler.getCompilerOptions().getNoCheck())) {
-            compiler.addInstruction(
-                new WSTR(
-                    "Error: method " + name.getMethodDefinition().getLabel().toString() + " needs a return"
-                )
-            );
+        if (!(name.getMethodDefinition().getType().isVoid())) {
+            if (!(compiler.getCompilerOptions().getNoCheck())) {
+                compiler.addInstruction(
+                    new WSTR(
+                        "Error: method " + name.getMethodDefinition().getLabel().toString() + " needs a return"
+                    )
+                );
+            }
+            compiler.addInstruction(new WNL());
+            compiler.addInstruction(new ERROR());
         }
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());
 
-        // Restauration des registres
         compiler.addLabel(labelReturn);
 
+        // Restauration et sauvegarde des registres si besoin
         methodBody.codeGenSaveRestore(compiler);
-        // compiler.addComment("Restauration des registres");
-        // compiler.getData().popUsedRegisters(compiler);
-        // compiler.getData().setLastUsedRegister(Register.R0);
-        // compiler.addInstruction(new RTS());
-
-        // // Sauvegarde des registres
-        // compiler.getData().pushUsedRegisters(compiler);
-        // compiler.addCommentAtFirst("Sauvegarde des registres");
 
         // TSTO
         /**

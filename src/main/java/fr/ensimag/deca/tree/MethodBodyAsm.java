@@ -9,6 +9,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.InlinePortion;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 
 
 public class MethodBodyAsm extends AbstractMethodBody {
@@ -48,7 +49,7 @@ public class MethodBodyAsm extends AbstractMethodBody {
 
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler) {
-        compiler.add(new InlinePortion(code.toString()));
+        compiler.add(new InlinePortion("    "+code.getValue()));
     }
 
 
@@ -62,9 +63,9 @@ public class MethodBodyAsm extends AbstractMethodBody {
 
     @Override
     protected void codeGenSaveRestore(DecacCompiler compiler) {
-        // Nothing to do
+        compiler.addInstruction(new RTS());
     }
-    
+
     public int getNbrVarMethodBody() {
         return 0;
     }

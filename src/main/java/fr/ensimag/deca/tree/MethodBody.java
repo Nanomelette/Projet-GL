@@ -73,6 +73,7 @@ public class MethodBody extends AbstractMethodBody{
 
     @Override
     protected void codeGenSaveRestore(DecacCompiler compiler) {
+        // Restauration des registres
         compiler.addComment("Restauration des registres");
         compiler.getData().popUsedRegisters(compiler);
         compiler.getData().setLastUsedRegister(Register.R0);

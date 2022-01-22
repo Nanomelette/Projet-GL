@@ -1,0 +1,16 @@
+
+
+
+
+// Ok
+
+class A {
+    void p() asm(
+    "LOAD #1, R1
+    WINT");
+} 
+
+{
+    A a = new A();
+    a.p();
+}
