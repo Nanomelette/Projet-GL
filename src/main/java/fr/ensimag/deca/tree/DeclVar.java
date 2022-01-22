@@ -99,7 +99,7 @@ public class DeclVar extends AbstractDeclVar {
         Identifier var = (Identifier) getVarName();
         var.getExpDefinition().setOperand(address);
         compiler.getData().incrementGbOffset();
-        initialization.codeGenInitVar(compiler, address);
+        initialization.codeGenInitVar(compiler, address, var.getType());
         compiler.getData().restoreData();
     }
 
@@ -109,7 +109,7 @@ public class DeclVar extends AbstractDeclVar {
         Identifier var = (Identifier) getVarName();
         var.getExpDefinition().setOperand(address);
         // compiler.getData().incrementLb();
-        initialization.codeGenInitVar(compiler, address);
+        initialization.codeGenInitVar(compiler, address, var.getType());
         compiler.getData().restoreData();
     }
 }

@@ -141,7 +141,7 @@ public class Data {
             compiler.addInstructionAtFirst(new BOV(labels.stack_overflow_error));
             compiler.addInstructionAtFirst(new TSTO(gBOffset + maxStackLength - 1));
         }
-        compiler.addInstructionAtFirst(null, "start main program");
+        compiler.addInstructionAtFirst(null, "Début du programme");
     }
 
     public void addBottom(DecacCompiler compiler) {
@@ -202,7 +202,7 @@ public class Data {
     }
 
     public void restorelBOffset() {
-        lBOffset = 0;
+        lBOffset = 1;
     }
 
     public void setLabelReturn(Label labelReturn) {

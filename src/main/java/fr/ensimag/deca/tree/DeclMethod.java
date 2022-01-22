@@ -183,7 +183,7 @@ public class DeclMethod extends AbstractDeclMethod{
         if (!(compiler.getCompilerOptions().getNoCheck())) {
             compiler.addInstruction(
                 new WSTR(
-                    "Error: method " + labelReturn.toString() + " needs a return"
+                    "Error: method " + name.getMethodDefinition().getLabel().toString() + " needs a return"
                 )
             );
         }
