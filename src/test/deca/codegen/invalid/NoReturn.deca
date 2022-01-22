@@ -1,0 +1,16 @@
+// Description:
+//    Erreur du 11.1 : abscence de return lors de l'exécution d'une méthode
+//
+// Resultats:
+// Error: method A.getX needs a return
+
+class A {
+    int x = 1;
+    int getX() {
+        int a = 2;
+    }
+}
+{
+    A a = new A();
+    print(a.getX());
+}
