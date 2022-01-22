@@ -51,7 +51,7 @@ public class EnvironmentType {
 		AbstractIdentifier identObject = new Identifier (symbObject) ;
 		AbstractIdentifier identOther  = new Identifier(symbOther);
 		
-		ParamDefinition defOther = new ParamDefinition(classTypeObject, Location.BUILTIN);
+		ParamDefinition defOther = new ParamDefinition(classTypeObject, Location.BUILTIN, 1);
 		
 		identOther.setDefinition(defOther);
 		
