@@ -37,7 +37,7 @@ public class New extends AbstractExpr {
             throws ContextualError {
         Type type = compiler.searchSymbol(this.class_.getName());
         if(type == null){
-            throw new ContextualError("class"+this.class_.getName().getName()+"not defined", getLocation());
+            throw new ContextualError("class "+this.class_.getName().getName()+" not defined", getLocation());
         }
         if(!type.isClass()){
             throw new ContextualError("the type of the class must be a class", getLocation());
