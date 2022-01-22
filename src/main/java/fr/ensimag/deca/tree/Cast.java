@@ -30,6 +30,7 @@ public class Cast extends AbstractExpr {
         }
         Type type = this.type.verifyType(compiler);
         Type expressionType = this.e.verifyExpr(compiler, localEnv, currentClass);
+        Type newType;
         if(type.isVoid()){
             throw new ContextualError("cannot cast void type", getLocation());
         }
@@ -37,13 +38,18 @@ public class Cast extends AbstractExpr {
             throw new ContextualError("cannot cast null type", getLocation());
         }
         if(type == expressionType){
+            this.setType(type);
             return type;
         }
         if(compiler.assignCompatible(compiler, type, expressionType)!= null){
-            return compiler.assignCompatible(compiler, type, expressionType);
+            newType = compiler.assignCompatible(compiler, type, expressionType);
+            this.setType(newType);
+            return newType;
         }
         if(compiler.assignCompatible(compiler, expressionType, type)!= null){
-            return compiler.assignCompatible(compiler, expressionType, type);
+            newType = compiler.assignCompatible(compiler, expressionType, type);
+            this.setType(newType);
+            return newType;
         }
         throw new ContextualError("impossible cast", getLocation());
     }
