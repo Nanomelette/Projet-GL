@@ -43,7 +43,7 @@ public class Data {
     }
 
     public int getNumberOfUsedRegister() {
-        return Math.min(maxRegister - 2, numberOfUsedRegister);
+        return Math.min(maxRegister - 1, numberOfUsedRegister);
     }
 
     public Labels getLabels() {
@@ -183,16 +183,16 @@ public class Data {
 
     public void popUsedRegisters(DecacCompiler compiler) {
         int tmp = getNumberOfUsedRegister();
-        while (tmp > 0) {
-            compiler.addInstruction(new POP(Register.getR(1 + tmp)));
+        while (tmp > 1) {
+            compiler.addInstruction(new POP(Register.getR(tmp)));
             tmp--;
         }
     }
 
     public void pushUsedRegisters(DecacCompiler compiler) {
         int tmp = getNumberOfUsedRegister();
-        while (tmp > 0) {
-            compiler.addInstructionAtFirst(new PUSH(Register.getR(1 + tmp)));
+        while (tmp > 1) {
+            compiler.addInstructionAtFirst(new PUSH(Register.getR(tmp)));
             tmp--;
         }
     }
