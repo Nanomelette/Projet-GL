@@ -8,6 +8,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 
 public class MethodBody extends AbstractMethodBody{
     private ListDeclVar var;
@@ -24,7 +26,6 @@ public class MethodBody extends AbstractMethodBody{
 
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -67,6 +68,18 @@ public class MethodBody extends AbstractMethodBody{
             AbstractIdentifier class1, Type return1) throws ContextualError {
         // TODO Auto-generated method stub
         
+    }
+
+    @Override
+    protected void codeGenSaveRestore(DecacCompiler compiler) {
+        compiler.addComment("Restauration des registres");
+        compiler.getData().popUsedRegisters(compiler);
+        compiler.getData().setLastUsedRegister(Register.R0);
+        compiler.addInstruction(new RTS());
+
+        // Sauvegarde des registres
+        compiler.getData().pushUsedRegisters(compiler);
+        compiler.addCommentAtFirst("Sauvegarde des registres");
     }
  
 }

@@ -192,14 +192,16 @@ public class DeclMethod extends AbstractDeclMethod{
 
         // Restauration des registres
         compiler.addLabel(labelReturn);
-        compiler.addComment("Restauration des registres");
-        compiler.getData().popUsedRegisters(compiler);
-        compiler.getData().setLastUsedRegister(Register.R0);
-        compiler.addInstruction(new RTS());
 
-        // Sauvegarde des registres
-        compiler.getData().pushUsedRegisters(compiler);
-        compiler.addCommentAtFirst("Sauvegarde des registres");
+        methodBody.codeGenSaveRestore(compiler);
+        // compiler.addComment("Restauration des registres");
+        // compiler.getData().popUsedRegisters(compiler);
+        // compiler.getData().setLastUsedRegister(Register.R0);
+        // compiler.addInstruction(new RTS());
+
+        // // Sauvegarde des registres
+        // compiler.getData().pushUsedRegisters(compiler);
+        // compiler.addCommentAtFirst("Sauvegarde des registres");
 
         // TSTO
         /**
