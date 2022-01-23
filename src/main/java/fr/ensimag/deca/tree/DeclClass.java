@@ -165,27 +165,27 @@ public class DeclClass extends AbstractDeclClass {
         }
     }
 
-    private void codeGenInitClass(DecacCompiler compiler) {
-        compiler.addLabel(
-                new Label("code.Object.equals"));
-        compiler.addInstruction(
-                new LOAD(
-                        new RegisterOffset(-2, Register.LB),
-                        Register.R0));
-        compiler.addInstruction(
-                new LOAD(
-                        new RegisterOffset(-3, Register.LB),
-                        Register.R1));
-        compiler.addInstruction(
-                new CMP(Register.R0, Register.R1));
+    // private void codeGenInitClass(DecacCompiler compiler) {
+    //     compiler.addLabel(
+    //             new Label("code.Object.equals"));
+    //     compiler.addInstruction(
+    //             new LOAD(
+    //                     new RegisterOffset(-2, Register.LB),
+    //                     Register.R0));
+    //     compiler.addInstruction(
+    //             new LOAD(
+    //                     new RegisterOffset(-3, Register.LB),
+    //                     Register.R1));
+    //     compiler.addInstruction(
+    //             new CMP(Register.R0, Register.R1));
 
-        compiler.addInstruction(
-                new SEQ(Register.R0));
-        compiler.getData().setLastUsedRegister(Register.R0);
-        compiler.addInstruction(
-                new RTS());
+    //     compiler.addInstruction(
+    //             new SEQ(Register.R0));
+    //     compiler.getData().setLastUsedRegister(Register.R0);
+    //     compiler.addInstruction(
+    //             new RTS());
 
-    }
+    // }
 
     @Override
     protected void codeGenDeclClass(DecacCompiler compiler) {
@@ -255,7 +255,7 @@ public class DeclClass extends AbstractDeclClass {
 
         // Codage des méthodes
         // Ajout de l'etiquette de code.Object.equals
-        codeGenInitClass(compiler);
+        // codeGenInitClass(compiler);
         listDeclMethod.codeGenListDeclMethod(compiler);
 
     }

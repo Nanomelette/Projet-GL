@@ -9,13 +9,16 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.INT;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 public class Cast extends AbstractExpr {
     private AbstractIdentifier type;
@@ -81,13 +84,18 @@ public class Cast extends AbstractExpr {
     private void isInstanceOf(DecacCompiler compiler, Label doCast) {
         // register contient l'adresse de l'objet à tester dans le tas
         GPRegister register = compiler.getData().getLastUsedRegister();
-        ClassType classType = (ClassType)type.getType();
-        ClassDefinition typeCible = classType.getDefinition();
-        compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
+        // ClassDefinition typeCible = type.getClassDefinition();
+        ClassType cType = (ClassType)e.getType();
+        ClassDefinition typeCible = cType.getDefinition();
+        ClassType bla = (ClassType)type.getType();
+        ClassDefinition alzn = bla.getDefinition();
+        GPRegister reg = compiler.getData().getFreeRegister(compiler);
+        compiler.addInstruction(new LOAD(alzn.getAddressVTable(), reg));
+        compiler.addInstruction(new CMP(typeCible.getAddressVTable(), reg));
         compiler.addInstruction(new BEQ(doCast));
         while (typeCible.getSuperClass() != null) {
             typeCible = typeCible.getSuperClass();
-            compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
+            compiler.addInstruction(new CMP(typeCible.getAddressVTable(), reg));
             compiler.addInstruction(new BEQ(doCast));
         }
     }
@@ -108,11 +116,11 @@ public class Cast extends AbstractExpr {
                 compiler.incrNLabel();
                 // Tester en assembleur si e est une instance de type
                 isInstanceOf(compiler, doCast);
-                compiler.addLabel(doCast);
                 // On cast
                 if (!(compiler.getCompilerOptions().getNoCheck())) {
                     compiler.addInstruction(new BRA(new Label("cast_error")));
                 }
+                compiler.addLabel(doCast);
             }
         } else {
             if (!(compiler.getCompilerOptions().getNoCheck())) { 

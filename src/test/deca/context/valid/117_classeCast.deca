@@ -8,13 +8,23 @@
 //    cree le 01/01/2022
 
 class A {
+    int x = 1;
 }
 
 class B extends A {
+    int x = 2;
 }
 
 {
-	A a = new A();
-	B b = (B)(a);
-	A c = (A)(b);
+	// A a = new A();
+	// B b = (B)(a);
+	// A c = (A)(b);
+
+    B b = new B();
+    A a = (A)(b);
+    print(b.x);
+    print(a.x);
+
+    // int a = 1;
+    // float f = (float)(a);
 }
