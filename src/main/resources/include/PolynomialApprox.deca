@@ -159,7 +159,7 @@ class Polynomial {
             return 0.0;
         }
         a = (1.0f + sqrt(1.0f-x*x));
-        return 2 * atan_poly(x/a);
+        return 2 * atan(x/a);
     }
 
     //
@@ -169,12 +169,12 @@ class Polynomial {
     float ulp(float x){
         float e;
 		if (x ==0 ) {
-			return 0;
+			return 0.0;
 		}
 		else {
 			e = getExponent(x);
 			if (e >= -127) {
-				return pow(2.0f, e-23);
+				return pow(2.0f, (int)(e-23));
 			}
 			
 			else {
