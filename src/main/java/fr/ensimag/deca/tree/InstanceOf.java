@@ -14,6 +14,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -64,22 +65,22 @@ public class InstanceOf extends AbstractExpr {
 
     // private void isInstanceOf(DecacCompiler compiler) {
     //     e.codeGenInst(compiler);
-    //     Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
+    //     Label false_instanceof = new Label("true.instanceof."+compiler.getNLabel());
     //     // register contient l'adresse de l'objet à tester dans le tas
     //     GPRegister register = compiler.getData().getLastUsedRegister();
     //     ClassDefinition typeCible = type.getClassDefinition();
     //     compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
-    //     compiler.addInstruction(new BEQ(true_instanceof));
+    //     compiler.addInstruction(new BEQ(false_instanceof));
     //     while (typeCible.getSuperClass() != null) {
     //         typeCible = typeCible.getSuperClass();
     //         compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
-    //         compiler.addInstruction(new BEQ(true_instanceof));
+    //         compiler.addInstruction(new BEQ(false_instanceof));
     //     }
     // }
 
     private void isInstanceOf(DecacCompiler compiler) {
         e.codeGenInst(compiler);
-        Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
+        Label false_instanceof = new Label("true.instanceof."+compiler.getNLabel());
         ClassType cType = (ClassType)e.getType();
         ClassDefinition typeCible = cType.getDefinition();
         ClassType bla = (ClassType)type.getType();
@@ -87,22 +88,22 @@ public class InstanceOf extends AbstractExpr {
         GPRegister reg = compiler.getData().getFreeRegister(compiler);
         compiler.addInstruction(new LOAD(alzn.getAddressVTable(), reg));
         compiler.addInstruction(new CMP(typeCible.getAddressVTable(), reg));
-        compiler.addInstruction(new BEQ(true_instanceof));
+        compiler.addInstruction(new BEQ(false_instanceof));
         while (typeCible.getSuperClass() != null) {
             typeCible = typeCible.getSuperClass();
             compiler.addInstruction(new CMP(typeCible.getAddressVTable(), reg));
-            compiler.addInstruction(new BEQ(true_instanceof));
+            compiler.addInstruction(new BEQ(false_instanceof));
         }
     }
 
     @Override
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
-        Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
+        Label false_instanceof = new Label("false.instanceof."+compiler.getNLabel());
         Label end_instanceof = new Label("end.instanceof."+compiler.getNLabel());
         isInstanceOf(compiler);
         compiler.addInstruction(new BRA(end_instanceof));
-        compiler.addLabel(true_instanceof);
-        if (b) {
+        compiler.addLabel(false_instanceof);
+        if (!b) {
             compiler.addInstruction(new BRA(E));
         }
         compiler.addLabel(end_instanceof);
@@ -111,13 +112,13 @@ public class InstanceOf extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
+        Label false_instanceof = new Label("false.instanceof."+compiler.getNLabel());
         Label end_instanceof = new Label("end.instanceof."+compiler.getNLabel());
         isInstanceOf(compiler);
         GPRegister resultRegister = compiler.getData().getFreeRegister(compiler);
         compiler.addInstruction(new LOAD(0, resultRegister));
         compiler.addInstruction(new BRA(end_instanceof));
-        compiler.addLabel(true_instanceof);
+        compiler.addLabel(false_instanceof);
         compiler.addInstruction(new LOAD(1, resultRegister));
         compiler.getData().setLastUsedRegister(resultRegister);
         compiler.addLabel(end_instanceof);
