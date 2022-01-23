@@ -14,7 +14,7 @@ files = glob.glob('./src/test/deca/**/invalid/*.deca',
 
 for file in files:
     print("Fichier en cours de compilation invalid : " + file)
-    subprocess.run(['decac',file])
+    subprocess.run(['decac','-r','4',file])
 
 #Lancement des fichiers situés dans valid
 
@@ -22,7 +22,7 @@ files = glob.glob('./src/test/deca/**/valid/*.deca',
                    recursive = True)
 for file in files:
     print("Fichier en cours de compilation valid : " + file)
-    subprocess.run(['decac',file])
+    subprocess.run(['decac','-r','4',file])
 
 
 #On lance ensuite les tests des .ass qui sont dans valid
@@ -35,11 +35,11 @@ for file in files:
     if file == './src/test/deca/codegen/valid/ReadFloat.ass' :
         print ("Test avec un Float : ")
         cmd = subprocess.run(['ima',file], input='1.0', text=True)
-        print (cmd)
+        # print (cmd)
 
     else :
         cmd = subprocess.run(['ima',file])
-        print (cmd)
+        # print (cmd)
 
 
 #On lance ensuite les tests des .ass qui sont dans invalid
