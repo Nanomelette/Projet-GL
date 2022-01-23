@@ -2,7 +2,7 @@
 //    Programme minimaliste: une classe et des Cast dans le Main.
 //
 // Résultats:
-//	Classes différentes
+//	Classes differentes
 //
 // Historique:
 //    cree le 01/01/2022
@@ -13,6 +13,6 @@ class B extends A { }
    A a = new A();
    B b = new B();
    if (a != b) {
-        println("Classes différentes");
+        println("Classes differentes");
    }
 }

@@ -1,0 +1,14 @@
+// Description:
+//     Table de vérité pour AND
+
+// Résultats:
+// pas ok
+
+{
+    boolean res = false && false;
+    if (res) {
+        println("ok");
+    } else {
+        println("pas ok");
+    }
+}

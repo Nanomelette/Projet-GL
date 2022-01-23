@@ -1,0 +1,17 @@
+// Description:
+//     Lecture d'un float
+
+// Résultat:
+//     float 
+//     non 
+
+// Historique:
+//     cree le 14/01/2022
+
+{
+    if (readFloat() == 1.0) {
+        println("ok");
+    } else {
+        println("okok");
+    }
+}
