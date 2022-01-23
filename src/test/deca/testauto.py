@@ -8,7 +8,7 @@ print("3. La verification de la sortie VS la sortie attendue est implémentée p
 #On commence par compiler tous les fichiers en .deca
 
 #Lancement des fichiers situés dans invalid
-'''
+
 files = glob.glob('./src/test/deca/**/invalid/*.deca',
                    recursive = True)
 
@@ -23,7 +23,7 @@ files = glob.glob('./src/test/deca/**/valid/*.deca',
 for file in files:
     print("Fichier en cours de compilation valid : " + file)
     subprocess.run(['decac',file])
-'''
+
 
 #On lance ensuite les tests des .ass qui sont dans valid
 files = glob.glob('./src/test/deca/**/valid/*.ass',
