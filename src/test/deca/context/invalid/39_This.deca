@@ -2,12 +2,12 @@
 //    Affectation et typage
 //
 // Resultats:
-//	Ligne 12: ContextualError: field void
+//	Ligne 12: ContextualError: Current class must not be null
 // 
 // Historique:
 //    cree le 01/01/2022
 
-class A {
-	// Doit etre refuse.
-	void x;
+{
+   // Doit etre refuse.
+   int x = this.x;
 }

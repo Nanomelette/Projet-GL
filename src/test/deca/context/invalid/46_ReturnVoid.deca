@@ -2,12 +2,14 @@
 //    Affectation et typage
 //
 // Resultats:
-//	Ligne 12: ContextualError: field void
+//	Ligne 13: ContextualError: returned type can't be void
 // 
 // Historique:
 //    cree le 01/01/2022
 
 class A {
-	// Doit etre refuse.
-	void x;
+	void f() {
+		// Doit etre refuse.
+		return 1;
+	}
 }

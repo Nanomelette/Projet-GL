@@ -2,12 +2,15 @@
 //    Affectation et typage
 //
 // Resultats:
-//	Ligne 12: ContextualError: field void
+//	Ligne 15: ContextualError: f not defined
 // 
 // Historique:
 //    cree le 01/01/2022
 
 class A {
-	// Doit etre refuse.
-	void x;
+}
+{
+   A a = new A();
+   // Doit etre refuse.
+   int x = a.f();
 }

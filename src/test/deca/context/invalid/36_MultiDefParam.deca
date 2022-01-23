@@ -2,12 +2,12 @@
 //    Affectation et typage
 //
 // Resultats:
-//	Ligne 12: ContextualError: field void
+//	Ligne 12: ContextualError: can't defined parameter identifier several times in a class
 // 
 // Historique:
 //    cree le 01/01/2022
 
 class A {
 	// Doit etre refuse.
-	void x;
+	void f(int x, float x) {}
 }
