@@ -48,8 +48,21 @@ public class ClassDefinition extends TypeDefinition {
         return numberOfMethods;
     }
 
+    public int getIndexMethods() {
+        return indexMethods;
+    }
+
+    public void setIndexMethods(int index) {
+        this.indexMethods = index;
+    }
+
+    public void incIndexMethods() {
+        indexMethods++;
+    }
+
     private int numberOfFields = 0;
     private int numberOfMethods = 0;
+    private int indexMethods;
 
     private DAddr addressLabelVTable = new RegisterOffset(1, Register.GB);
     private Map<Integer, Label> labelVTable = new HashMap<Integer, Label>();

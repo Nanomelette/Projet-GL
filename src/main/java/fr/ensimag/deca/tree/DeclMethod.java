@@ -61,25 +61,29 @@ public class DeclMethod extends AbstractDeclMethod{
             ClassDefinition classDefSup = classTypeSup.getDefinition();
             EnvironmentExp envExpSup = classDefSup.getMembers();
             ExpDefinition ExpDef = envExpSup.get(method);
+            Symbol symb = classe.getName();
+            ClassType classType = (ClassType) env_Types.getType(symb);
+            ClassDefinition classDef = classType.getDefinition();
+            int index = classDef.getIndexMethods();
             if (ExpDef != null) {
                 Validate.isTrue(ExpDef.isMethod(), method.getName() + " isn't a method");
                 MethodDefinition methodDef = (MethodDefinition) ExpDef;
                 Type typeSup = methodDef.getType();
                 if (compiler.subType(compiler, mType, typeSup)) {
                     Signature sig = methodDef.getSignature();
-                    if (!sig.sameSignature(sig2)) {
+                    if (sig.sameSignature(sig2)) {
+                        index = methodDef.getIndex();
+                    } else {
                         throw new ContextualError(method.getName()+" must have same signature", this.getLocation());
                     }
                 } else {
                     throw new ContextualError(method.getName()+" must have same type", this.getLocation());
                 }
+            } else {
+                classDef.incIndexMethods();
             }
             try {
-                Symbol symb = classe.getName();
-                ClassType classType = (ClassType) env_Types.getType(symb);
-                ClassDefinition classDef = classType.getDefinition();
                 EnvironmentExp envExp = classDef.getMembers();
-                int index = classDefSup.getNumberOfMethods() + classDef.getNumberOfMethods() + 2;
                 MethodDefinition newDef = new MethodDefinition(mType, name.getLocation(), sig2, index);
                 Label label = new Label(symb.getName() +"."+ method.getName());
                 newDef.setLabel(label);

@@ -53,7 +53,8 @@ public class EnvironmentType {
 		
 		ParamDefinition defOther = new ParamDefinition(classTypeObject, Location.BUILTIN);
 		
-		identOther.setDefinition(defOther);
+        classTypeObject.getDefinition().setIndexMethods(2);
+        identOther.setDefinition(defOther);
 		
 		ListDeclParam listParamEquals  = new ListDeclParam() ;
     }

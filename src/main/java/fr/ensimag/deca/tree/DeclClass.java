@@ -86,8 +86,6 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        this.listDeclField.verifyListField(compiler, this.classeSup, this.classe);
-        this.listDeclMethod.verifyListMethod(compiler, this.classeSup, this.classe);
         Symbol symb = this.classe.getName();
         ClassType classType = (ClassType) compiler.GetEnvTypes().getType(symb);
         ClassDefinition classDef = classType.getDefinition();
@@ -96,6 +94,10 @@ public class DeclClass extends AbstractDeclClass {
         ClassType classTypeSup = (ClassType) compiler.GetEnvTypes().getType(symbSup);
         ClassDefinition classDefSup = classTypeSup.getDefinition();
         EnvironmentExp envExpSup = classDefSup.getMembers();
+        int indexMethods = classDefSup.getIndexMethods();
+        classDef.setIndexMethods(indexMethods);
+        this.listDeclField.verifyListField(compiler, this.classeSup, this.classe);
+        this.listDeclMethod.verifyListMethod(compiler, this.classeSup, this.classe);
         for (Symbol s : envExpSup.getDictionnary().keySet()) {
             try {
                 envExp.declare(s, envExpSup.get(s));
