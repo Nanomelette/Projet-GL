@@ -33,7 +33,7 @@ public class Divide extends AbstractOpArith {
         GPRegister freeRegister = compiler.getData().getFreeRegister(compiler);
         // Division par zéro
         compiler.addInstruction(new LOAD(op1, freeRegister));
-        if (this.getType().isInt()) {
+        if (this.getType().isInt() && !(compiler.getCompilerOptions().getNoCheck())) {
             compiler.addInstruction(new CMP(0, freeRegister));
             compiler.addInstruction(new BEQ(new Label("zero_division")));
         } else {
