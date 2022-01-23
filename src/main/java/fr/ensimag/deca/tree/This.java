@@ -70,5 +70,12 @@ public class This extends AbstractExpr {
         compiler.getData().setLastUsedRegister(register);
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        GPRegister register = compiler.getData().getFreeRegister(compiler);
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), register));
+        compiler.getData().setLastUsedRegister(register);
+    }
+
 }
 
