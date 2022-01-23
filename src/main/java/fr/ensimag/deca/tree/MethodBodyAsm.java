@@ -49,7 +49,7 @@ public class MethodBodyAsm extends AbstractMethodBody {
 
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler) {
-        compiler.add(new InlinePortion("    "+code.getValue()));
+        compiler.add(new InlinePortion("    "+code.getValue().replace("\\\"", "\"")));
     }
 
 
