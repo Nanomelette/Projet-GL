@@ -2,16 +2,13 @@
 //    Affectation et typage
 //
 // Resultats:
-//	Ligne 16: ContextualError: cannot cast void type
+//	Ligne 13: ContextualError: cannot cast void type
 // 
 // Historique:
 //    cree le 01/01/2022
 
-class A {
-	void f() {}
-}
 {
-   A a = new A();
+   float a = 1.0;
    // Doit etre refuse.
-   int b = (int)(a.f());
+   int b = (void)(a) + 1;
 }

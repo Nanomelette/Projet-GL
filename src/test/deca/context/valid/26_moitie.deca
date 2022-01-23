@@ -1,11 +1,4 @@
-// Description:
-//	affichage en flottant de la moitié du carré d'un entier.
-//
-// Résultats:
-//
-//
-// Historique:
-//    cree le 16/01/2022
+// affichage en flottant de la moitié du carré d'un entier.
 
 {
     int x;
