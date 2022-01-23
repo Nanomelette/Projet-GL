@@ -12,7 +12,10 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
@@ -65,60 +68,80 @@ public class InstanceOf extends AbstractExpr {
 
     // private void isInstanceOf(DecacCompiler compiler) {
     //     e.codeGenInst(compiler);
-    //     Label false_instanceof = new Label("true.instanceof."+compiler.getNLabel());
+    //     Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
     //     // register contient l'adresse de l'objet à tester dans le tas
     //     GPRegister register = compiler.getData().getLastUsedRegister();
     //     ClassDefinition typeCible = type.getClassDefinition();
     //     compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
-    //     compiler.addInstruction(new BEQ(false_instanceof));
+    //     compiler.addInstruction(new BEQ(true_instanceof));
     //     while (typeCible.getSuperClass() != null) {
     //         typeCible = typeCible.getSuperClass();
     //         compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
-    //         compiler.addInstruction(new BEQ(false_instanceof));
+    //         compiler.addInstruction(new BEQ(true_instanceof));
     //     }
     // }
 
     private void isInstanceOf(DecacCompiler compiler) {
+        // e.codeGenInst(compiler);
+        // Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
+        // ClassType cType = (ClassType)e.getType();
+        // ClassDefinition typeCible = cType.getDefinition();
+        // ClassType bla = (ClassType)type.getType();
+        // ClassDefinition alzn = bla.getDefinition();
+        // GPRegister reg = compiler.getData().getFreeRegister(compiler);
+        // compiler.addInstruction(new LOAD(alzn.getAddressVTable(), reg));
+        // compiler.addInstruction(new CMP(typeCible.getAddressVTable(), reg));
+        // compiler.addInstruction(new BEQ(true_instanceof));
+        // while (typeCible.getSuperClass() != null) {
+        //     typeCible = typeCible.getSuperClass();
+        //     compiler.addInstruction(new CMP(typeCible.getAddressVTable(), reg));
+        //     compiler.addInstruction(new BEQ(true_instanceof));
+        // }
+
         e.codeGenInst(compiler);
-        Label false_instanceof = new Label("true.instanceof."+compiler.getNLabel());
-        ClassType cType = (ClassType)e.getType();
+        // exprAddrReg contient l'adresse de e dans le tas
+        GPRegister exprAddrReg = compiler.getData().getLastUsedRegister(); 
+        Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
+        Label W_Start = new Label("W.Start"+compiler.getNLabel());
+        Label W_Cond = new Label("W.Cond."+compiler.getNLabel());
+        ClassType cType = (ClassType)type.getType();
         ClassDefinition typeCible = cType.getDefinition();
-        ClassType bla = (ClassType)type.getType();
-        ClassDefinition alzn = bla.getDefinition();
         GPRegister reg = compiler.getData().getFreeRegister(compiler);
-        compiler.addInstruction(new LOAD(alzn.getAddressVTable(), reg));
+        compiler.addInstruction(new LOAD(exprAddrReg, reg));
+        compiler.addInstruction(new BRA(W_Cond));
+        compiler.addLabel(W_Start);
+        // Comparer les adresses, sauter à true_instanceof si ok,
+        // sinon chercher la classe parent de expr
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, reg), reg));
         compiler.addInstruction(new CMP(typeCible.getAddressVTable(), reg));
-        compiler.addInstruction(new BEQ(false_instanceof));
-        while (typeCible.getSuperClass() != null) {
-            typeCible = typeCible.getSuperClass();
-            compiler.addInstruction(new CMP(typeCible.getAddressVTable(), reg));
-            compiler.addInstruction(new BEQ(false_instanceof));
-        }
+        compiler.addInstruction(new BEQ(true_instanceof));
+        compiler.addLabel(W_Cond);
+        // Tester si la classe parent de e est nulle
+        compiler.addInstruction(new CMP(new NullOperand(), reg));
+        compiler.addInstruction(new BNE(W_Start));
     }
 
     @Override
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
-        Label false_instanceof = new Label("false.instanceof."+compiler.getNLabel());
-        Label end_instanceof = new Label("end.instanceof."+compiler.getNLabel());
+        Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
+        // Label end_instanceof = new Label("end.instanceof."+compiler.getNLabel());
         isInstanceOf(compiler);
-        compiler.addInstruction(new BRA(end_instanceof));
-        compiler.addLabel(false_instanceof);
         if (!b) {
             compiler.addInstruction(new BRA(E));
         }
-        compiler.addLabel(end_instanceof);
+        compiler.addLabel(true_instanceof);
         compiler.incrNLabel();
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        Label false_instanceof = new Label("false.instanceof."+compiler.getNLabel());
+        Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
         Label end_instanceof = new Label("end.instanceof."+compiler.getNLabel());
         isInstanceOf(compiler);
         GPRegister resultRegister = compiler.getData().getFreeRegister(compiler);
         compiler.addInstruction(new LOAD(0, resultRegister));
         compiler.addInstruction(new BRA(end_instanceof));
-        compiler.addLabel(false_instanceof);
+        compiler.addLabel(true_instanceof);
         compiler.addInstruction(new LOAD(1, resultRegister));
         compiler.getData().setLastUsedRegister(resultRegister);
         compiler.addLabel(end_instanceof);
