@@ -58,7 +58,7 @@ class Polynomial {
     *   Returns a to the power of b (a^b).
     *
     */
-    public float pow(float a, float b) {
+    public float pow(float a, int b) {
 		if (b < 0 ) {
 			return pow(1/a, -b);
 		}
@@ -176,7 +176,7 @@ class Polynomial {
     *
     */
     public float ulp(float x){
-        float e;
+        int e;
 		if (x ==0 ) {
 			return 0;
 		}
