@@ -6,6 +6,7 @@ import org.apache.commons.lang.Validate;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
@@ -66,7 +67,10 @@ public class InstanceOf extends AbstractExpr {
         Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
         // register contient l'adresse de l'objet à tester dans le tas
         GPRegister register = compiler.getData().getLastUsedRegister();
-        ClassDefinition typeCible = type.getClassDefinition();
+        Type verType = type.getType();
+        Validate.isTrue(verType.isClass(), type.getName()+" isn't a class");
+        ClassType classType = (ClassType) verType;
+        ClassDefinition typeCible = classType.getDefinition();
         compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
         compiler.addInstruction(new BEQ(true_instanceof));
         while (typeCible.getSuperClass() != null) {
