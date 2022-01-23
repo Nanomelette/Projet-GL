@@ -13,11 +13,15 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.INT;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 public class Cast extends AbstractExpr {
@@ -85,19 +89,27 @@ public class Cast extends AbstractExpr {
     }
 
     private void isInstanceOf(DecacCompiler compiler, Label doCast) {
-        ClassType cType = (ClassType)e.getType();
+        e.codeGenInst(compiler);
+        // exprAddrReg contient l'adresse de e dans le tas
+        GPRegister exprAddrReg = compiler.getData().getLastUsedRegister(); 
+        Label W_Start = new Label("W.Start"+compiler.getNLabel());
+        Label W_Cond = new Label("W.Cond."+compiler.getNLabel());
+        ClassType cType = (ClassType)type.getType();
         ClassDefinition typeCible = cType.getDefinition();
-        ClassType bla = (ClassType)type.getType();
-        ClassDefinition alzn = bla.getDefinition();
         GPRegister reg = compiler.getData().getFreeRegister(compiler);
-        compiler.addInstruction(new LOAD(alzn.getAddressVTable(), reg));
-        compiler.addInstruction(new CMP(typeCible.getAddressVTable(), reg));
+        compiler.addInstruction(new LOAD(exprAddrReg, reg));
+        compiler.addInstruction(new BRA(W_Cond));
+        compiler.addLabel(W_Start);
+        // Comparer les adresses, sauter à true_instanceof si ok,
+        // sinon chercher la classe parent de expr
+        compiler.addInstruction(new LEA(typeCible.getAddressVTable(), Register.R0));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, reg), reg));
+        compiler.addInstruction(new CMP(Register.R0, reg));
         compiler.addInstruction(new BEQ(doCast));
-        while (typeCible.getSuperClass() != null) {
-            typeCible = typeCible.getSuperClass();
-            compiler.addInstruction(new CMP(typeCible.getAddressVTable(), reg));
-            compiler.addInstruction(new BEQ(doCast));
-        }
+        compiler.addLabel(W_Cond);
+        // Tester si la classe parent de e est nulle
+        compiler.addInstruction(new CMP(new NullOperand(), reg));
+        compiler.addInstruction(new BNE(W_Start));
     }
 
     @Override

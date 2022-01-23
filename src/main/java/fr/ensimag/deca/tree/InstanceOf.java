@@ -15,11 +15,13 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 public class InstanceOf extends AbstractExpr {
@@ -66,38 +68,7 @@ public class InstanceOf extends AbstractExpr {
 
     }
 
-    // private void isInstanceOf(DecacCompiler compiler) {
-    //     e.codeGenInst(compiler);
-    //     Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
-    //     // register contient l'adresse de l'objet à tester dans le tas
-    //     GPRegister register = compiler.getData().getLastUsedRegister();
-    //     ClassDefinition typeCible = type.getClassDefinition();
-    //     compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
-    //     compiler.addInstruction(new BEQ(true_instanceof));
-    //     while (typeCible.getSuperClass() != null) {
-    //         typeCible = typeCible.getSuperClass();
-    //         compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
-    //         compiler.addInstruction(new BEQ(true_instanceof));
-    //     }
-    // }
-
     private void isInstanceOf(DecacCompiler compiler) {
-        // e.codeGenInst(compiler);
-        // Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
-        // ClassType cType = (ClassType)e.getType();
-        // ClassDefinition typeCible = cType.getDefinition();
-        // ClassType bla = (ClassType)type.getType();
-        // ClassDefinition alzn = bla.getDefinition();
-        // GPRegister reg = compiler.getData().getFreeRegister(compiler);
-        // compiler.addInstruction(new LOAD(alzn.getAddressVTable(), reg));
-        // compiler.addInstruction(new CMP(typeCible.getAddressVTable(), reg));
-        // compiler.addInstruction(new BEQ(true_instanceof));
-        // while (typeCible.getSuperClass() != null) {
-        //     typeCible = typeCible.getSuperClass();
-        //     compiler.addInstruction(new CMP(typeCible.getAddressVTable(), reg));
-        //     compiler.addInstruction(new BEQ(true_instanceof));
-        // }
-
         e.codeGenInst(compiler);
         // exprAddrReg contient l'adresse de e dans le tas
         GPRegister exprAddrReg = compiler.getData().getLastUsedRegister(); 
@@ -112,8 +83,9 @@ public class InstanceOf extends AbstractExpr {
         compiler.addLabel(W_Start);
         // Comparer les adresses, sauter à true_instanceof si ok,
         // sinon chercher la classe parent de expr
+        compiler.addInstruction(new LEA(typeCible.getAddressVTable(), Register.R0));
         compiler.addInstruction(new LOAD(new RegisterOffset(0, reg), reg));
-        compiler.addInstruction(new CMP(typeCible.getAddressVTable(), reg));
+        compiler.addInstruction(new CMP(Register.R0, reg));
         compiler.addInstruction(new BEQ(true_instanceof));
         compiler.addLabel(W_Cond);
         // Tester si la classe parent de e est nulle
