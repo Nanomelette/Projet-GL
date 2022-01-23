@@ -47,14 +47,17 @@ public class Cast extends AbstractExpr {
         if(type.isNull()){
             throw new ContextualError("cannot cast null type", getLocation());
         }
-        if(type == expressionType){
+        if(type.sameType(expressionType)){
+            this.setType(type);
             return type;
         }
         if(compiler.assignCompatible(compiler, type, expressionType)!= null){
-            return compiler.assignCompatible(compiler, type, expressionType);
+            this.setType(type);
+            return type;
         }
         if(compiler.assignCompatible(compiler, expressionType, type)!= null){
-            return compiler.assignCompatible(compiler, expressionType, type);
+            this.setType(type);
+            return type;
         }
         throw new ContextualError("impossible cast", getLocation());
     }

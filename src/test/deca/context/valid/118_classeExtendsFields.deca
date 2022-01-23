@@ -2,8 +2,7 @@
 //    Programme minimaliste: une classe et un Main vérifiant que x est défini pour B.
 //
 // Résultats:
-//	1
-//	1
+// 1
 //
 // Historique:
 //    cree le 01/01/2022
@@ -18,6 +17,5 @@ class B extends A {
 {
 	A a = new A();
 	B b = new B();
-	println(a.x);
 	println(b.x);
 }

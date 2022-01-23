@@ -190,6 +190,7 @@ public class DeclClass extends AbstractDeclClass {
             listDeclField.codeGenListDeclFieldSetZero(compiler);
             // Init les champs parents
             compiler.addComment("Appel de l'initialisation des champs hérités de " + classeSup.getName().getName());
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
             compiler.addInstruction(new PUSH(Register.R1), "Empile l'objet à initialiser");
             compiler.addInstruction(new BSR(new Label("init." + classeSup.getName().getName())),
                     "Appel de l’initialisation de la super-classe");
@@ -202,14 +203,14 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addInstruction(new RTS());
 
         // Restauration des registres
-        if (compiler.getData().getNumberOfUsedRegister() != 0) {
+        if (compiler.getData().getNumberOfUsedRegister() > 1) {
             compiler.addComment("Restauration des registres");
         }
         compiler.getData().popUsedRegisters(compiler);
 
         // Sauvegarde des registres
         compiler.getData().pushUsedRegisters(compiler);
-        if (compiler.getData().getNumberOfUsedRegister() != 0) {
+        if (compiler.getData().getNumberOfUsedRegister() > 1) {
             compiler.addCommentAtFirst("Sauvegarde des registres");
         }
 
