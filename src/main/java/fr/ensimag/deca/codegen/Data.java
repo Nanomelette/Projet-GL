@@ -38,6 +38,10 @@ public class Data {
     public Data() {
     };
 
+    public void incrementLb() {
+        lBOffset++;
+    }
+
     public int getMaxStackLength() {
         return maxStackLength;
     }

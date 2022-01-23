@@ -102,7 +102,7 @@ public class DeclVar extends AbstractDeclVar {
         DAddr address = new RegisterOffset(compiler.getData().getlBOffset(), Register.LB);
         Identifier var = (Identifier) getVarName();
         var.getExpDefinition().setOperand(address);
-        // compiler.getData().incrementLb();
+        compiler.getData().incrementLb();
         initialization.codeGenInitVar(compiler, address, var.getType());
         compiler.getData().restoreData();
     }
