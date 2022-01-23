@@ -6,13 +6,16 @@ import javax.naming.OperationNotSupportedException;
 
 class Polynomial {
 
+    float pi = 3.141592653589793f;
+    float pi2 = 6.28318530718f;
+
     /*
     *   Returns the exponant of a float
     *   For more information about the exponent, you can check : https://www.keil.com/support/man/docs/c51/c51_ap_floatingpt.htm 
     *
     */
-    public float getExponent(float x){
-        float exp = 0;
+    public int getExponent(float x){
+        int exp = 0;
 		if (x < 0) {
 			return getExponent(-x);
 		}
@@ -106,10 +109,12 @@ class Polynomial {
     *
     */
     public float cos(float x){
+
+        x = x%(2*pi); // as cos function is 2pi periodic, we bring the float value back in [0,2pi]
  
         float res = 1f;
         float sign = 1, fact = 1, pow = 1;
-        for (float i = 1; i < 5; i++) {
+        for (float i = 1; i < 20; i++) {
             sign = sign * -1;
             fact = fact * (2 * i - 1) * (2 * i);
             pow = pow * x * x;
@@ -125,16 +130,19 @@ class Polynomial {
     *
     */
     public float sin(float a){
-      float sinx, pterm;
-      float i, sign=-1,n=20;
-      sinx = a;
-      pterm = a;
-      for(i=1;i<=n;i++){
+
+        a = a%(2f*pi); // as sin function is 2pi periodic, we bring the float value back in [0,2pi]
+        
+        float sinx, pterm;
+        float i, sign=-1,n=20;
+        sinx = a;
+        pterm = a;
+        for(i=1;i<=n;i++){
             sinx = sinx + sign*pterm*a*a/(2*i*(2*i+1));
             pterm = pterm * a* a /(2 * i * (2 * i + 1));
             sign = -1 * sign;
-      }
-      return sinx;
+        }
+        return sinx;
     }
 
     /*
@@ -167,7 +175,7 @@ class Polynomial {
             return 0;
         }
         float a = (1f + sqrt(1f-x*x));
-        return 2 * atan_poly(x/a);
+        return 2 * atan(x/a);
     }
 
     /*
@@ -198,32 +206,42 @@ class Polynomial {
 
 public class PolynomialApprox {
     public static void main(String[] args ) {
-        // Polynomial p = new Polynomial();
-        // float x;
+        Polynomial p = new Polynomial();
+        float x = -(0.5F + 6f*p.pi);
+        //System.out.println(-0.5f);
+        //x = x%(p.pi2);
+        System.out.println(p.pi);
+        System.out.println(x);
+        System.out.println(p.cos(x));
+        System.out.println(Math.cos(x));
+        System.out.println(p.cos(x)-Math.cos(x));
+        System.out.println(p.ulp(x));
+        
         // ArrayList<Float> listFloat = new ArrayList<Float>();
-        // ArrayList<Float> listUlp = new ArrayList<Float>();
-        // ArrayList<Float> listMathUlp = new ArrayList<Float>();
-        // float a = p.ArcSin(1.5f);
-        // ArrayList<Float> arrayListAtan = new ArrayList<Float>();
-        // ArrayList<Float> arrayListRAtan = new ArrayList<Float>();
+        // // ArrayList<Float> listUlp = new ArrayList<Float>();
+        // // ArrayList<Float> listMathUlp = new ArrayList<Float>();
+        // // float a = p.ArcSin(1.5f);
+        // // ArrayList<Float> arrayListAtan = new ArrayList<Float>();
+        // // ArrayList<Float> arrayListRAtan = new ArrayList<Float>();
         // ArrayList<Float> arrayListCos = new ArrayList<Float>();
         // ArrayList<Float> arrayListRCos = new ArrayList<Float>();
-        // ArrayList<Float> arrayListAsin = new ArrayList<Float>();
-        // ArrayList<Float> arrayListRAsin = new ArrayList<Float>();
+        // // ArrayList<Float> arrayListAsin = new ArrayList<Float>();
+        // // ArrayList<Float> arrayListRAsin = new ArrayList<Float>();
         // ArrayList<Float> err = new ArrayList<Float>();
-        // for(x=-3f; x<=3; x = x + 0.1F ){
-        //     listUlp.add(p.ulp(x));
-        //     listMathUlp.add(Math.ulp(x));
+        // for(x=-3.14f; x<=3.14; x = x + 0.01F ){
+        //     arrayListCos.add(p.cos(x));
+        //     arrayListRCos.add((float)Math.cos(x));
         //     listFloat.add(x);
+        //     err.add(Math.abs(p.cos(x)-(float)Math.cos(x)));
         // }
-        // System.out.println(listUlp.toString());
-        // System.out.println(listMathUlp.toString());
-        //System.out.println(listFloat.toString());
+        // // System.out.println(listUlp.toString());
+        // // System.out.println(listMathUlp.toString());
+        // System.out.println(listFloat.toString());
         // System.out.println(arrayListAsin.toString());
         // System.out.println(arrayListRAsin.toString());
-        //System.out.println(arrayListCos.toString());
+        // System.out.println(arrayListCos.toString());
         // System.out.println(arrayListRCos.toString());
-        //System.out.println(err.toString());
+        // System.out.println(err.toString());
       
         
         // float poly = p.atan_poly(x);
