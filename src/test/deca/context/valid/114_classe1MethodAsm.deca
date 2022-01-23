@@ -2,7 +2,7 @@
 //    Programme minimaliste: une classe pas très utile, avec asm pour une seule méthode.
 //
 // Résultats:
-// Directement de l'assembleur
+//
 
 class A {
     void a() asm("WSTR \"Oui\"");

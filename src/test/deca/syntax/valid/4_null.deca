@@ -2,12 +2,12 @@
 //    Programme minimaliste utilisant println et une affectation.
 //
 // Resultats:
-//    Valeur: null
+// Valeur: 1.00000e+00
 //
 // Historique:
 //    cree le 01/01/2022
 
 {
-        int i = null;
-        println("Valeur:", i);
+        float i = 1;
+        println("Valeur: ", i);
 }
