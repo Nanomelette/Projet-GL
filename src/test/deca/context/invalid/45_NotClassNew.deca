@@ -1,0 +1,13 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 12: ContextualError: the type of the class must be a class
+// 
+// Historique:
+//    cree le 01/01/2022
+
+{
+   // Doit etre refuse.
+   int x = new int();
+}

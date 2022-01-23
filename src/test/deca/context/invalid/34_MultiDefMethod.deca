@@ -2,12 +2,13 @@
 //    Affectation et typage
 //
 // Resultats:
-//	Ligne 12: ContextualError: field void
+//	Ligne 13: ContextualError: can't defined field identifier several times in a class
 // 
 // Historique:
 //    cree le 01/01/2022
 
 class A {
+	void f() {}
 	// Doit etre refuse.
-	void x;
+	void f() {}
 }

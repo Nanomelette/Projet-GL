@@ -2,12 +2,14 @@
 //    Affectation et typage
 //
 // Resultats:
-//	Ligne 12: ContextualError: field void
+//	Ligne 14: ContextualError: Incorrect types
 // 
 // Historique:
 //    cree le 01/01/2022
 
 class A {
-	// Doit etre refuse.
-	void x;
+}
+{
+   // Doit etre refuse.
+   boolean b = 1.0 instanceof A;
 }

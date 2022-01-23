@@ -2,12 +2,12 @@
 //    Affectation et typage
 //
 // Resultats:
-//	Ligne 12: ContextualError: field void
+//	Ligne 12: ContextualError: parameter void
 // 
 // Historique:
 //    cree le 01/01/2022
 
 class A {
 	// Doit etre refuse.
-	void x;
+	void f(void x) {}
 }
