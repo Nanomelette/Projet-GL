@@ -25,7 +25,7 @@ public class DeclParam extends AbstractDeclParam{
             throws ContextualError{
             Type paramType = type.verifyType(compiler);
             if (paramType.isVoid()){
-                throw new ContextualError("type void", type.getLocation());
+                throw new ContextualError("parameter void", type.getLocation());
             }
             return paramType;
         }
@@ -39,7 +39,7 @@ public class DeclParam extends AbstractDeclParam{
                 name.setType(type.getType());
                 localEnv.declare(name.getName(), newDef);
             } catch (EnvironmentExp.DoubleDefException e) {
-                String message = "can't defined method identifier several times in a class";
+                String message = "can't defined parameter identifier several times in a class";
                 throw new ContextualError(message, name.getLocation());
             }
         }
