@@ -1,0 +1,14 @@
+
+
+
+
+// Classe non nulle
+
+class A { }
+class B extends A { }
+{
+   B b = new B();
+   if (b != null) {
+        println("Classe non nulle");
+   }
+}

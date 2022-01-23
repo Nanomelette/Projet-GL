@@ -1,0 +1,19 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 17: ContextualError: can't access to protected field x
+// 
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	protected int x = 1;
+}
+class B {
+	int f() {
+		A a = new A();
+		// Doit etre refuse.
+		return a.x;
+	}
+}

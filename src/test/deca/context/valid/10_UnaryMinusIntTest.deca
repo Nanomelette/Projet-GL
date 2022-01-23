@@ -1,0 +1,13 @@
+// Description:
+//    Test l'attribution de valeur négative pour un entier
+//
+// Résultats:
+//
+//
+// Historique:
+//    cree le 16/01/2022
+
+{
+        int x =1;
+        x=-x;
+}

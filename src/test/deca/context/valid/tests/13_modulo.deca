@@ -1,9 +1,0 @@
-// Description:
-//    Test modulo
-//
-// Historique:
-//    cree le 16/01/2022
-
-{
-        int x = 17%3;
-}

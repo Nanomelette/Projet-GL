@@ -1,0 +1,23 @@
+// Description:
+//    Programme minimaliste: une classe et des Cast dans le Main.
+//
+// Résultats:
+// 21
+//
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+    int x = 1;
+}
+
+class B extends A {
+    int x = 2;
+}
+
+{
+    B b = new B();
+    A a = (A)(b);
+    print(b.x);
+    print(a.x);
+}

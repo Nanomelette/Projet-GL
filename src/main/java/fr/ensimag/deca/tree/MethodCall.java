@@ -1,26 +1,18 @@
 package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
-import java.util.Iterator;
-
-import org.apache.log4j.DailyRollingFileAppender;
-
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.Register;
@@ -49,11 +41,16 @@ public class MethodCall extends AbstractExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         Type type = this.obj.verifyExpr(compiler, localEnv, currentClass);
+        if (!type.isClass()) {
+            throw new ContextualError("object isn't a class", this.getLocation());
+        }
         ClassType classType = (ClassType) type ;
         ClassDefinition classDef = classType.getDefinition();
         EnvironmentExp env = classDef.getMembers();
         MethodDefinition methodDef = (MethodDefinition) env.getDictionnary().get(this.meth.getName());
-
+        if (methodDef == null) {
+            throw new ContextualError(this.meth.getName()+" not defined", this.getLocation());
+        }
         this.meth.setType(methodDef.getType());
         this.meth.setDefinition(methodDef);
         this.setType(methodDef.getType());
@@ -100,7 +97,7 @@ public class MethodCall extends AbstractExpr {
         
         // On calcul l'emplacement de la méthode
         Register addresseClassRegister = data.getLastUsedRegister();
-        DAddr addr = new RegisterOffset(0, addresseClassRegister);
+        // DAddr addr = new RegisterOffset(0, addresseClassRegister);
 
         // On reserve la place pour les parametres
         compiler.addInstruction(new ADDSP(param.size() + 1));
@@ -108,7 +105,7 @@ public class MethodCall extends AbstractExpr {
         data.decrementFreeStoragePointer();
 
         // On empile le parametre implicite
-        compiler.addInstruction(new LOAD(addr, register));
+        compiler.addInstruction(new LOAD(addresseClassRegister, register));
         compiler.addInstruction(new STORE(register, new RegisterOffset(0, Register.SP)));
 
         // On empile les autres parametres
@@ -128,5 +125,10 @@ public class MethodCall extends AbstractExpr {
         compiler.addInstruction(new SUBSP(param.size() + 1));
         // Le resultat de la méthode est stocké dans R0
         data.setLastUsedRegister(Register.R0);
+    }
+
+    @Override
+    protected void codeGenSelect(DecacCompiler compiler) {
+        codeGenInst(compiler);
     }
 }

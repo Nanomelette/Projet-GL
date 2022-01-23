@@ -16,6 +16,10 @@ public abstract class AbstractMethodBody extends Tree {
 										 AbstractIdentifier class1, Type return1) throws ContextualError ;
 
     protected abstract void codeGenMethodBody(DecacCompiler compiler);
+
+	protected abstract void codeGenSaveRestore(DecacCompiler compiler);
 	
 	public abstract void decompile(IndentPrintStream s);
+
+    public abstract int getNbrVarMethodBody();
 }

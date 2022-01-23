@@ -1,0 +1,16 @@
+
+// Description:
+//    Test le NoOperation
+//
+// Résultats:
+//	0.5
+//
+// Historique:
+//    cree le 16/01/2022
+
+{
+        float x = 0.5;
+        float y = 2.3;
+        int z = 5;
+        printlnx(x, y, z);
+}

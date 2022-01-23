@@ -1,0 +1,18 @@
+
+
+
+
+// 5
+
+class A {
+    B b = new B();
+}
+
+class B {
+    int x = 5;
+}
+
+{
+    A a = new A();
+    print(a.b.x);
+}

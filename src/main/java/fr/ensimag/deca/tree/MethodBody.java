@@ -4,12 +4,12 @@ import java.io.PrintStream;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 
 public class MethodBody extends AbstractMethodBody{
     private ListDeclVar var;
@@ -20,22 +20,24 @@ public class MethodBody extends AbstractMethodBody{
         this.inst = listInst;
     }
 
+    @Override
     public int getNbrVarMethodBody() {
         return var.size();
     }
 
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("{"); 
+        s.println("{");
+        s.indent(); 
         var.decompile(s);
         inst.decompile(s);
-        s.print("}");
+        s.unindent();
+        s.println("}");
     }
 
     @Override
@@ -67,6 +69,23 @@ public class MethodBody extends AbstractMethodBody{
             AbstractIdentifier class1, Type return1) throws ContextualError {
         // TODO Auto-generated method stub
         
+    }
+
+    @Override
+    protected void codeGenSaveRestore(DecacCompiler compiler) {
+        // Restauration des registres
+        if (compiler.getData().getNumberOfUsedRegister() > 1) {
+            compiler.addComment("Restauration des registres");
+        }
+        compiler.getData().popUsedRegisters(compiler);
+        compiler.getData().setLastUsedRegister(Register.R0);
+        compiler.addInstruction(new RTS());
+
+        // Sauvegarde des registres
+        compiler.getData().pushUsedRegisters(compiler);
+        if (compiler.getData().getNumberOfUsedRegister() > 1) {
+            compiler.addCommentAtFirst("Sauvegarde des registres");
+        }
     }
  
 }

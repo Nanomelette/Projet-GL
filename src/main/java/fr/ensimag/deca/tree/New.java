@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import static org.mockito.Mockito.inOrder;
 
 import java.io.PrintStream;
 
@@ -37,7 +36,7 @@ public class New extends AbstractExpr {
             throws ContextualError {
         Type type = compiler.searchSymbol(this.class_.getName());
         if(type == null){
-            throw new ContextualError("New class cannot be null", getLocation());
+            throw new ContextualError("class "+this.class_.getName().getName()+" not defined", getLocation());
         }
         if(!type.isClass()){
             throw new ContextualError("the type of the class must be a class", getLocation());
@@ -51,7 +50,7 @@ public class New extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {     
-        s.print("new");
+        s.print("new ");
         class_.decompile(s);
         s.print("()");
     }
@@ -79,7 +78,9 @@ public class New extends AbstractExpr {
             nbOfField += classDef.getNumberOfFields();
         }
         compiler.addInstruction(new NEW(nbOfField+1, register));
-        compiler.addInstruction(new BOV(heap_overflow));
+        if (!(compiler.getCompilerOptions().getNoCheck())) {
+            compiler.addInstruction(new BOV(heap_overflow));
+        }
         DAddr addr = class_.getClassDefinition().getAddressVTable(); 
         compiler.addInstruction(new LEA(addr, Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, register)));

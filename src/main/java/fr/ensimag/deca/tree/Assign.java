@@ -1,12 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
-import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.lang.Validate;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -21,7 +18,6 @@ import fr.ensimag.deca.context.EnvironmentExp;
  */
 public class Assign extends AbstractBinaryExpr {
 
-    private static final Logger LOG = Logger.getLogger(Main.class);
     @Override
     public AbstractLValue getLeftOperand() {
         // The cast succeeds by construction, as the leftOperand has been set
@@ -37,6 +33,9 @@ public class Assign extends AbstractBinaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         Type type = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        if (type.isNull()) {
+            throw new ContextualError("Can't assign a null value", this.getLocation());
+        }
         this.setRightOperand(this.getRightOperand().verifyRValue(compiler, localEnv, currentClass, type));
         this.setType(type);
         return getType();

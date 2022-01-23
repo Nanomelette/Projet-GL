@@ -1,0 +1,15 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 13: ContextualError: unexpected return type
+// 
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	int f() {
+		// Doit etre refuse.
+		return true;
+	}
+}

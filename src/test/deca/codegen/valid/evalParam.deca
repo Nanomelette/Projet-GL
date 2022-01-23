@@ -1,0 +1,25 @@
+
+
+
+
+// 42
+
+class A {
+    void eval(int a) {
+        println(a);
+    }
+
+    int get() {
+        return 40;
+    }
+
+    int get2() {
+        int x = get();
+        return x;
+    }
+}
+
+{
+    A a = new A();
+    a.eval(1+1+a.get());
+}

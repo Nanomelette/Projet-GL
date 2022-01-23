@@ -1,0 +1,21 @@
+// Description:
+//    Programme minimaliste traitant une somme.
+//
+// Resultats:
+//    Valeur: false
+//
+// Historique:
+//    cree le 01/01/2022
+
+{
+        boolean a = true;
+        boolean b = false;
+        boolean c;
+        c = a && b;
+        if (c || !c != true) {
+                println("Booleen: ", true);
+        } else {
+                println("Booleen: ", false);
+        }
+        
+}

@@ -1,0 +1,16 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 15: ContextualError: f not defined
+// 
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+}
+{
+   A a = new A();
+   // Doit etre refuse.
+   int x = a.f();
+}

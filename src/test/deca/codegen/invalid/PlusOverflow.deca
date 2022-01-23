@@ -1,0 +1,11 @@
+// Description:
+// Test du PLUS
+
+// Résultats:
+// 
+
+{
+    float res1 = 2.33e50;
+
+    println(res1+100000000000000.0);
+} 

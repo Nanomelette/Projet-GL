@@ -1,8 +1,0 @@
-// classe pas très utile avec un champ de type A.
-
-class A {
-}
-
-class B {
-	A a;
-}

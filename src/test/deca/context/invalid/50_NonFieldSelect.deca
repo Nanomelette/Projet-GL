@@ -1,0 +1,17 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 16: ContextualError: f isn't a field
+// 
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	int f() {}
+}
+{
+   A a = new A();
+   // Doit etre refuse.
+   int x = a.f;
+}

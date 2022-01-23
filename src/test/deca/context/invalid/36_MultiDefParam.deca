@@ -1,0 +1,13 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 12: ContextualError: can't defined parameter identifier several times in a class
+// 
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	// Doit etre refuse.
+	void f(int x, float x) {}
+}

@@ -1,0 +1,20 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 17: ContextualError: f must have same type
+// 
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	float f() {
+		return 1.0;
+	}
+}
+class B extends A {
+	// Doit etre refuse.
+	int f() {
+		return 1;
+	}
+}

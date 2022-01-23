@@ -58,6 +58,10 @@ public class CompilerOptions {
         return tree;
     }
 
+    public boolean getDecoTree() {
+        return decoTree;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
@@ -67,6 +71,7 @@ public class CompilerOptions {
     private boolean noCheck = false;
     private int maxRegister = 16;
     private boolean tree = false;
+    private boolean decoTree = false;
     
     public void parseArgs(String[] args) throws CLIException {
         if (args.length != 0) {
@@ -123,6 +128,8 @@ public class CompilerOptions {
                                 parallel = true;
                             } else if (args[i].charAt(1) == 't') {
                                 tree = true;
+                            } else if (args[i].charAt(1) == 'x') {
+                                decoTree = true;
                             } else {
                                 throw new CLIException("Incorrect arguments");
                             }

@@ -11,21 +11,15 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
-
 /**
  * @author gl20
  * @date 01/01/2022
  */
 public class DeclVar extends AbstractDeclVar {
-
-    private static final Logger LOG = Logger.getLogger(Main.class);
-
     
     final private AbstractIdentifier type;
     final private AbstractIdentifier varName;
@@ -99,7 +93,7 @@ public class DeclVar extends AbstractDeclVar {
         Identifier var = (Identifier) getVarName();
         var.getExpDefinition().setOperand(address);
         compiler.getData().incrementGbOffset();
-        initialization.codeGenInitVar(compiler, address);
+        initialization.codeGenInitVar(compiler, address, var.getType());
         compiler.getData().restoreData();
     }
 
@@ -108,8 +102,8 @@ public class DeclVar extends AbstractDeclVar {
         DAddr address = new RegisterOffset(compiler.getData().getlBOffset(), Register.LB);
         Identifier var = (Identifier) getVarName();
         var.getExpDefinition().setOperand(address);
-        // compiler.getData().incrementLb();
-        initialization.codeGenInitVar(compiler, address);
+        compiler.getData().incrementLb();
+        initialization.codeGenInitVar(compiler, address, var.getType());
         compiler.getData().restoreData();
     }
 }

@@ -1,5 +1,5 @@
 #!/bin/sh
-for n in src/test/deca/context/"$1"/tests/"$2"_*.deca
+for n in src/test/deca/context/"$1"/"$2"_*.deca
 do
     echo "decac -v $n"
     decac -v "$n"

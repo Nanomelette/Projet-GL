@@ -1,6 +1,0 @@
-// classe pas très utile avec 2 champs, partiellement initialisés.
-
-class A {
-	int i, j = 1;
-	float a = 2.0, b = 5;
-}

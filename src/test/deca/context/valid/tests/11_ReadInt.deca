@@ -1,9 +1,0 @@
-// Description:
-//    Test ReadInt()
-//
-// Historique:
-//    cree le 16/01/2022
-
-{
-        int x = readInt();
-}

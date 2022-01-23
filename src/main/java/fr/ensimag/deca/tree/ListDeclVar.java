@@ -5,11 +5,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-
-import static org.mockito.ArgumentMatchers.booleanThat;
-
-import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
+// import org.apache.log4j.Logger;
 
 /**
  * List of declarations (e.g. int x; float y,z).
@@ -18,7 +14,7 @@ import org.apache.log4j.Logger;
  * @date 01/01/2022
  */
 public class ListDeclVar extends TreeList<AbstractDeclVar> {
-    private static final Logger LOG = Logger.getLogger(ListDeclVar.class);
+    // private static final Logger LOG = Logger.getLogger(ListDeclVar.class);
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -42,7 +38,6 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
     public EnvironmentExp verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
                 for (AbstractDeclVar v : getList()) {
-                    //LOG.debug(localEnv.getClass().getName().toString());
                     v.verifyDeclVar(compiler,localEnv,currentClass);
                 }
                 return localEnv;

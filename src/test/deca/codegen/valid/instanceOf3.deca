@@ -1,0 +1,20 @@
+
+
+
+
+// ok
+
+class A { }
+class B extends A {}
+class C extends B {}
+
+{
+   A a = new A();
+   B b = new B();
+   C c = new C();
+   if (c instanceof B) {
+       if (c instanceof A) {
+           println("ok");
+       }
+   }
+}

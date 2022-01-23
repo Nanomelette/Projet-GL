@@ -1,0 +1,27 @@
+
+
+
+
+// 42
+
+class A {
+    int x = 1;
+
+    void setX(int a) {
+        x = a;
+    }
+}
+
+class B {
+    A a = new A();
+
+    A getA() {
+        return a;
+    }
+}
+
+{
+    B b = new B();
+    b.getA().setX(42);
+    print(b.getA().x);
+}

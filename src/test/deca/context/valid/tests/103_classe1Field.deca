@@ -1,5 +1,0 @@
-// classe pas très utile avec un seul champ non initialisé.
-
-class A {
-	int i;
-}

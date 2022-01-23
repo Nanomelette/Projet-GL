@@ -20,7 +20,6 @@ import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
-import net.bytebuddy.asm.Advice.Thrown;
 
 public class Selection extends AbstractLValue{
 
@@ -37,50 +36,38 @@ public class Selection extends AbstractLValue{
             throws ContextualError {
 
         Type type = this.obj.verifyExpr(compiler, localEnv, currentClass);
-        ClassType currentType = (ClassType) type;
-        ClassType classType;
-        if(type.isClass()){
-            classType = (ClassType) type;
+        if (!type.isClass()) {
+            throw new ContextualError(type.getName().getName()+" isn't a class", getLocation());
         }
-        else{
-            throw new ContextualError("Must be a class", getLocation());
-        }
-        type = compiler.searchSymbol(type.getName());
-        classType = (ClassType) type;
+        ClassType classType = (ClassType) type;
         EnvironmentExp env_exp2 = classType.getDefinition().getMembers();
         if(env_exp2.get(this.field.getName())==null){
-            throw new ContextualError("env_exp2 is null", getLocation());
+            throw new ContextualError(this.field.getName().getName()+" isn't defined in this class", getLocation());
         }
         FieldDefinition fieldDef ;
         if(env_exp2.get(this.field.getName()).isField()){
             fieldDef = (FieldDefinition) env_exp2.get(this.field.getName());
         }
         else{
-            throw new ContextualError("Not a field", getLocation());
+            throw new ContextualError(this.field.getName().getName()+" isn't a field", getLocation());
         }
 
         // condition : field_ident = { visibility : PROTECTED }
 
         if(fieldDef.getVisibility().name().equals("PROTECTED")){
             //on verifie les subTypes
-            Type protectedType = this.obj.getType();
-            ClassType pclassType;
-            if(protectedType.isClass()){
-                pclassType = (ClassType) protectedType;
+            if (currentClass == null) {
+                throw new ContextualError("can't access to protected field "+this.field.getName().getName(), getLocation());
             }
-            else{
-                throw new ContextualError("Type is not a class", getLocation());
-            }
-            if (classType.isSubClassOf(currentType)){
-                if(currentType.isSubClassOf(pclassType)){
-                    setType(fieldDef.getType());
+            ClassType currentType = currentClass.getType();
+            if (classType.isSubClassOf(currentType) || currentType.isSubClassOf(classType)){
+                setType(fieldDef.getType());
                     this.field.setDefinition(fieldDef);
                     this.obj.setType(fieldDef.getType());
                     return fieldDef.getType();
-                }
             }
             else {
-                throw new ContextualError("current class not of the same class", getLocation());
+                throw new ContextualError("can't access to protected field "+this.field.getName().getName(), getLocation());
             }
         }
         

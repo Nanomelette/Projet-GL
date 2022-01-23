@@ -1,4 +1,0 @@
-// classe B extension de la classe A.
-
-class A {}
-class B extends A {}

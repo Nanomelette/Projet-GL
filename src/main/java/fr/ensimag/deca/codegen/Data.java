@@ -1,9 +1,6 @@
 package fr.ensimag.deca.codegen;
 
 import java.util.Iterator;
-
-import org.apache.log4j.Logger;
-
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
@@ -23,7 +20,6 @@ import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 public class Data {
-    private static final Logger LOG = Logger.getLogger(Data.class);
 
     private int maxRegister = 15;
     // When storagePointer < maxRegister, the storage is in a register,
@@ -42,12 +38,16 @@ public class Data {
     public Data() {
     };
 
+    public void incrementLb() {
+        lBOffset++;
+    }
+
     public int getMaxStackLength() {
         return maxStackLength;
     }
 
     public int getNumberOfUsedRegister() {
-        return Math.min(maxRegister - 2, numberOfUsedRegister);
+        return Math.min(maxRegister - 1, numberOfUsedRegister + 1);
     }
 
     public Labels getLabels() {
@@ -141,7 +141,7 @@ public class Data {
             compiler.addInstructionAtFirst(new BOV(labels.stack_overflow_error));
             compiler.addInstructionAtFirst(new TSTO(gBOffset + maxStackLength - 1));
         }
-        compiler.addInstructionAtFirst(null, "start main program");
+        compiler.addInstructionAtFirst(null, "Début du programme");
     }
 
     public void addBottom(DecacCompiler compiler) {
@@ -187,22 +187,22 @@ public class Data {
 
     public void popUsedRegisters(DecacCompiler compiler) {
         int tmp = getNumberOfUsedRegister();
-        while (tmp > 0) {
-            compiler.addInstruction(new POP(Register.getR(1 + tmp)));
+        while (tmp > 1) {
+            compiler.addInstruction(new POP(Register.getR(tmp)));
             tmp--;
         }
     }
 
     public void pushUsedRegisters(DecacCompiler compiler) {
         int tmp = getNumberOfUsedRegister();
-        while (tmp > 0) {
-            compiler.addInstructionAtFirst(new PUSH(Register.getR(1 + tmp)));
+        while (tmp > 1) {
+            compiler.addInstructionAtFirst(new PUSH(Register.getR(tmp)));
             tmp--;
         }
     }
 
     public void restorelBOffset() {
-        lBOffset = 0;
+        lBOffset = 1;
     }
 
     public void setLabelReturn(Label labelReturn) {

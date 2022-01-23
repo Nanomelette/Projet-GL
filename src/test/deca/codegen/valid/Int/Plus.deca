@@ -1,0 +1,13 @@
+// Description:
+//     Test du PLUS
+
+// Résultats:
+//     2
+
+
+
+{
+    int res1 = 2147483646;
+
+    println(res1+1);
+}
