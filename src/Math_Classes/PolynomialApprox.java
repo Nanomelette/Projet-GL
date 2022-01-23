@@ -2,11 +2,41 @@ import java.lang.Math;
 
 import java.util.ArrayList;
 
+import javax.naming.OperationNotSupportedException;
+
 class Polynomial {
 
-    float M_PI_4  = ((3.1415926535897932384626433832795f/4.0f));
+    /*
+    *   Returns the exponant of a float
+    *   For more information about the exponent, you can check : https://www.keil.com/support/man/docs/c51/c51_ap_floatingpt.htm 
+    *
+    */
+    public float getExponent(float x){
+        float exp = 0;
+		if (x < 0) {
+			return getExponent(-x);
+		}
+		if (x < 1) {
+			while (x < 1) {
+				exp = exp -1;
+				x = x * 2;
+			}
+			return exp;
+		}
+		else {
+			while (x >= 2) {
+				exp = exp + 1;
+				x = x/2;
+			}
+			return exp;
+		}
+    }
 
-
+    /*
+    *   
+    *   Returns the square root of a float.
+    *
+    */
     public float sqrt(float x){
         float u = x;
 		int i = 10;
@@ -23,42 +53,12 @@ class Polynomial {
 		return u;
     }
 
-    // float FastArcTan(float x) {
-    // return M_PI_4*x - x*(java.lang.Math.abs(x) - 1)*(0.2447F + 0.0663F*java.lang.Math.abs(x));
-    // }
-
-    // float A = 0.0776509570923569f;
-    // float B = -0.287434475393028f;
-    // float C = (M_PI_4 - A - B);
-
-
-    // float Fast2ArcTan(float x) {
-    // float xx = x * x;
-    // return ((A*xx + B)*xx + C)*x;
-    // }
-
-    // float PolyArcTan(float x) {
-    //     float xx = x*x;
-    //     float a = 0.5f;
-	// 	float b = 0.2f;
-	// 	float c = 0.1428571f;
-	// 	float d = 0.1111111f;
-    //     return x*(1-xx*(a+xx*(b-xx*(c+xx*d))));
-    // }
-
-    float ArcSin(float x){
-        float a = (1f + sqrt(1f-x*x));
-        return 2 * atan_poly(x/a);
-    }
-
-
-    float ArcCos(float x){
-        float a = sqrt(1f-x*x);
-        float b = 1f + x;
-        return 2 * atan_poly(a/b);
-    }
-
-    public float pow(float a, int b) {
+    /*
+    *
+    *   Returns a to the power of b (a^b).
+    *
+    */
+    public float pow(float a, float b) {
 		if (b < 0 ) {
 			return pow(1/a, -b);
 		}
@@ -77,11 +77,72 @@ class Polynomial {
 		
 	}
 
-    float fmaf(float a, float b, float c){
+    /*
+    *
+    *   Multiply the first two values and add the third one.
+    *
+    */
+    public float fmaf(float a, float b, float c){
         return a*b+c;
     }
 
-    float atan_poly (float a) {
+    /*
+    *
+    *   Returns the absolute value of a float.
+    *
+    */
+    public float abs(float x) {
+        if(x>=0){
+            return x;
+        }
+        else{
+            return -x;
+        }
+    }
+
+    /*
+    *
+    *   Returns the cosinus value of a float.
+    *
+    */
+    public float cos(float x){
+ 
+        float res = 1f;
+        float sign = 1, fact = 1, pow = 1;
+        for (float i = 1; i < 5; i++) {
+            sign = sign * -1;
+            fact = fact * (2 * i - 1) * (2 * i);
+            pow = pow * x * x;
+            res = res + sign * pow / fact;
+        }
+    
+        return res;
+    }
+
+    /*
+    *
+    *   Returns the sinus value of a float.
+    *
+    */
+    public float sin(float a){
+      float sinx, pterm;
+      float i, sign=-1,n=20;
+      sinx = a;
+      pterm = a;
+      for(i=1;i<=n;i++){
+            sinx = sinx + sign*pterm*a*a/(2*i*(2*i+1));
+            pterm = pterm * a* a /(2 * i * (2 * i + 1));
+            sign = -1 * sign;
+      }
+      return sinx;
+    }
+
+    /*
+    *
+    *   Returns the arctan value of a float.
+    *
+    */
+    public float atan(float a) {
         float s = a * a, u = fmaf(a, -a, 0x1.fde90cp-1f);
         float r1 =               0x1.74dfb6p-9f;
         float r2 = fmaf (r1, u,  0x1.3a1c7cp-8f);
@@ -96,60 +157,40 @@ class Polynomial {
         return r10;
     }
 
-    float abs(float x) {
-        if(x>=0){
-            return x;
+    /*
+    *
+    *   Returns the Arcsin value of a float.
+    *
+    */
+    public float arcsin(float x){
+        if(x > 1f || x < -1f){
+            return 0;
         }
-        else{
-            return -x;
-        }
+        float a = (1f + sqrt(1f-x*x));
+        return 2 * atan_poly(x/a);
     }
 
-    float sinf_poly (float a, float s) {
-        float r, t;
-
-        r =              0x1.80a000p-19f;  //  2.86567956e-6
-        r = fmaf (r, s, -0x1.a0690cp-13f); // -1.98559923e-4
-        r = fmaf (r, s,  0x1.111182p-07f); //  8.33338592e-3
-        r = fmaf (r, s, -0x1.555556p-03f); // -1.66666672e-1
-        t = fmaf (a, s, 0.0f); // ensure -0 is passed through
-        r = fmaf (r, t, a);
-        return r;
-    }
-
-    float cosf_poly (float x){
- 
-        float res = 1f;
-        float sign = 1, fact = 1, pow = 1;
-        for (float i = 1; i < 5; i++) {
-            sign = sign * -1;
-            fact = fact * (2 * i - 1) * (2 * i);
-            pow = pow * x * x;
-            res = res + sign * pow / fact;
-        }
-    
-        return res;
-    }
-        // float r;
-        // r =         0x1.9a8000p-16f; //  2.44677067e-5
-        // r = r * s - 0x1.6c0efap-10f; // -1.38877297e-3
-        // r = r * s + 0x1.555550p-05f; //  4.16666567e-2
-        // r = r * s - 0x1.000000p-01f; // -5.00000000e-1
-        // r = r * s + 0x1.000000p+00f; //  1.00000000e+0
-        // return r;
-    //}
-
-    float my_sinf (float a){
-      float sinx, pterm;
-      float i, sign=-1,n=20;
-      sinx = a;
-      pterm = a;
-      for(i=1;i<=n;i++){
-            sinx = sinx + sign*pterm*a*a/(2*i*(2*i+1));
-            pterm = pterm * a* a /(2 * i * (2 * i + 1));
-            sign = -1 * sign;
-      }
-      return sinx;
+    /*
+    *
+    *   Returns the ulp value of a float.
+    *
+    */
+    public float ulp(float x){
+        float e;
+		if (x ==0 ) {
+			return 0;
+		}
+		else {
+			e = getExponent(x);
+			if (e >= -127) {
+				return pow(2.0f, e-23);
+			}
+			
+			else {
+				return pow(2.0f, -127-23);
+			}
+			
+		}
     }
 
     
@@ -157,30 +198,32 @@ class Polynomial {
 
 public class PolynomialApprox {
     public static void main(String[] args ) {
-        Polynomial p = new Polynomial();
-        float x;
-        ArrayList<Float> listFloat = new ArrayList<Float>();
-        ArrayList<Float> arrayListAtan = new ArrayList<Float>();
-        ArrayList<Float> arrayListRAtan = new ArrayList<Float>();
-        ArrayList<Float> arrayListCos = new ArrayList<Float>();
-        ArrayList<Float> arrayListRCos = new ArrayList<Float>();
-        ArrayList<Float> arrayListAsin = new ArrayList<Float>();
-        ArrayList<Float> arrayListRAsin = new ArrayList<Float>();
-        ArrayList<Float> err = new ArrayList<Float>();
-        for(x=-3.14f; x<=3.14f; x = x + 0.01F ){
-            arrayListAtan.add(p.cosf_poly(x));
-            arrayListRAtan.add((float)Math.cos(x));
-            err.add(Math.abs(p.cosf_poly(x)-((float)Math.cos(x))));
-            listFloat.add(x);
-        }
-        System.out.println(arrayListAtan.toString());
-        System.out.println(arrayListRAtan.toString());
-        System.out.println(listFloat.toString());
+        // Polynomial p = new Polynomial();
+        // float x;
+        // ArrayList<Float> listFloat = new ArrayList<Float>();
+        // ArrayList<Float> listUlp = new ArrayList<Float>();
+        // ArrayList<Float> listMathUlp = new ArrayList<Float>();
+        // float a = p.ArcSin(1.5f);
+        // ArrayList<Float> arrayListAtan = new ArrayList<Float>();
+        // ArrayList<Float> arrayListRAtan = new ArrayList<Float>();
+        // ArrayList<Float> arrayListCos = new ArrayList<Float>();
+        // ArrayList<Float> arrayListRCos = new ArrayList<Float>();
+        // ArrayList<Float> arrayListAsin = new ArrayList<Float>();
+        // ArrayList<Float> arrayListRAsin = new ArrayList<Float>();
+        // ArrayList<Float> err = new ArrayList<Float>();
+        // for(x=-3f; x<=3; x = x + 0.1F ){
+        //     listUlp.add(p.ulp(x));
+        //     listMathUlp.add(Math.ulp(x));
+        //     listFloat.add(x);
+        // }
+        // System.out.println(listUlp.toString());
+        // System.out.println(listMathUlp.toString());
+        //System.out.println(listFloat.toString());
         // System.out.println(arrayListAsin.toString());
         // System.out.println(arrayListRAsin.toString());
         //System.out.println(arrayListCos.toString());
         // System.out.println(arrayListRCos.toString());
-        System.out.println(err.toString());
+        //System.out.println(err.toString());
       
         
         // float poly = p.atan_poly(x);
