@@ -1,0 +1,14 @@
+// Description:
+//    Programme minimaliste: une classe pas très utile, avec une seule méthode de type A.
+//
+// Résultats:
+//
+//
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	A f() {
+		return new A();
+	}
+}

@@ -1,6 +1,5 @@
 package fr.ensimag.deca.context;
 
-import fr.ensimag.deca.tree.AbstractDeclMethod;
 import fr.ensimag.deca.tree.Location;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Label;
@@ -10,8 +9,6 @@ import fr.ensimag.ima.pseudocode.RegisterOffset;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import javax.swing.AbstractCellEditor;
 
 import org.apache.commons.lang.Validate;
 
@@ -51,8 +48,21 @@ public class ClassDefinition extends TypeDefinition {
         return numberOfMethods;
     }
 
+    public int getIndexMethods() {
+        return indexMethods;
+    }
+
+    public void setIndexMethods(int index) {
+        this.indexMethods = index;
+    }
+
+    public void incIndexMethods() {
+        indexMethods++;
+    }
+
     private int numberOfFields = 0;
     private int numberOfMethods = 0;
+    private int indexMethods;
 
     private DAddr addressLabelVTable = new RegisterOffset(1, Register.GB);
     private Map<Integer, Label> labelVTable = new HashMap<Integer, Label>();

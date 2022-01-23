@@ -15,11 +15,7 @@ import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.deca.tree.Visibility;
-
 import java.io.PrintStream;
-import java.io.ObjectInputStream.GetField;
-
 import org.apache.commons.lang.Validate;
 
 public class DeclField extends AbstractDeclField {
@@ -112,6 +108,11 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     public void decompile(IndentPrintStream s) {
+        if (v.toString().equals("PROTECTED")) {
+            s.print("protected");
+        }
+        s.print(" ");
+        type.decompile(s);
         s.print(" ");
     	this.field.decompile(s);
     	s.print(" ");
@@ -137,7 +138,7 @@ public class DeclField extends AbstractDeclField {
     @Override
     protected void codeGenDeclField(DecacCompiler compiler) {
         compiler.addComment("Initialisation du champ " + field.getName().getName());
-        init.codeGenInitField(compiler);
+        init.codeGenInitField(compiler, field.getType());
         compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(field.getFieldDefinition().getIndex(), Register.R1)));
     }

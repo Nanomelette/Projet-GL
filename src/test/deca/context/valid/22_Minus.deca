@@ -1,0 +1,13 @@
+// Description:
+//    Test pour les opérations (minus)
+//
+// Résultats:
+//
+//
+// Historique:
+//    cree le 16/01/2022
+
+{
+    int x = 1;
+    x = 1 - x;
+}

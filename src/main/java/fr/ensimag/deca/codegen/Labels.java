@@ -2,8 +2,6 @@ package fr.ensimag.deca.codegen;
 
 import java.util.HashSet;
 import java.util.Iterator;
-
-import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 
 public class Labels {

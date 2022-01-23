@@ -1,0 +1,12 @@
+// Description:
+//    Programme minimaliste: une classe pas très utile, avec asm pour une seule méthode.
+//
+// Résultats:
+//
+//
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	void f() asm("WSTR \"OK\"");
+}

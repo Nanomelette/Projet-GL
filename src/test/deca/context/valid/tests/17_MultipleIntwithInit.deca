@@ -1,9 +1,0 @@
-// Description:
-//    Test creation de plusieurs identifiers (int) avec Initialization
-//
-// Historique:
-//    cree le 16/01/2022
-
-{
-        int x,y,z = 1;
-}

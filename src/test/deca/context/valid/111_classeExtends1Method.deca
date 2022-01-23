@@ -1,0 +1,25 @@
+// Description:
+//    Programme minimaliste: une classe vérifiant si les méthodes héritées ont même type, mêmes paramètres.
+//
+// Résultats:
+//
+//
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	int f(int x, float y) {
+		return x + y;
+	}
+	boolean g(boolean c) {
+		return c;
+	}
+}
+class B extends A {
+	int f(int x, float y) {
+		return x + y;
+	}
+	int h(int x, float y) {
+		return x - y;
+	}
+}

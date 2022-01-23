@@ -1,0 +1,16 @@
+// Description:
+//    test d'une boucle while pour la synthaxe contextuelle.
+//
+// Résultats:
+//
+//
+// Historique:
+//    cree le 16/01/2022
+
+{
+    int x = 0;
+    while(x<5){
+        x = x+1;
+    }
+    print(x);
+}

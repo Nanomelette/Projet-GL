@@ -1,5 +1,0 @@
-// classe pas très utile, avec asm pour une seule méthode.
-
-class A {
-	void f() asm("f");
-}

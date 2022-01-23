@@ -8,6 +8,5 @@
 {
     float x = 1.0 + 3;
     float y = 2;
-    // println(x + (1 + y*5.0));
     print(x, ";", y);
 }

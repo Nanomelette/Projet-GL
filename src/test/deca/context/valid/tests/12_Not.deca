@@ -1,9 +1,0 @@
-// Description:
-//    Test Not
-//
-// Historique:
-//    cree le 16/01/2022
-
-{
-        boolean a = !false;
-}

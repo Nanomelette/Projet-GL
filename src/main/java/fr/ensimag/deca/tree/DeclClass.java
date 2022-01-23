@@ -6,32 +6,24 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.LabelOperand;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
-import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.BSR;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.RTS;
-import fr.ensimag.ima.pseudocode.instructions.SEQ;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.instructions.SUBSP;
 import fr.ensimag.ima.pseudocode.instructions.TSTO;
-
 import java.io.PrintStream;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -47,7 +39,7 @@ public class DeclClass extends AbstractDeclClass {
     private ListDeclMethod listDeclMethod;
 
     public DeclClass(AbstractIdentifier tree, AbstractIdentifier tree2, ListDeclField listField,
-        ListDeclMethod listDeclMethod) {
+            ListDeclMethod listDeclMethod) {
         Validate.notNull(tree);
         Validate.notNull(tree2);
         Validate.notNull(listField);
@@ -62,11 +54,14 @@ public class DeclClass extends AbstractDeclClass {
     public void decompile(IndentPrintStream s) {
         s.print("class ");
         classe.decompile(s);
-        s.print(" extends ");
-        classeSup.decompile(s);
-        s.print("{");
+        if (!classeSup.getName().getName().equals("Object")) {
+            s.print(" extends " + classeSup.getName().getName());
+        }
+        s.println(" {");
+        s.indent();
         listDeclField.decompile(s);
         listDeclMethod.decompile(s);
+        s.unindent();
         s.print("}");
     }
 
@@ -89,8 +84,23 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
+        Symbol symb = this.classe.getName();
+        ClassType classType = (ClassType) compiler.GetEnvTypes().getType(symb);
+        ClassDefinition classDef = classType.getDefinition();
+        EnvironmentExp envExp = classDef.getMembers();
+        Symbol symbSup = this.classeSup.getName();
+        ClassType classTypeSup = (ClassType) compiler.GetEnvTypes().getType(symbSup);
+        ClassDefinition classDefSup = classTypeSup.getDefinition();
+        EnvironmentExp envExpSup = classDefSup.getMembers();
+        int indexMethods = classDefSup.getIndexMethods();
+        classDef.setIndexMethods(indexMethods);
         this.listDeclField.verifyListField(compiler, this.classeSup, this.classe);
         this.listDeclMethod.verifyListMethod(compiler, this.classeSup, this.classe);
+        for (Symbol s : envExpSup.getDictionnary().keySet()) {
+            try {
+                envExp.declare(s, envExpSup.get(s));
+            } catch (EnvironmentExp.DoubleDefException e) {}
+        }
     }
 
     @Override
@@ -140,102 +150,24 @@ public class DeclClass extends AbstractDeclClass {
                         compiler.getData().getGbOffset(), Register.GB)));
         compiler.getData().incrementGbOffset();
 
-        // Ajout des méthodes de la classe
+        // On initialise d'abord la VTable de la classe
         classe.getClassDefinition().initLabelVTable(
                 classeSup.getClassDefinition().getLabelVTable());
         for (AbstractDeclMethod aDeclMethod : listDeclMethod.getList()) {
+            Label codeLabel = new Label(
+                    "code." + classe.getName().getName() + "." + aDeclMethod.getName().getName().getName());
             classe.getClassDefinition().addLabel(
-                    aDeclMethod.getName().getMethodDefinition().getIndex(),
-                    new Label(
-                            "code." + classe.getName().getName() + "." + aDeclMethod.getName().getName().getName()));
+                    aDeclMethod.getName().getMethodDefinition().getIndex(), codeLabel);
+        }
+        
+
+        // Ajout des méthodes de la classe
+        for (Label codeLabel : classe.getClassDefinition().getLabelVTable().values()) {
+            compiler.addInstruction(new LOAD(new LabelOperand(codeLabel), Register.R0));
+            compiler.addInstruction(
+                    new STORE(Register.R0, new RegisterOffset(compiler.getData().getGbOffset(), Register.GB)));
             compiler.getData().incrementGbOffset();
         }
-
-        // On ajoute les méthodes de la classe mère, donc en faisant l'hypothèse que
-        // l'on réécrit moins de fonction
-        // Iterator<Integer> it = classeSup.getClassDefinition().getKeys();
-        // while (it.hasNext()) {
-        // int index = it.next();
-        // AbstractDeclMethod declmethod =
-        // classeSup.getClassDefinition().getLabel(index);
-        // Map<Integer, AbstractDeclMethod> classeVTable =
-        // classe.getClassDefinition().getLabelVTable();
-        // String debName;
-        // if (classeVTable.containsValue(declmethod)) {
-        // debName = "code." + classeSup.getName().getName();
-        // classe.getClassDefinition().addLabel(, index);
-        // } else {
-        // debName = "code." + classe.getName().getName();
-        // classe.getClassDefinition().addLabel(declmethod, index);
-        // }
-        // declmethod.addToVTable(compiler, debName);
-
-        // }
-
-        // Version fonctionnel avec HashMap<Integer, AbstractDeclMethod>
-        // for (int key = 0; key < classeSup.getClassDefinition().sizeVTable(); key++) {
-        // AbstractDeclMethod declMethod = classeSup.getClassDefinition().getLabel(key);
-        // Map<Integer, AbstractDeclMethod> classeVTable =
-        // classe.getClassDefinition().getLabelVTable();
-        // String debName;
-        // if (classeVTable.containsValue(declMethod)) {
-        // debName = "code." + classeSup.getName().getName();
-        // classe.getClassDefinition().addLabel(declMethod, key);
-        // } else {
-        // debName = "code." + classeSup.getName().getName();
-        // classe.getClassDefinition().addLabel(declMethod, key);
-        // }
-        // declMethod.addToVTable(compiler, debName);
-        // }
-
-        // for (AbstractDeclMethod aDeclMethod : listDeclMethod.getList()) {
-        // // Table des étiquettes
-        // classe.getClassDefinition().addLabel(aDeclMethod);
-        // // Gen du code
-        // aDeclMethod.addToVTable(compiler, "code." + classe.getName().getName());
-        // if (!classeSup.getName().getName().equals("Object")) {
-        // int key = 2;
-        // while (classeSup.getClassDefinition().hasKey(key)) {
-        // if (!classe.getClassDefinition().hasKey(key)) {
-        // classe.getClassDefinition().addLabel(
-        // classeSup.getClassDefinition().getLabel(key)
-        // );
-        // }
-        // key++;
-        // }
-        // }
-    }
-
-    private void codeGenInitClass(DecacCompiler compiler) {
-        compiler.addLabel(
-            new Label("code.Object.equals")
-        );
-        compiler.addInstruction(
-            new LOAD(
-                new RegisterOffset(-2, Register.LB),
-                Register.R0
-            )
-        );
-        compiler.addInstruction(
-            new LOAD(
-                new RegisterOffset(-3, Register.LB),
-                Register.R1
-            )
-        );
-        compiler.addInstruction(
-            new CMP(Register.R0, Register.R1)
-        );
-
-        compiler.addInstruction(
-            new SEQ(Register.R0)
-        );
-        compiler.getData().setLastUsedRegister(Register.R0);
-        compiler.addInstruction(
-            new RTS()
-        );
-
-
-
     }
 
     @Override
@@ -246,14 +178,17 @@ public class DeclClass extends AbstractDeclClass {
         }
 
         // Début de bloc
-        compiler.newBloc(); compiler.setToBlocProgram();
+        compiler.newBloc();
+        compiler.setToBlocProgram();
 
-        // compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
+        // compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB),
+        // Register.R1));
         if (!classeSup.getName().getName().equals("Object")) {
             // Initialiser les nouveaux champs à zero
             listDeclField.codeGenListDeclFieldSetZero(compiler);
             // Init les champs parents
             compiler.addComment("Appel de l'initialisation des champs hérités de " + classeSup.getName().getName());
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
             compiler.addInstruction(new PUSH(Register.R1), "Empile l'objet à initialiser");
             compiler.addInstruction(new BSR(new Label("init." + classeSup.getName().getName())),
                     "Appel de l’initialisation de la super-classe");
@@ -266,14 +201,14 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addInstruction(new RTS());
 
         // Restauration des registres
-        if (compiler.getData().getNumberOfUsedRegister() != 0) {
+        if (compiler.getData().getNumberOfUsedRegister() > 1) {
             compiler.addComment("Restauration des registres");
         }
         compiler.getData().popUsedRegisters(compiler);
 
         // Sauvegarde des registres
         compiler.getData().pushUsedRegisters(compiler);
-        if (compiler.getData().getNumberOfUsedRegister() != 0) {
+        if (compiler.getData().getNumberOfUsedRegister() > 1) {
             compiler.addCommentAtFirst("Sauvegarde des registres");
         }
 
@@ -281,14 +216,15 @@ public class DeclClass extends AbstractDeclClass {
         /**
          * TODO : TSTO
          * 
-         * nombre de registres sauvegardés en début de bloc = 
-         *          0
+         * nombre de registres sauvegardés en début de bloc =
+         * 0
          * nombre de variables du bloc =
-         *          0 <- Initialisation des champs donc pas de variables
+         * 0 <- Initialisation des champs donc pas de variables
          * nombre maximal de temporaires nécessaires à l’évaluation des expressions =
-         *          compiler.getData().getFreeStoragePointer() - 2
-         * nombre maximal de paramètres des méthodes appelées (chaque instruction BSR effectuant deux empilements) =
-         *          2 <- Il faut retenir le PC et l'objet
+         * compiler.getData().getFreeStoragePointer() - 2
+         * nombre maximal de paramètres des méthodes appelées (chaque instruction BSR
+         * effectuant deux empilements) =
+         * 2 <- Il faut retenir le PC et l'objet
          * 
          */
         if (!(compiler.getCompilerOptions().getNoCheck())) {
@@ -300,14 +236,11 @@ public class DeclClass extends AbstractDeclClass {
         compiler.appendBlocInstructions();
         compiler.getData().restoreData();
         compiler.setToMainProgram();
-        
+
         // Codage des méthodes
         // Ajout de l'etiquette de code.Object.equals
-        codeGenInitClass(compiler);
+        // codeGenInitClass(compiler);
         listDeclMethod.codeGenListDeclMethod(compiler);
-
-        
-
 
     }
 }

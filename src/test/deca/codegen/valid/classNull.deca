@@ -1,0 +1,14 @@
+
+
+
+
+// Classe nulle
+
+class A { }
+class B extends A { }
+{
+   B b;
+   if (b == null) {
+        println("Classe nulle");
+   }
+}

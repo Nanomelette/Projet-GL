@@ -1,0 +1,11 @@
+// Description:
+//    Erreur du 11.1 : conversion de type impossible
+// Resultats:
+// 
+
+class A {}
+class B extends A {}
+class C extends B {}
+{
+    A a;
+}

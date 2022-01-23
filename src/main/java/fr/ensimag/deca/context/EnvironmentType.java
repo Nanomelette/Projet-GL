@@ -53,7 +53,8 @@ public class EnvironmentType {
 		
 		ParamDefinition defOther = new ParamDefinition(classTypeObject, Location.BUILTIN);
 		
-		identOther.setDefinition(defOther);
+        classTypeObject.getDefinition().setIndexMethods(2);
+        identOther.setDefinition(defOther);
 		
 		ListDeclParam listParamEquals  = new ListDeclParam() ;
     }
@@ -72,7 +73,11 @@ public class EnvironmentType {
     }
     
     public Type getType(Symbol s){
-    	return this.env_Type.get(s).getType();
+    	TypeDefinition typeDef = this.env_Type.get(s);
+        if (typeDef == null) {
+            return null;
+        }
+        return typeDef.getType();
     }
 
     public TypeDefinition get(Symbol create) {

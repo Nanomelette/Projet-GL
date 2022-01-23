@@ -1,0 +1,16 @@
+// Description:
+//    Programme minimaliste: une classe pas très utile, dont le type retourné est A.
+//
+// Résultats:
+//
+//
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+}
+class B {
+	A f(int x, float y) {
+		return new A();
+	}
+}

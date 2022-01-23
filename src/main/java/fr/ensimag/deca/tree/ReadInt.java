@@ -62,6 +62,7 @@ public class ReadInt extends AbstractReadExpr {
         GPRegister lastRegister = data.getFreeRegister(compiler);
         compiler.addInstruction(new LOAD(GPRegister.R1, lastRegister));
         data.setLastUsedRegister(lastRegister);
+        // data.decrementFreeStoragePointer();
         // } else {
         //     // compiler.addInstruction(new PUSH(data.getMaxRegister()), "sauvegarde");
         //     // compiler.addInstruction(new LOAD(GPRegister.R1, data.getMaxRegister()));

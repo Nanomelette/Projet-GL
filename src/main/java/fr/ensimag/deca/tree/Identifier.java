@@ -4,12 +4,12 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.deca.context.ParamDefinition;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -20,9 +20,9 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
@@ -38,7 +38,7 @@ import org.apache.commons.lang.Validate;
  */
 public class Identifier extends AbstractIdentifier {
     // private static final Logger LOG = Logger.getLogger(Identifier.class);
-    
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -59,7 +59,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a class definition.
+     *                            if the definition is not a class definition.
      */
     @Override
     public ClassDefinition getClassDefinition() {
@@ -81,7 +81,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a method definition.
+     *                            if the definition is not a method definition.
      */
     @Override
     public MethodDefinition getMethodDefinition() {
@@ -103,7 +103,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public FieldDefinition getFieldDefinition() {
@@ -125,7 +125,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public VariableDefinition getVariableDefinition() {
@@ -140,13 +140,14 @@ public class Identifier extends AbstractIdentifier {
     }
 
     /**
-     * Like {@link #getDefinition()}, but works only if the definition is a ExpDefinition.
+     * Like {@link #getDefinition()}, but works only if the definition is a
+     * ExpDefinition.
      * 
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public ExpDefinition getExpDefinition() {
@@ -157,6 +158,17 @@ public class Identifier extends AbstractIdentifier {
                     "Identifier "
                             + getName()
                             + " is not a Exp identifier, you can't call getExpDefinition on it");
+        }
+    }
+
+    public ParamDefinition getParamDefinition() {
+        try {
+            return (ParamDefinition) definition;
+        } catch (ClassCastException e) {
+            throw new DecacInternalError(
+                    "Identifier "
+                            + getName()
+                            + " is not a parameter identifier, you can't call getParamDefinition on it");
         }
     }
 
@@ -180,37 +192,35 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-    
-        Symbol symb = (Symbol)compiler.getSymbolTable().create(this.name.getName());
+
+        Symbol symb = (Symbol) compiler.getSymbolTable().create(this.name.getName());
         if (localEnv.get(symb) != null) {
             setDefinition(localEnv.get(symb));
             setType(localEnv.get(symb).getType());
             return localEnv.get(symb).getType();
-        }
-        else {
-            throw new ContextualError(this.getName()+": identifier not defined", getLocation());
+        } else {
+            throw new ContextualError(this.getName() + ": identifier not defined", getLocation());
         }
     }
 
     /**
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes
+     * 
      * @param compiler contains "env_types" attribute
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-            Type type = compiler.searchSymbol(this.name);
-            if ( type == null )
-                throw new ContextualError("Identifier-type error", this.getLocation());
-            else {
-                this.setDefinition(compiler.GetEnvTypes().get(this.getName()));
-                setType(type);
-            }
-                return type ;
+        Type type = compiler.searchSymbol(this.name);
+        if (type == null)
+            throw new ContextualError("Identifier-type error", this.getLocation());
+        else {
+            this.setDefinition(compiler.GetEnvTypes().get(this.getName()));
+            setType(type);
+        }
+        return type;
     }
-    
-    
-    private Definition definition;
 
+    private Definition definition;
 
     @Override
     protected void iterChildren(TreeFunction f) {
@@ -224,7 +234,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(name.toString());
+        s.print(name.getName());
     }
 
     @Override
@@ -261,7 +271,18 @@ public class Identifier extends AbstractIdentifier {
     protected void codeGenInst(DecacCompiler compiler) {
         Data data = compiler.getData();
         GPRegister register = data.getFreeRegister(compiler);
-        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), register));
+        if (getDefinition().isField()) {
+            compiler.addInstruction(
+                new LOAD(new RegisterOffset(-2, Register.LB), register));
+            compiler.addInstruction(
+                new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), register), register));
+        } else if (getDefinition().isParam()) {
+            int offset = getParamDefinition().getIndex() + 2;
+            compiler.addInstruction(new LOAD(
+                new RegisterOffset(-offset, Register.LB), register));
+        } else {
+            compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), register));
+        }
         data.setLastUsedRegister(register);
     }
 
@@ -271,16 +292,32 @@ public class Identifier extends AbstractIdentifier {
         GPRegister register = data.getFreeRegister(compiler);
         compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), register));
         data.setLastUsedRegister(register);
-    } 
+    }
 
     /**
-     * Methode use to generate code that assign the result 
+     * Methode used to generate code that assign the result
      * saved in lastUsedRegister to this identifer
+     * 
      * @param compiler
      */
     @Override
     protected void codeGenAssign(DecacCompiler compiler, Register register) {
-        DAddr adress = getExpDefinition().getOperand();
-        compiler.addInstruction(new STORE(register, adress));
+        if (getDefinition().isField()) {
+            GPRegister tmpRegister = compiler.getData().getFreeRegister(compiler);
+            // compiler.getData().decrementFreeStoragePointer();
+            compiler.addInstruction(
+                new LOAD(new RegisterOffset(-2, Register.LB), tmpRegister));
+            // compiler.addInstruction(
+            //     new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), tmpRegister), tmpRegister));
+            // compiler.addInstruction(new STORE(register, new RegisterOffset(0, tmpRegister)));
+            compiler.addInstruction(new STORE(register, new RegisterOffset(getFieldDefinition().getIndex(), tmpRegister)));
+        } else if (getDefinition().isParam()) {
+            int offset = getParamDefinition().getIndex() + 2;
+            compiler.addInstruction(new STORE(register, new RegisterOffset(-offset, Register.LB)));
+        } else {
+            DAddr adress = getExpDefinition().getOperand();
+            compiler.addInstruction(new STORE(register, adress));
+        }
+        
     }
 }

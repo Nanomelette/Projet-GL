@@ -4,17 +4,24 @@ import java.io.PrintStream;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.INT;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 public class Cast extends AbstractExpr {
     private AbstractIdentifier type;
@@ -43,14 +50,17 @@ public class Cast extends AbstractExpr {
         if(type.isNull()){
             throw new ContextualError("cannot cast null type", getLocation());
         }
-        if(type == expressionType){
+        if(type.sameType(expressionType)){
+            this.setType(type);
             return type;
         }
         if(compiler.assignCompatible(compiler, type, expressionType)!= null){
-            return compiler.assignCompatible(compiler, type, expressionType);
+            this.setType(type);
+            return type;
         }
         if(compiler.assignCompatible(compiler, expressionType, type)!= null){
-            return compiler.assignCompatible(compiler, expressionType, type);
+            this.setType(type);
+            return type;
         }
         throw new ContextualError("impossible cast", getLocation());
     }
@@ -78,16 +88,27 @@ public class Cast extends AbstractExpr {
     }
 
     private void isInstanceOf(DecacCompiler compiler, Label doCast) {
-        // register contient l'adresse de l'objet à tester dans le tas
-        GPRegister register = compiler.getData().getLastUsedRegister();
-        ClassDefinition typeCible = type.getClassDefinition();
-        compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
+        e.codeGenInst(compiler);
+        // exprAddrReg contient l'adresse de e dans le tas
+        GPRegister exprAddrReg = compiler.getData().getLastUsedRegister(); 
+        Label W_Start = new Label("W.Start"+compiler.getNLabel());
+        Label W_Cond = new Label("W.Cond."+compiler.getNLabel());
+        ClassType cType = (ClassType)type.getType();
+        ClassDefinition typeCible = cType.getDefinition();
+        GPRegister reg = compiler.getData().getFreeRegister(compiler);
+        compiler.addInstruction(new LOAD(exprAddrReg, reg));
+        compiler.addInstruction(new BRA(W_Cond));
+        compiler.addLabel(W_Start);
+        // Comparer les adresses, sauter à true_instanceof si ok,
+        // sinon chercher la classe parent de expr
+        compiler.addInstruction(new LEA(typeCible.getAddressVTable(), Register.R0));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, reg), reg));
+        compiler.addInstruction(new CMP(Register.R0, reg));
         compiler.addInstruction(new BEQ(doCast));
-        while (typeCible.getSuperClass() != null) {
-            typeCible = typeCible.getSuperClass();
-            compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
-            compiler.addInstruction(new BEQ(doCast));
-        }
+        compiler.addLabel(W_Cond);
+        // Tester si la classe parent de e est nulle
+        compiler.addInstruction(new CMP(new NullOperand(), reg));
+        compiler.addInstruction(new BNE(W_Start));
     }
 
     @Override
@@ -106,11 +127,11 @@ public class Cast extends AbstractExpr {
                 compiler.incrNLabel();
                 // Tester en assembleur si e est une instance de type
                 isInstanceOf(compiler, doCast);
-                compiler.addLabel(doCast);
                 // On cast
                 if (!(compiler.getCompilerOptions().getNoCheck())) {
                     compiler.addInstruction(new BRA(new Label("cast_error")));
                 }
+                compiler.addLabel(doCast);
             }
         } else {
             if (!(compiler.getCompilerOptions().getNoCheck())) { 

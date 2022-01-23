@@ -4,17 +4,12 @@ import java.io.PrintStream;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.Signature;
-import fr.ensimag.deca.context.StringType;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.InlinePortion;
-import fr.ensimag.ima.pseudocode.Line;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 
 
 public class MethodBodyAsm extends AbstractMethodBody {
@@ -54,15 +49,25 @@ public class MethodBodyAsm extends AbstractMethodBody {
 
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler) {
-        compiler.add(new InlinePortion(code.toString()));
+        compiler.add(new InlinePortion("    "+code.getValue().replace("\\\"", "\"")));
     }
 
 
     @Override
     public void verifyClassBody(DecacCompiler compiler, EnvironmentExp members, EnvironmentExp envExpParams,
             AbstractIdentifier class1, Type return1) throws ContextualError {
-        // TODO Auto-generated method stub
+        // Nothing to do
         
+    }
+
+
+    @Override
+    protected void codeGenSaveRestore(DecacCompiler compiler) {
+        compiler.addInstruction(new RTS());
+    }
+
+    public int getNbrVarMethodBody() {
+        return 0;
     }
 
     

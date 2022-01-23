@@ -20,7 +20,6 @@ import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
-import net.bytebuddy.asm.Advice.Thrown;
 
 public class Selection extends AbstractLValue{
 
