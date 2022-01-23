@@ -43,7 +43,7 @@ public class Data {
     }
 
     public int getNumberOfUsedRegister() {
-        return Math.min(maxRegister - 1, numberOfUsedRegister);
+        return Math.min(maxRegister - 1, numberOfUsedRegister + 1);
     }
 
     public Labels getLabels() {

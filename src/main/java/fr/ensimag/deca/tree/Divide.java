@@ -38,7 +38,9 @@ public class Divide extends AbstractOpArith {
             compiler.addInstruction(new BEQ(new Label("zero_division")));
         } else {
             compiler.addInstruction(new CMP(new ImmediateFloat(0), freeRegister));
-            compiler.addInstruction(new BOV(new Label("overflow_error")));
+            if (!(compiler.getCompilerOptions().getNoCheck())) {
+                compiler.addInstruction(new BOV(new Label("overflow_error")));
+            }
         }
 
         if (this.getType().isFloat()) {

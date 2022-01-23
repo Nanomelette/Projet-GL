@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import subprocess
 import glob
 
@@ -14,7 +16,7 @@ files = glob.glob('./src/test/deca/**/invalid/*.deca',
 
 for file in files:
     print("Fichier en cours de compilation invalid : " + file)
-    subprocess.run(['decac',file])
+    subprocess.run(['decac','-r','4',file])
 
 #Lancement des fichiers situés dans valid
 
@@ -22,7 +24,7 @@ files = glob.glob('./src/test/deca/**/valid/*.deca',
                    recursive = True)
 for file in files:
     print("Fichier en cours de compilation valid : " + file)
-    subprocess.run(['decac',file])
+    subprocess.run(['decac','-r','4',file])
 
 
 #On lance ensuite les tests des .ass qui sont dans valid

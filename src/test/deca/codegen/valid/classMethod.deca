@@ -2,7 +2,7 @@
 //     Méthodes de class
 
 // Résultat:
-//     42
+// 42
 
 class A {
     int x = 1;
@@ -11,7 +11,7 @@ class A {
         return x;
     }
 
-    int setX(int i) {
+    void setX(int i) {
         x = i;
     }
 }
