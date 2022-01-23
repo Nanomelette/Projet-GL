@@ -1,0 +1,11 @@
+
+
+
+
+// 1.00000e+00
+
+{
+    int x = 1;
+    float y = (float)(x);
+    print(y);
+}
