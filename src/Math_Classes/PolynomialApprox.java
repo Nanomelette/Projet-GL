@@ -1,5 +1,7 @@
 import java.lang.Math;
 
+import java.util.ArrayList;
+
 class Polynomial {
 
     float M_PI_4  = ((3.1415926535897932384626433832795f/4.0f));
@@ -49,6 +51,7 @@ class Polynomial {
         return 2 * atan_poly(x/a);
     }
 
+
     float ArcCos(float x){
         float a = sqrt(1f-x*x);
         float b = 1f + x;
@@ -91,30 +94,114 @@ class Polynomial {
         float r9 = r8 * s;
         float r10 = fmaf (r9, a, a);
         return r10;
+    }
+
+    float abs(float x) {
+        if(x>=0){
+            return x;
+        }
+        else{
+            return -x;
+        }
+    }
+
+    float sinf_poly (float a, float s) {
+        float r, t;
+
+        r =              0x1.80a000p-19f;  //  2.86567956e-6
+        r = fmaf (r, s, -0x1.a0690cp-13f); // -1.98559923e-4
+        r = fmaf (r, s,  0x1.111182p-07f); //  8.33338592e-3
+        r = fmaf (r, s, -0x1.555556p-03f); // -1.66666672e-1
+        t = fmaf (a, s, 0.0f); // ensure -0 is passed through
+        r = fmaf (r, t, a);
+        return r;
+    }
+
+    float cosf_poly (float x){
+ 
+        float res = 1f;
+        float sign = 1, fact = 1, pow = 1;
+        for (float i = 1; i < 5; i++) {
+            sign = sign * -1;
+            fact = fact * (2 * i - 1) * (2 * i);
+            pow = pow * x * x;
+            res = res + sign * pow / fact;
+        }
+    
+        return res;
+    }
+        // float r;
+        // r =         0x1.9a8000p-16f; //  2.44677067e-5
+        // r = r * s - 0x1.6c0efap-10f; // -1.38877297e-3
+        // r = r * s + 0x1.555550p-05f; //  4.16666567e-2
+        // r = r * s - 0x1.000000p-01f; // -5.00000000e-1
+        // r = r * s + 0x1.000000p+00f; //  1.00000000e+0
+        // return r;
+    //}
+
+    float my_sinf (float a){
+      float sinx, pterm;
+      float i, sign=-1,n=20;
+      sinx = a;
+      pterm = a;
+      for(i=1;i<=n;i++){
+            sinx = sinx + sign*pterm*a*a/(2*i*(2*i+1));
+            pterm = pterm * a* a /(2 * i * (2 * i + 1));
+            sign = -1 * sign;
       }
+      return sinx;
+    }
 
-
-
+    
 }
 
 public class PolynomialApprox {
     public static void main(String[] args ) {
         Polynomial p = new Polynomial();
-        float x = 0.5f;
-       
+        float x;
+        ArrayList<Float> listFloat = new ArrayList<Float>();
+        ArrayList<Float> arrayListAtan = new ArrayList<Float>();
+        ArrayList<Float> arrayListRAtan = new ArrayList<Float>();
+        ArrayList<Float> arrayListCos = new ArrayList<Float>();
+        ArrayList<Float> arrayListRCos = new ArrayList<Float>();
+        ArrayList<Float> arrayListAsin = new ArrayList<Float>();
+        ArrayList<Float> arrayListRAsin = new ArrayList<Float>();
+        ArrayList<Float> err = new ArrayList<Float>();
+        for(x=-3.14f; x<=3.14f; x = x + 0.01F ){
+            arrayListAtan.add(p.cosf_poly(x));
+            arrayListRAtan.add((float)Math.cos(x));
+            err.add(Math.abs(p.cosf_poly(x)-((float)Math.cos(x))));
+            listFloat.add(x);
+        }
+        System.out.println(arrayListAtan.toString());
+        System.out.println(arrayListRAtan.toString());
+        System.out.println(listFloat.toString());
+        // System.out.println(arrayListAsin.toString());
+        // System.out.println(arrayListRAsin.toString());
+        //System.out.println(arrayListCos.toString());
+        // System.out.println(arrayListRCos.toString());
+        System.out.println(err.toString());
+      
         
-        float poly = p.atan_poly(x);
-        float asin = p.ArcSin(x);
-        float acos = p.ArcCos(x);
+        // float poly = p.atan_poly(x);
+        // float asin = p.ArcSin(x);
+        // float acos = p.ArcCos(x);
+        // float cos = p.cosf_poly(x);
+        // float sin = p.my_sinf(x);
         // System.out.println("FastArctan : " + y_fast1 + " | résultat attendu : 0.46364760");
         // System.out.println("Fast2Arctan : " + y_fast2 + " | résultat attendu : 0.46364760");
-        System.out.println("PolyArctan : " + poly + " | résultat attendu : 0.46364760");
-        System.out.println("Arcsin : " + asin + " | résultat attendu : 0.52359877") ;
-        System.out.println("Arccos : " + acos + " | résultat attendu : 1.04719755");
+        // System.out.println("PolyArctan : " + poly + " | résultat attendu : " + Math.atan(x));
+        // System.out.println("Arcsin : " + asin + " | résultat attendu : " + Math.asin(x)) ;
+        // //System.out.println("Arccos : " + acos + " | résultat attendu : " + Math.acos(x));
+        // System.out.println("cos : " + cos + " | résultat attendu : " + Math.cos(x));
+        // System.out.println("sin : " + sin + " | résultat attendu : " + Math.sin(x));
         // System.out.println(Math.ulp(y_fast2));
         // System.out.println(Math.ulp(y_fast1));
-        System.out.println(abs(poly-Math.atan(x)));
-        System.out.println(Math.ulp(x));
+        // System.out.println("|atan-val_réélle| = " + Math.abs(poly-Math.atan(x)) + "  | nbr ulp = " + Math.abs(poly-Math.atan(x))/Math.ulp(x));
+        // System.out.println("|asin-val_réélle| = " + Math.abs(asin-Math.asin(x)) + "  | nbr ulp = " + Math.abs(asin-Math.asin(x))/Math.ulp(x));
+        // System.out.println("|sin-val_réélle|  = " + Math.abs(sin-Math.sin(x)) + "  | nbr ulp = " + Math.abs(Math.ulp(x)/(sin-Math.sin(x))));
+        // System.out.println("|cos-val_réélle|  = " + Math.abs(cos-Math.cos(x)) + " | nbr ulp = " + Math.abs(Math.ulp(x)/(cos-Math.cos(x))));
+        // System.out.println("ulp(x) = " + (Math.ulp(x)));
         
     }
 }
