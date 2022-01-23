@@ -1,21 +1,10 @@
-class A {
-    float cos(float x){
- 
-        float res = 1.0f;
-        float sign = 1, fact = 1, power = 1;
-        float i = 1;
-        while (i < 5) {
-            sign = sign * -1;
-            fact = fact * (2 * i - 1) * (2 * i);
-            power = power * x * x;
-            res = res + sign * power / fact;
-            i = i + 1;
-        }
-        return res;
-    }
-}
+#include "Math.decah"
 
 {
-    A a = new A();
-    println(a.cos(0.0));
+    Math m = new Math();
+    println(m.cos(0.0));
+    println(m.sin(0.0));
+    println(m.asin(1.0));
+    println(m.atan(1.0));
+    println(m.ulp(1.0));
 }
