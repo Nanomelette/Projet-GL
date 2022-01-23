@@ -1,0 +1,16 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 15: ContextualError: Incompatible extension of field x
+// 
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	boolean x = true;
+}
+class B extends A {
+	// Doit etre refuse.
+	int x = 1;
+}

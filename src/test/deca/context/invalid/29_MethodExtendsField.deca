@@ -1,0 +1,18 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 15: ContextualError: f isn't a method
+// 
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	int f = 1;
+}
+class B extends A {
+	// Doit etre refuse.
+	int f() {
+		return 1;
+	}
+}

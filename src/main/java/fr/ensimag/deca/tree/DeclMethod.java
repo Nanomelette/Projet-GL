@@ -65,7 +65,9 @@ public class DeclMethod extends AbstractDeclMethod{
             ClassDefinition classDef = classType.getDefinition();
             int index = classDef.getIndexMethods();
             if (ExpDef != null) {
-                Validate.isTrue(ExpDef.isMethod(), method.getName() + " isn't a method");
+                if (!ExpDef.isMethod()) {
+                    throw new ContextualError(method.getName() + " isn't a method", this.getLocation());
+                }
                 MethodDefinition methodDef = (MethodDefinition) ExpDef;
                 Type typeSup = methodDef.getType();
                 if (compiler.subType(compiler, mType, typeSup)) {

@@ -1,7 +1,0 @@
-// classe pas très utile, une seule méthode qui affiche 1.
-
-class A {
-	void f() {
-		println(1);
-	}
-}

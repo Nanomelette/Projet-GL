@@ -61,12 +61,14 @@ public class DeclField extends AbstractDeclField {
             if (envExpSup.equals(envExp.getParent())) {
                 ExpDefinition ExpDef = envExpSup.get(fieldName);
                 if (ExpDef != null) {
-                    Validate.isTrue(ExpDef.isField(), fieldName.getName() + " isn't a field");
+                    if (!ExpDef.isField()) {
+                        throw new ContextualError(fieldName.getName() + " isn't a field", this.type.getLocation());
+                    }
                 }
             }
             Type fType = type.verifyType(compiler);
             if (fType.isVoid()){
-                throw new ContextualError("type void", this.type.getLocation());
+                throw new ContextualError("field void", this.type.getLocation());
             }
             try {
                 int index = classDefSup.getNumberOfFields() + def.getNumberOfFields() + 1;
@@ -100,7 +102,9 @@ public class DeclField extends AbstractDeclField {
             if (envExpSup.equals(envExp.getParent())) {
                 ExpDefinition ExpDef = envExpSup.get(fieldName);
                 if (ExpDef != null) {
-                    Validate.isTrue(compiler.subType(compiler, this.type.getType(), ExpDef.getType()), "Incompatible extension of field "+this.field.getName());
+                    if (!compiler.subType(compiler, this.type.getType(), ExpDef.getType())) {
+                        throw new ContextualError("Incompatible extension of field "+this.field.getName(), this.getLocation());
+                    }
                 }
             }
         }

@@ -68,11 +68,13 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         Symbol parent = this.classeSup.getName();
-        Validate.isTrue(compiler.searchSymbol(parent).isClass(), "not class extension");
-        ClassType classType = (ClassType) compiler.searchSymbol(parent);
-        if (classType == null) {
+        if (compiler.searchSymbol(parent) == null) {
             throw new ContextualError("undefined super class", this.getLocation());
         }
+        if (!compiler.searchSymbol(parent).isClass()) {
+            throw new ContextualError("not class extension", this.getLocation());
+        }
+        ClassType classType = (ClassType) compiler.searchSymbol(parent);
         ClassDefinition classSupDef = classType.getDefinition();
         classeSup.setDefinition(classSupDef);
         ClassType type = new ClassType(this.classe.getName(), this.classe.getLocation(), classSupDef);
@@ -105,6 +107,7 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
+        this.listDeclField.verifyListFieldBody(compiler, classeSup, classe);
         this.listDeclMethod.verifyListMethodBody(compiler, classeSup, classe);
     }
 
