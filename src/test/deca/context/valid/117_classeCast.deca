@@ -2,7 +2,7 @@
 //    Programme minimaliste: une classe et des Cast dans le Main.
 //
 // Résultats:
-//
+// 21
 //
 // Historique:
 //    cree le 01/01/2022
@@ -16,15 +16,8 @@ class B extends A {
 }
 
 {
-	// A a = new A();
-	// B b = (B)(a);
-	// A c = (A)(b);
-
     B b = new B();
     A a = (A)(b);
     print(b.x);
     print(a.x);
-
-    // int a = 1;
-    // float f = (float)(a);
 }

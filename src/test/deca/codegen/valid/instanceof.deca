@@ -1,19 +1,12 @@
-class A {
-    protected int x = 1 + 1;
-}
-
-class B extends A {
-    int x = 5;
-    int y = 0;
-}
-
+class A { }
+class B extends A { }
+class C extends B { }
 {
-    A a = new A();
-    B b = new B();
-
-    if (b instanceof A) {
+   A a;
+   B b;
+   a = new C();
+   if (a instanceof B) {
+        b = (B)(a);
         println("ok");
-    } else {
-        println("pas ok");
-    }
-}   
+   }
+}
