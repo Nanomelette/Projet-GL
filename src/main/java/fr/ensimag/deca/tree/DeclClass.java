@@ -152,7 +152,7 @@ public class DeclClass extends AbstractDeclClass {
                         compiler.getData().getGbOffset(), Register.GB)));
         compiler.getData().incrementGbOffset();
 
-        // Ajout des méthodes de la classe
+        // On initialise d'abord la VTable de la classe
         classe.getClassDefinition().initLabelVTable(
                 classeSup.getClassDefinition().getLabelVTable());
         for (AbstractDeclMethod aDeclMethod : listDeclMethod.getList()) {
@@ -160,34 +160,17 @@ public class DeclClass extends AbstractDeclClass {
                     "code." + classe.getName().getName() + "." + aDeclMethod.getName().getName().getName());
             classe.getClassDefinition().addLabel(
                     aDeclMethod.getName().getMethodDefinition().getIndex(), codeLabel);
+        }
+        
+
+        // Ajout des méthodes de la classe
+        for (Label codeLabel : classe.getClassDefinition().getLabelVTable().values()) {
             compiler.addInstruction(new LOAD(new LabelOperand(codeLabel), Register.R0));
             compiler.addInstruction(
                     new STORE(Register.R0, new RegisterOffset(compiler.getData().getGbOffset(), Register.GB)));
             compiler.getData().incrementGbOffset();
         }
     }
-
-    // private void codeGenInitClass(DecacCompiler compiler) {
-    //     compiler.addLabel(
-    //             new Label("code.Object.equals"));
-    //     compiler.addInstruction(
-    //             new LOAD(
-    //                     new RegisterOffset(-2, Register.LB),
-    //                     Register.R0));
-    //     compiler.addInstruction(
-    //             new LOAD(
-    //                     new RegisterOffset(-3, Register.LB),
-    //                     Register.R1));
-    //     compiler.addInstruction(
-    //             new CMP(Register.R0, Register.R1));
-
-    //     compiler.addInstruction(
-    //             new SEQ(Register.R0));
-    //     compiler.getData().setLastUsedRegister(Register.R0);
-    //     compiler.addInstruction(
-    //             new RTS());
-
-    // }
 
     @Override
     protected void codeGenDeclClass(DecacCompiler compiler) {

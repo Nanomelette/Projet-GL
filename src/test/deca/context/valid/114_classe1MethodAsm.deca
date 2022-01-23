@@ -5,5 +5,5 @@
 // Directement de l'assembleur
 
 class A {
-    void a() asm("WSTR");
+    void a() asm("WSTR \"Oui\"");
 }
