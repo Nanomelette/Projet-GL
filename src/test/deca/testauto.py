@@ -8,7 +8,7 @@ print("3. La verification de la sortie VS la sortie attendue est implémentée p
 #On commence par compiler tous les fichiers en .deca
 
 #Lancement des fichiers situés dans invalid
-
+'''
 files = glob.glob('./src/test/deca/**/invalid/*.deca',
                    recursive = True)
 
@@ -23,7 +23,7 @@ files = glob.glob('./src/test/deca/**/valid/*.deca',
 for file in files:
     print("Fichier en cours de compilation valid : " + file)
     subprocess.run(['decac',file])
-
+'''
 
 #On lance ensuite les tests des .ass qui sont dans valid
 files = glob.glob('./src/test/deca/**/valid/*.ass',
@@ -34,28 +34,44 @@ for file in files:
     #if listant tous les fichiers spéciaux qui nécssitent des inputs pour être testés
     if file == './src/test/deca/codegen/valid/ReadFloat.ass' :
         print ("Test avec un Float : ")
-        cmd = subprocess.run(['ima',file], input='1.0', text=True)
+        cmd = subprocess.run(['ima',file], input='1.0', text=True, capture_output=True)
         print (cmd)
 
     elif file == './src/test/deca/codegen/valid/readExpr.ass' :
         print ("Test avec un un entier : ")
-        subprocess.run(['ima',file], input='1.0', text=True)
+        subprocess.run(['ima',file], input='1.0', text=True, capture_output=True)
 
     elif file == './src/test/deca/syntax/valid/moitie.ass' :
         print ("Test avec un un entier : ")
-        subprocess.run(['ima',file], input='1.0', text=True)
+        subprocess.run(['ima',file], input='1.0', text=True, capture_output=True)
 
     elif file == './src/test/deca/context/valid/11_ReadInt.ass' :
         print ("Test avec un un entier : ")
-        subprocess.run(['ima',file], input='1.0', text=True)
+        subprocess.run(['ima',file], input='1.0', text=True, capture_output=True)
 
     elif file == './src/test/deca/context/valid/26_moitie.ass' :
         print ("Test avec un un entier : ")
-        subprocess.run(['ima',file], input='1.0', text=True)
+        subprocess.run(['ima',file], input='1.0', text=True, capture_output=True)
 
     else :
-        cmd = subprocess.run(['ima',file])
+        cmd = subprocess.run(['ima',file], capture_output=True)
         print (cmd)
+        res1 = cmd.stdout.decode('ascii')
+        print("Résultat obtenu : ")
+        print (res1)
+        head, _sep, tail = file.rpartition('.')
+        head=head+'.deca'
+        filin = open(head, "r")
+        lignes = filin.readlines()
+        if (len(lignes)>=5):
+            res2 = lignes[4][3:]
+            print("Résultat attendu : ")
+            print (res2)
+        else :
+            res2="Pas de résultat prévu"
+        filin.close()
+        if(res1!=res2):
+            print("le fichier "+head+" ne donne pas le résultat attendu")
 
 
 #On lance ensuite les tests des .ass qui sont dans invalid
@@ -63,11 +79,24 @@ files = glob.glob('./src/test/deca/**/invalid/*.ass',
                    recursive = True)
 for file in files:
     print("Fichier en cours d'execution : " + file)
-    if file == './src/test/deca/codegen/valid/ReadFloat.ass' :
-        print ("Test avec un Float : ")
-        subprocess.run(['ima',file], input='1.0', text=True)
+    cmd = subprocess.run(['ima',file], capture_output=True)
+    res1 = cmd.stdout.decode('ascii')
+    print("Résultat obtenu : ")
+    print (res1)
+    head, _sep, tail = file.rpartition('.')
+    head=head+'.deca'
+    filin = open(head, "r")
+    lignes = filin.readlines()
+    if (len(lignes)>=5):
+        res2 = lignes[4][3:]
+        print("Résultat attendu : ")
+        print (res2)
     else :
-        subprocess.run(['ima',file])
+        res2="Pas de résultat prévu"
+    filin.close()
+    if(res1!=res2):
+        print("le fichier "+head+" ne donne pas le résultat attendu")
+
 '''
 ### NOTES MEMO
 
