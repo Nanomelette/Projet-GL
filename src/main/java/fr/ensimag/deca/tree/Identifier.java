@@ -307,9 +307,10 @@ public class Identifier extends AbstractIdentifier {
             // compiler.getData().decrementFreeStoragePointer();
             compiler.addInstruction(
                 new LOAD(new RegisterOffset(-2, Register.LB), tmpRegister));
-            compiler.addInstruction(
-                new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), tmpRegister), tmpRegister));
-            compiler.addInstruction(new STORE(register, new RegisterOffset(0, tmpRegister)));
+            // compiler.addInstruction(
+            //     new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), tmpRegister), tmpRegister));
+            // compiler.addInstruction(new STORE(register, new RegisterOffset(0, tmpRegister)));
+            compiler.addInstruction(new STORE(register, new RegisterOffset(getFieldDefinition().getIndex(), tmpRegister)));
         } else if (getDefinition().isParam()) {
             int offset = getParamDefinition().getIndex() + 2;
             compiler.addInstruction(new STORE(register, new RegisterOffset(-offset, Register.LB)));

@@ -121,4 +121,9 @@ public class MethodCall extends AbstractExpr {
         // Le resultat de la méthode est stocké dans R0
         data.setLastUsedRegister(Register.R0);
     }
+
+    @Override
+    protected void codeGenSelect(DecacCompiler compiler) {
+        codeGenInst(compiler);
+    }
 }

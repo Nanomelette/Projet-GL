@@ -1,0 +1,17 @@
+
+
+
+
+// Error: stack_overflow_error
+ 
+class A {
+    B b = new B();
+}
+
+class B {
+    A a = new A();
+}
+
+{
+    B b = new B();
+}
