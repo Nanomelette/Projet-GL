@@ -37,6 +37,22 @@ for file in files:
         cmd = subprocess.run(['ima',file], input='1.0', text=True)
         # print (cmd)
 
+    elif file == './src/test/deca/codegen/valid/readExpr.ass' :
+        print ("Test avec un un entier : ")
+        subprocess.run(['ima',file], input='1.0', text=True)
+
+    elif file == './src/test/deca/syntax/valid/moitie.ass' :
+        print ("Test avec un un entier : ")
+        subprocess.run(['ima',file], input='1.0', text=True)
+
+    elif file == './src/test/deca/context/valid/11_ReadInt.ass' :
+        print ("Test avec un un entier : ")
+        subprocess.run(['ima',file], input='1.0', text=True)
+
+    elif file == './src/test/deca/context/valid/26_moitie.ass' :
+        print ("Test avec un un entier : ")
+        subprocess.run(['ima',file], input='1.0', text=True)
+
     else :
         cmd = subprocess.run(['ima',file])
         # print (cmd)
@@ -50,7 +66,6 @@ for file in files:
     if file == './src/test/deca/codegen/valid/ReadFloat.ass' :
         print ("Test avec un Float : ")
         subprocess.run(['ima',file], input='1.0', text=True)
-
     else :
         subprocess.run(['ima',file])
 '''

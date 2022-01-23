@@ -41,8 +41,10 @@ public class InstanceOf extends AbstractExpr {
             throws ContextualError {
         Type type1 = this.e.verifyExpr(compiler, localEnv, currentClass);
         Type type2 = this.type.verifyType(compiler);
-        if ((type1 == null || type1.isClass()) && type2.isClass()) {
-            return compiler.searchSymbol(compiler.getSymbolTable().create("boolean"));
+        if ((type1.isNull() || type1.isClass()) && type2.isClass()) {
+            Type newtype = compiler.searchSymbol(compiler.getSymbolTable().create("boolean"));
+            this.setType(newtype);
+            return newtype;
         }
         throw new ContextualError("Incorrect types", getLocation());
     }
@@ -58,12 +60,14 @@ public class InstanceOf extends AbstractExpr {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO Auto-generated method stub
+        e.prettyPrint(s, prefix, false);
+        type.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO Auto-generated method stub
+        e.iter(f);
+        type.iter(f);
 
     }
 
