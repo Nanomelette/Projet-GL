@@ -41,11 +41,16 @@ public class MethodCall extends AbstractExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         Type type = this.obj.verifyExpr(compiler, localEnv, currentClass);
+        if (!type.isClass()) {
+            throw new ContextualError("object isn't a class", this.getLocation());
+        }
         ClassType classType = (ClassType) type ;
         ClassDefinition classDef = classType.getDefinition();
         EnvironmentExp env = classDef.getMembers();
         MethodDefinition methodDef = (MethodDefinition) env.getDictionnary().get(this.meth.getName());
-
+        if (methodDef == null) {
+            throw new ContextualError(this.meth.getName()+" not defined", this.getLocation());
+        }
         this.meth.setType(methodDef.getType());
         this.meth.setDefinition(methodDef);
         this.setType(methodDef.getType());
