@@ -92,7 +92,7 @@ public class MethodCall extends AbstractExpr {
         
         // On calcul l'emplacement de la méthode
         Register addresseClassRegister = data.getLastUsedRegister();
-        DAddr addr = new RegisterOffset(0, addresseClassRegister);
+        // DAddr addr = new RegisterOffset(0, addresseClassRegister);
 
         // On reserve la place pour les parametres
         compiler.addInstruction(new ADDSP(param.size() + 1));
