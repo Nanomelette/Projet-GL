@@ -2,6 +2,8 @@ package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
 
+import org.apache.commons.lang.Validate;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ClassType;
@@ -44,14 +46,17 @@ public class Cast extends AbstractExpr {
         if(type.isNull()){
             throw new ContextualError("cannot cast null type", getLocation());
         }
-        if(type == expressionType){
+        if(type.sameType(expressionType)){
+            this.setType(type);
             return type;
         }
         if(compiler.assignCompatible(compiler, type, expressionType)!= null){
-            return compiler.assignCompatible(compiler, type, expressionType);
+            this.setType(type);
+            return type;
         }
         if(compiler.assignCompatible(compiler, expressionType, type)!= null){
-            return compiler.assignCompatible(compiler, expressionType, type);
+            this.setType(type);
+            return type;
         }
         throw new ContextualError("impossible cast", getLocation());
     }
@@ -81,7 +86,9 @@ public class Cast extends AbstractExpr {
     private void isInstanceOf(DecacCompiler compiler, Label doCast) {
         // register contient l'adresse de l'objet à tester dans le tas
         GPRegister register = compiler.getData().getLastUsedRegister();
-        ClassType classType = (ClassType)type.getType();
+        Type verType = type.getType();
+        Validate.isTrue(verType.isClass(), type.getName()+" isn't a class");
+        ClassType classType = (ClassType) verType;
         ClassDefinition typeCible = classType.getDefinition();
         compiler.addInstruction(new CMP(typeCible.getAddressVTable(), register));
         compiler.addInstruction(new BEQ(doCast));
