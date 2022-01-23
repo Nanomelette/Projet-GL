@@ -30,7 +30,13 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
                             this.setType(type);
                             return type;
                         } else {
-                            throw new ContextualError("NotIntAndNotFloatType", getLocation());
+                            if ((type1.isNull() || type1.isClass()) && (type2.isNull() || type2.isClass())) {
+                                Type type = new BooleanType(compiler.getSymbolTable().create("boolean"));
+                                this.setType(type);
+                                return type;
+                            } else {
+                                throw new ContextualError("NotIntAndNotFloatType", getLocation());
+                            }
                         }
                     } else {
                         throw new ContextualError("NotIntAndNotFloatType", getLocation());
