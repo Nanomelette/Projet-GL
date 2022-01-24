@@ -407,8 +407,10 @@ public class DecacCompiler {
         if(right.isInt() && left.isFloat()){
             return right;
         }
-        if (right.sameType(left)) {
-            return right;
+        if (!left.isClass()) {
+            if (right.sameType(left)) {
+                return right;
+            }
         }
         if (right.isClass() && left.isClass()) {
             ClassType rightClassType = (ClassType) right;

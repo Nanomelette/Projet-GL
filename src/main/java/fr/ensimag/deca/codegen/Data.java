@@ -38,6 +38,10 @@ public class Data {
     public Data() {
     };
 
+    public void setNumberOfUsedRegister(int numberOfUsedRegister) {
+        this.numberOfUsedRegister = numberOfUsedRegister;
+    }
+
     public void incrementLb() {
         lBOffset++;
     }
@@ -47,7 +51,7 @@ public class Data {
     }
 
     public int getNumberOfUsedRegister() {
-        return Math.min(maxRegister - 1, numberOfUsedRegister + 1);
+        return numberOfUsedRegister;
     }
 
     public Labels getLabels() {
@@ -76,7 +80,7 @@ public class Data {
 
     public GPRegister getFreeRegister(DecacCompiler compiler) {
         if (hasFreeRegister()) {
-            numberOfUsedRegister++;
+            numberOfUsedRegister = Math.max(numberOfUsedRegister, freeStoragePointer - 1);
             return GPRegister.getR(freeStoragePointer++);
         } else {
             GPRegister lastRegister = GPRegister.getR(maxRegister - 1);
@@ -97,7 +101,6 @@ public class Data {
     }
 
     public void incrementFreeStoragePointer(int... incrementList) {
-        numberOfUsedRegister++;
         freeStoragePointer++;
         for (int i : incrementList) {
             freeStoragePointer += i;
@@ -105,7 +108,7 @@ public class Data {
         if (freeStoragePointer > maxStackLength) {
             maxStackLength = freeStoragePointer;
         }
-
+        numberOfUsedRegister = Math.max(numberOfUsedRegister, freeStoragePointer - 2);
     }
 
     public void restoreData() {
@@ -187,16 +190,16 @@ public class Data {
 
     public void popUsedRegisters(DecacCompiler compiler) {
         int tmp = getNumberOfUsedRegister();
-        while (tmp > 1) {
-            compiler.addInstruction(new POP(Register.getR(tmp)));
+        while (tmp > 0) {
+            compiler.addInstruction(new POP(Register.getR(tmp+1)));
             tmp--;
         }
     }
 
     public void pushUsedRegisters(DecacCompiler compiler) {
         int tmp = getNumberOfUsedRegister();
-        while (tmp > 1) {
-            compiler.addInstructionAtFirst(new PUSH(Register.getR(tmp)));
+        while (tmp > 0) {
+            compiler.addInstructionAtFirst(new PUSH(Register.getR(tmp+1)));
             tmp--;
         }
     }

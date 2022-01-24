@@ -2,12 +2,12 @@
 //    Programme minimaliste utilisant println et une affectation.
 //
 // Resultats:
-//    Valeur: 1
+// Valeur: 1
 //
 // Historique:
 //    cree le 01/01/2022
 
 {
         int i = 1;
-        println("Valeur:", i);
+        println("Valeur: ", i);
 }

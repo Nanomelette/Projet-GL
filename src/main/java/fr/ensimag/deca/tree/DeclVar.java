@@ -104,6 +104,5 @@ public class DeclVar extends AbstractDeclVar {
         var.getExpDefinition().setOperand(address);
         compiler.getData().incrementLb();
         initialization.codeGenInitVar(compiler, address, var.getType());
-        compiler.getData().restoreData();
     }
 }
