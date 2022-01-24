@@ -19,7 +19,7 @@ files = glob.glob('./src/test/deca/**/invalid/*.deca',
 for file in files:
     i+=1
     #print("Fichier en cours de compilation invalid : " + file)
-    subprocess.run(['decac','-r','4',file])
+    subprocess.run(['decac', file])
 
 #Lancement des fichiers situés dans valid
 
@@ -28,7 +28,7 @@ files = glob.glob('./src/test/deca/**/valid/*.deca',
 for file in files:
     i+=1
     #print("Fichier en cours de compilation valid : " + file)
-    subprocess.run(['decac','-r','4',file])
+    subprocess.run(['decac', file])
 
 
 #On lance ensuite les tests des .ass qui sont dans valid
