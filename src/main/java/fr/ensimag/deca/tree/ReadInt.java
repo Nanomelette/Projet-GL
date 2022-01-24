@@ -27,8 +27,6 @@ import java.io.PrintStream;
  */
 public class ReadInt extends AbstractReadExpr {
 
-    // private static final Logger LOG = Logger.getLogger(AbstractBinaryExpr.class);
-
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -58,18 +56,9 @@ public class ReadInt extends AbstractReadExpr {
         Data data = compiler.getData();
         compiler.addInstruction(new RINT());
         compiler.addInstruction(new BOV(new Label("io_error")));
-        // if (data.hasFreeRegister()) {
         GPRegister lastRegister = data.getFreeRegister(compiler);
         compiler.addInstruction(new LOAD(GPRegister.R1, lastRegister));
         data.setLastUsedRegister(lastRegister);
-        // data.decrementFreeStoragePointer();
-        // } else {
-        //     // compiler.addInstruction(new PUSH(data.getMaxRegister()), "sauvegarde");
-        //     // compiler.addInstruction(new LOAD(GPRegister.R1, data.getMaxRegister()));
-        //     // compiler.addInstruction(new LOAD(op, GPRegister.R0));
-        //     // compiler.addInstruction(new POP((GPRegister)op), "restauration");
-        //     // data.decrementFreeStoragePointer();
-        // }
     }
 
 }

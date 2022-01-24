@@ -8,14 +8,13 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
+
 
 /**
  * @author gl20
  * @date 01/01/2022
  */
 public class Main extends AbstractMain {
-    private static final Logger LOG = Logger.getLogger(Main.class);
     
     private ListDeclVar declVariables;
     private ListInst insts;
@@ -33,24 +32,14 @@ public class Main extends AbstractMain {
 
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("verify Main: start");
-        // A FAIRE: Appeler méthodes "verify*" de ListDeclVar et ListInst.
-        // Vous avez le droit de changer le profil fourni pour ces méthodes
-        // (mais ce n'est à priori pas nécessaire).
         EnvironmentExp localEnv = new EnvironmentExp(null);
         localEnv = declVariables.verifyListDeclVariable(compiler, localEnv, null);
         Symbol symbVoid = compiler.getSymbolTable().create("void");
         insts.verifyListInst(compiler,localEnv,null,compiler.searchSymbol(symbVoid));
-
-        LOG.debug("verify Main: end");
     }
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // for (AbstractDeclVar absDeclVar : declVariables.getList()) {
-        //     DeclVar declVar = (DeclVar) absDeclVar;
-        //     declVar.codeGenDeclVarGlob(compiler);
-        // }
 
         compiler.addComment("------------------------------------------");
         compiler.addComment("    Déclaration des variables globales    ");
@@ -80,8 +69,6 @@ public class Main extends AbstractMain {
         for(AbstractInst inst : insts.getList()){
             inst.iter(f);
         }
-        //declVariables.iter(f);
-        //insts.iter(f);
     }
  
     @Override
