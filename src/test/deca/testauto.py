@@ -34,7 +34,7 @@ files = glob.glob('./src/test/deca/**/invalid/*.deca',
 for file in files:
 #    i+=1
     #print("Fichier en cours de compilation invalid : " + file)
-    cmd = subprocess.run(['decac','-r','4',file],capture_output=True)
+    cmd = subprocess.run(['decac',file],capture_output=True)
     #print(cmd)
     res1 = cmd.stdout.decode('ascii')
     if (file[:24]=='./src/test/deca/context/'):
@@ -63,7 +63,7 @@ files = glob.glob('./src/test/deca/**/valid/*.deca',
 for file in files:
 #    i+=1
     #print("Fichier en cours de compilation valid : " + file)
-    cmd = subprocess.run(['decac','-r','4',file],capture_output=True)
+    cmd = subprocess.run(['decac',file],capture_output=True)
 
 #On lance ensuite les tests des .ass qui sont dans valid
 files = glob.glob('./src/test/deca/**/valid/*.ass',recursive = True)
