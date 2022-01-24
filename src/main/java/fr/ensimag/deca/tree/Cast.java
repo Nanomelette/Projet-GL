@@ -36,23 +36,19 @@ public class Cast extends AbstractExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
 
-        if(type.getName().getName().equals("Null")){
-            throw new ContextualError("cannot cast null type", getLocation());
+        if (e == null) {
+            throw new ContextualError("Expression is null", getLocation());
         }
-        if(type.getName().getName().equals("void")){
-            throw new ContextualError("cannot cast void type", getLocation());
+        if (type == null) {
+            throw new ContextualError("Type is null", getLocation());
         }
         Type type = this.type.verifyType(compiler);
         Type expressionType = this.e.verifyExpr(compiler, localEnv, currentClass);
-        if(type.isVoid()){
+        if(expressionType.isVoid()){
             throw new ContextualError("cannot cast void type", getLocation());
         }
-        if(type.isNull()){
+        if(expressionType.isNull()){
             throw new ContextualError("cannot cast null type", getLocation());
-        }
-        if(type.sameType(expressionType)){
-            this.setType(type);
-            return type;
         }
         if(compiler.assignCompatible(compiler, type, expressionType)!= null){
             this.setType(type);

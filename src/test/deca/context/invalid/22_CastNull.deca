@@ -2,13 +2,12 @@
 //    Affectation et typage
 //
 // Resultats:
-//	Ligne 13: ContextualError: cannot cast null type
+//	Ligne 12: ContextualError: cannot cast null type
 // 
 // Historique:
 //    cree le 01/01/2022
 
 {
-   float a = 1.0;
    // Doit etre refuse.
-   int b = 1 + (Null)(a);
+   int b = 1 + (int)(null);
 }
