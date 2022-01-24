@@ -1,0 +1,210 @@
+class Polynomial {
+
+    float pi = 3.141592653589793f;
+    float pi2 = 6.28318530718f;
+
+    // 
+    //   Returns the exponant of a float
+    //   For more information about the exponent, you can check : https://www.keil.com/support/man/docs/c51/c51_ap_floatingpt.htm 
+    // 
+
+    int getExponent(float x){
+        int exp = 0;
+		if (x < 0) {
+			return getExponent(-x);
+		}
+		if (x < 1) {
+			while (x < 1) {
+				exp = exp -1;
+				x = x * 2;
+			}
+			return exp;
+		}
+		else {
+			while (x >= 2) {
+				exp = exp + 1;
+				x = x/2;
+			}
+			return exp;
+		}
+    }
+
+    //   
+    //   Returns the square root of a float.
+    //
+
+    float sqrt(float x){
+        float u = x;
+        float div;
+		int i = 10;
+		if (x < 0) {
+            print("Sqrt on negative number impossible");
+        } 
+		if (x == 0) {
+			return 0.0f;
+		}
+					
+		while (i > 0) {
+		    div = x/u;
+			u = (u + div)*0.5f;
+			i  = i-1;
+		}
+		return u;
+    }
+
+    //
+    //   Returns a to the power of b (a^b).
+    //
+
+    float pow(float a, int b) {
+		if (b < 0 ) {
+			return pow(1/a, -b);
+		}
+        else if (b==0 ) {
+			return 1.0;
+		}
+		else if ( b==1 ) {
+			return a;
+		}
+		else if (b%2 == 0) {
+			return pow(a*a, b/2);
+		}
+		else {
+			return a*pow(a*a ,(b-1)/2);
+		}
+		
+	}
+
+    // 
+    //  Multiply the first two values and add the third one.
+    //
+
+    //float fmaf(float a, float b, float c){
+    //    return a*b+c;
+    //}
+
+    // ajouter bov
+    float fmaf(float a, float b, float c) asm(
+        "LOAD -5(LB), R1
+    LOAD -4(LB), R0
+    FMA -3(LB), R0
+    RTS"
+    );
+
+    //
+    //  Returns the absolute value of a float.
+    //
+    float abs(float x) {
+        if(x>=0){
+            return x;
+        }
+        else{
+            return -x;
+        }
+    }
+
+    
+    //
+    //  Returns the cosinus value of a float.
+    //
+
+    float cos(float x){
+ 
+        float res = 1.0f;
+        float sign = 1, fact = 1, power = 1;
+        float i = 1;
+        int n = 32;
+        while (x < -pi) {
+            x = x + pi2;
+        } 
+        while (x >= pi) {
+            x = x - pi2;
+        }
+        while (i < n) {
+            sign = sign * -1;
+            fact = fact * (2 * i - 1) * (2 * i);
+            power = power * x * x;
+            res = res + sign * power / fact;
+            i = i + 1;
+        }
+        return res;
+    }
+
+    // 
+    //  Returns the sinus value of a float.
+    // 
+
+    float sin(float a){
+        float sinx, pterm;
+        float i = 1, sign=-1, n=20;
+        while (a < -pi) {
+            a = a + pi2;
+        } 
+        while (a >= pi) {
+            a = a - pi2;
+        }
+        sinx = a;
+        pterm = a;
+        while (i<=n) {
+            sinx = sinx + sign*pterm*a*a/(2*i*(2*i+1));
+            pterm = pterm * a* a /(2 * i * (2 * i + 1));
+            sign = -1 * sign;
+            i = i + 1;
+        }
+        return sinx;
+    }
+
+    // 
+    //  Returns the arctan value of a float.
+    // 
+
+    float atan(float a) {
+        float s = a * a, u = fmaf(a, -a, 0x1.fde90cp-1f);
+        float r1 =               0x1.74dfb6p-9f;
+        float r2 = fmaf (r1, u,  0x1.3a1c7cp-8f);
+        float r3 = fmaf (r2, s, -0x1.7f24b6p-7f);
+        float r4 = fmaf (r3, u, -0x1.eb3900p-7f);
+        float r5 = fmaf (r4, s,  0x1.1ab95ap-5f);
+        float r6 = fmaf (r5, u,  0x1.80e87cp-5f);
+        float r7 = fmaf (r6, s, -0x1.e71aa4p-4f);
+        float r8 = fmaf (r7, u, -0x1.b81b44p-3f);
+        float r9 = r8 * s;
+        float r10 = fmaf (r9, a, a);
+        return r10;
+    }
+
+    //
+    //  Returns the Arcsin value of a float.
+    //
+
+    float arcsin(float x){
+        float a;
+        if(x > 1.0f || x < -1.0f){
+            return 0.0;
+        }
+        a = (1.0f + sqrt(1.0f-x*x));
+        return 2 * atan(x/a);
+    }
+
+    //
+    //  Returns the ulp value of a float.
+    //
+
+    float ulp(float x){
+        float e;
+		if (x ==0 ) {
+			return 0.0;
+		}
+		else {
+			e = getExponent(x);
+			if (e >= -127) {
+				return pow(2.0f, (int)(e-23));
+			}
+			
+			else {
+				return pow(2.0f, -127-23);
+			}
+			
+		}
+    }   
+}
