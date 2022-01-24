@@ -197,7 +197,7 @@ class Polynomial {
     */
     public float arcsin(float x){
         if(x > 1f || x < -1f){
-            throw new OperationNotSupportedException("the valued entered for arcsin must be in [-1,1]");
+            throw new Error("the valued entered for arcsin must be in [-1,1]");
         }
         else{
             float a = (1f + sqrt(1f-x*x));
@@ -235,27 +235,14 @@ class Polynomial {
 public class PolynomialApprox {
     public static void main(String[] args ) {
         Polynomial p = new Polynomial();
-        float x = -(0.5F + 6f*p.pi);
-        //System.out.println(-0.5f);
-        //x = x%(p.pi2);
-        // System.out.println(p.pi);
-        // System.out.println(x);
-        // System.out.println(p.arcsin(1));
         System.out.println(Math.cos(x));
         System.out.println(p.cos(x)-Math.cos(x));
         System.out.println(p.ulp(x));
         
         ArrayList<Float> listFloat = new ArrayList<Float>();
         ArrayList<Float> listUlp = new ArrayList<Float>();
-        // // ArrayList<Float> listUlp = new ArrayList<Float>();
-        // // ArrayList<Float> listMathUlp = new ArrayList<Float>();
-        // // float a = p.ArcSin(1.5f);
-        // // ArrayList<Float> arrayListAtan = new ArrayList<Float>();
-        // // ArrayList<Float> arrayListRAtan = new ArrayList<Float>();
         ArrayList<Float> arrayListCos = new ArrayList<Float>();
         ArrayList<Float> arrayListRCos = new ArrayList<Float>();
-        // // ArrayList<Float> arrayListAsin = new ArrayList<Float>();
-        // // ArrayList<Float> arrayListRAsin = new ArrayList<Float>();
         ArrayList<Float> err = new ArrayList<Float>();
         for(x=-3.14f*2f; x<=3.14f*2f; x = x + 0.01F ){
             arrayListCos.add(p.atan(x));
@@ -264,36 +251,12 @@ public class PolynomialApprox {
             listUlp.add(Math.ulp(x));
             err.add(Math.abs(p.atan(x)-(float)Math.atan(x)));
         }
-        // // System.out.println(listUlp.toString());
-        // // System.out.println(listMathUlp.toString());
+
         System.out.println(listFloat.toString());
         System.out.println(listUlp.toString());
-        // System.out.println(arrayListAsin.toString());
-        // System.out.println(arrayListRAsin.toString());
         System.out.println(arrayListCos.toString());
         System.out.println(arrayListRCos.toString());
         System.out.println(err.toString());
-      
-        
-        // float poly = p.atan_poly(x);
-        // float asin = p.ArcSin(x);
-        // float acos = p.ArcCos(x);
-        // float cos = p.cosf_poly(x);
-        // float sin = p.my_sinf(x);
-        // System.out.println("FastArctan : " + y_fast1 + " | résultat attendu : 0.46364760");
-        // System.out.println("Fast2Arctan : " + y_fast2 + " | résultat attendu : 0.46364760");
-        // System.out.println("PolyArctan : " + poly + " | résultat attendu : " + Math.atan(x));
-        // System.out.println("Arcsin : " + asin + " | résultat attendu : " + Math.asin(x)) ;
-        // //System.out.println("Arccos : " + acos + " | résultat attendu : " + Math.acos(x));
-        // System.out.println("cos : " + cos + " | résultat attendu : " + Math.cos(x));
-        // System.out.println("sin : " + sin + " | résultat attendu : " + Math.sin(x));
-        // System.out.println(Math.ulp(y_fast2));
-        // System.out.println(Math.ulp(y_fast1));
-        // System.out.println("|atan-val_réélle| = " + Math.abs(poly-Math.atan(x)) + "  | nbr ulp = " + Math.abs(poly-Math.atan(x))/Math.ulp(x));
-        // System.out.println("|asin-val_réélle| = " + Math.abs(asin-Math.asin(x)) + "  | nbr ulp = " + Math.abs(asin-Math.asin(x))/Math.ulp(x));
-        // System.out.println("|sin-val_réélle|  = " + Math.abs(sin-Math.sin(x)) + "  | nbr ulp = " + Math.abs(Math.ulp(x)/(sin-Math.sin(x))));
-        // System.out.println("|cos-val_réélle|  = " + Math.abs(cos-Math.cos(x)) + " | nbr ulp = " + Math.abs(Math.ulp(x)/(cos-Math.cos(x))));
-        // System.out.println("ulp(x) = " + (Math.ulp(x)));
         
     }
 }
