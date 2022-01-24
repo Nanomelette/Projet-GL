@@ -24,3 +24,9 @@ Decac : compilateur pour le langage Deca.
   -P (parallel)     : s’il y a plusieurs fichiers sources,
                       lance la compilation des fichiers en
                       parallèle (pour accélérer la compilation)"
+
+  -t (tree)         : arrête decac après l’étape de construction de
+                      l’arbre, et affiche ce dernier
+
+  -x (enrichedTree) : arrête decac après l’étape de vérification et 
+                      affiche l'arbre enrichi

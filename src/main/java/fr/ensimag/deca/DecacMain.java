@@ -36,8 +36,8 @@ public class DecacMain {
             System.exit(1);
         }
         if (options.getPrintBanner()) {
-            System.out.println("Groupe 4 Equipe 20");
-            System.out.println("Hagenburg Arthur / Maggiori Oscar / Martineau Thomas / Gariel Arnaud / Kuhnast Antoine");
+            // System.out.println("Groupe 4 Equipe 20");
+            // System.out.println("Hagenburg Arthur / Maggiori Oscar / Martineau Thomas / Gariel Arnaud / Kuhnast Antoine");
             URL location = DecacMain.class.getProtectionDomain().getCodeSource().getLocation();
             try (Scanner input = new Scanner(new File(location.getPath()+"../../src/main/java/fr/ensimag/deca/banner.txt"))) {
                 while (input.hasNextLine())
