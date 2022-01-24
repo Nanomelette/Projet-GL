@@ -47,7 +47,6 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        // compiler.addComment("Main program");
         
         // Table des méthodes
         main.vTableInitialization(compiler, getClasses());

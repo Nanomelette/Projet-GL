@@ -1,7 +1,6 @@
 package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
-import java.io.ObjectInputStream.GetField;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -69,7 +68,6 @@ public class MethodBody extends AbstractMethodBody{
     @Override
     public void verifyClassBody(DecacCompiler compiler, EnvironmentExp members, EnvironmentExp envExpParams,
             AbstractIdentifier class1, Type return1) throws ContextualError {
-        // TODO Auto-generated method stub
         
     }
 
