@@ -1,0 +1,6 @@
+#!/bin/sh
+for i in ./src/test/deca/*/valid/*.ass
+    do
+    echo "Nettoyage de $i"
+    rm "$i"
+done
