@@ -110,7 +110,7 @@ class Polynomial {
     */
     public float cos(float x){
 
-        x = x%(2*pi); // as cos function is 2pi periodic, we bring the float value back in [0,2pi]
+        //x = x%(2*pi); // as cos function is 2pi periodic, we bring the float value back in [0,2pi]
  
         float res = 1f;
         float sign = 1, fact = 1, pow = 1;
@@ -131,7 +131,7 @@ class Polynomial {
     */
     public float sin(float a){
 
-        a = a%(2f*pi); // as sin function is 2pi periodic, we bring the float value back in [0,2pi]
+        //a = a%(2f*pi); // as sin function is 2pi periodic, we bring the float value back in [0,2pi]
         
         float sinx, pterm;
         float i, sign=-1,n=20;
@@ -148,9 +148,16 @@ class Polynomial {
     /*
     *
     *   Returns the arctan value of a float.
+    *   Works only on [-1,1] or calls FastArctan;
     *
     */
     public float atan(float a) {
+        if(a > 1f){
+            return FastArctan(a);
+        } 
+        if(a < -1f){
+            return FastArctan(a);
+        }
         float s = a * a, u = fmaf(a, -a, 0x1.fde90cp-1f);
         float r1 =               0x1.74dfb6p-9f;
         float r2 = fmaf (r1, u,  0x1.3a1c7cp-8f);
@@ -164,6 +171,24 @@ class Polynomial {
         float r10 = fmaf (r9, a, a);
         return r10;
     }
+
+
+    /*
+    *
+    *   Returns the arctan value of a float.
+    *   Works only on [-1,1];
+    *
+    */
+    float FastArctan(float x) {
+        float sign = 1;
+        if(x<0){
+            sign = -1;
+        }
+        float A = 1.57079632679f;
+
+        return A*sign - 4f*x/fmaf(4f,x*x,1);
+    }
+
 
     /*
     *
@@ -210,38 +235,41 @@ public class PolynomialApprox {
         float x = -(0.5F + 6f*p.pi);
         //System.out.println(-0.5f);
         //x = x%(p.pi2);
-        System.out.println(p.pi);
-        System.out.println(x);
-        System.out.println(p.cos(x));
+        // System.out.println(p.pi);
+        // System.out.println(x);
+        // System.out.println(p.arcsin(1));
         System.out.println(Math.cos(x));
         System.out.println(p.cos(x)-Math.cos(x));
         System.out.println(p.ulp(x));
         
-        // ArrayList<Float> listFloat = new ArrayList<Float>();
+        ArrayList<Float> listFloat = new ArrayList<Float>();
+        ArrayList<Float> listUlp = new ArrayList<Float>();
         // // ArrayList<Float> listUlp = new ArrayList<Float>();
         // // ArrayList<Float> listMathUlp = new ArrayList<Float>();
         // // float a = p.ArcSin(1.5f);
         // // ArrayList<Float> arrayListAtan = new ArrayList<Float>();
         // // ArrayList<Float> arrayListRAtan = new ArrayList<Float>();
-        // ArrayList<Float> arrayListCos = new ArrayList<Float>();
-        // ArrayList<Float> arrayListRCos = new ArrayList<Float>();
+        ArrayList<Float> arrayListCos = new ArrayList<Float>();
+        ArrayList<Float> arrayListRCos = new ArrayList<Float>();
         // // ArrayList<Float> arrayListAsin = new ArrayList<Float>();
         // // ArrayList<Float> arrayListRAsin = new ArrayList<Float>();
-        // ArrayList<Float> err = new ArrayList<Float>();
-        // for(x=-3.14f; x<=3.14; x = x + 0.01F ){
-        //     arrayListCos.add(p.cos(x));
-        //     arrayListRCos.add((float)Math.cos(x));
-        //     listFloat.add(x);
-        //     err.add(Math.abs(p.cos(x)-(float)Math.cos(x)));
-        // }
+        ArrayList<Float> err = new ArrayList<Float>();
+        for(x=-3.14f*2f; x<=3.14f*2f; x = x + 0.01F ){
+            arrayListCos.add(p.atan(x));
+            arrayListRCos.add((float)Math.atan(x));
+            listFloat.add(x);
+            listUlp.add(Math.ulp(x));
+            err.add(Math.abs(p.atan(x)-(float)Math.atan(x)));
+        }
         // // System.out.println(listUlp.toString());
         // // System.out.println(listMathUlp.toString());
-        // System.out.println(listFloat.toString());
+        System.out.println(listFloat.toString());
+        System.out.println(listUlp.toString());
         // System.out.println(arrayListAsin.toString());
         // System.out.println(arrayListRAsin.toString());
-        // System.out.println(arrayListCos.toString());
-        // System.out.println(arrayListRCos.toString());
-        // System.out.println(err.toString());
+        System.out.println(arrayListCos.toString());
+        System.out.println(arrayListRCos.toString());
+        System.out.println(err.toString());
       
         
         // float poly = p.atan_poly(x);
