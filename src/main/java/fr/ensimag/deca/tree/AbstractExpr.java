@@ -150,10 +150,6 @@ public abstract class AbstractExpr extends AbstractInst {
                 compiler.addInstruction(new WFLOAT());
             }
         } 
-        // else if (getType().isBoolean()) {
-        //     ((BooleanLiteral) this).codeGenPrint(compiler);
-        // }
-
     }
 
     @Override

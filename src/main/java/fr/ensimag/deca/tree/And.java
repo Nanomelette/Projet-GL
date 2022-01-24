@@ -41,11 +41,6 @@ public class And extends AbstractOpBool {
         compiler.addInstruction(new LOAD(0, op2));
         compiler.getData().setLastUsedRegister(op2);
         compiler.addLabel(End);
-        // codeBoolean(true, False, compiler);
-        // compiler.addInstruction(new LOAD(1, op2));
-        // compiler.addLabel(False);
-        // compiler.addInstruction(new LOAD(0, op2));
-        // compiler.getData().setLastUsedRegister(op2);
         compiler.incrNLabel();
     }
 

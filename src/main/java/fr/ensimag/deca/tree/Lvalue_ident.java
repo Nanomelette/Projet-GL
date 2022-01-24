@@ -28,13 +28,13 @@ public class Lvalue_ident extends AbstractLValue {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO Auto-generated method stub
+        // nothing
         
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO Auto-generated method stub
+        // nothing
         
     }
     

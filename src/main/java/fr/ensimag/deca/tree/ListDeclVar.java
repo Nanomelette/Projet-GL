@@ -14,7 +14,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
  * @date 01/01/2022
  */
 public class ListDeclVar extends TreeList<AbstractDeclVar> {
-    // private static final Logger LOG = Logger.getLogger(ListDeclVar.class);
 
     @Override
     public void decompile(IndentPrintStream s) {

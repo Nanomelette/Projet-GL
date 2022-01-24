@@ -49,8 +49,6 @@ public class Assign extends AbstractBinaryExpr {
     protected void codeGenInst(DecacCompiler compiler) {
         getRightOperand().codeGenInst(compiler);
         GPRegister register = compiler.getData().getLastUsedRegister();
-        // DAddr adress = ((Identifier) getLeftOperand()).getExpDefinition().getOperand();
-        // compiler.addInstruction(new STORE(register, adress));
         getLeftOperand().codeGenAssign(compiler, register);
     }
 

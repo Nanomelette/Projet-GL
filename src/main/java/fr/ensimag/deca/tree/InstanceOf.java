@@ -97,7 +97,6 @@ public class InstanceOf extends AbstractExpr {
     @Override
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
         Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
-        // Label end_instanceof = new Label("end.instanceof."+compiler.getNLabel());
         isInstanceOf(compiler);
         if (!b) {
             compiler.addInstruction(new BRA(E));

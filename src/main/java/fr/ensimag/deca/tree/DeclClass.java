@@ -184,7 +184,6 @@ public class DeclClass extends AbstractDeclClass {
         compiler.newBloc();
         compiler.setToBlocProgram();
 
-        // compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB),
         // Register.R1));
         if (!classeSup.getName().getName().equals("Object")) {
             // Initialiser les nouveaux champs à zero
@@ -214,22 +213,7 @@ public class DeclClass extends AbstractDeclClass {
         if (compiler.getData().getNumberOfUsedRegister() > 0) {
             compiler.addCommentAtFirst("Sauvegarde des registres");
         }
-
-        // Fin de bloc
-        /**
-         * TODO : TSTO
-         * 
-         * nombre de registres sauvegardés en début de bloc =
-         * 0
-         * nombre de variables du bloc =
-         * 0 <- Initialisation des champs donc pas de variables
-         * nombre maximal de temporaires nécessaires à l’évaluation des expressions =
-         * compiler.getData().getFreeStoragePointer() - 2
-         * nombre maximal de paramètres des méthodes appelées (chaque instruction BSR
-         * effectuant deux empilements) =
-         * 2 <- Il faut retenir le PC et l'objet
-         * 
-         */
+        //Fin de bloc
         if (!(compiler.getCompilerOptions().getNoCheck())) {
             compiler.addInstructionAtFirst(new BOV(new Label("stack_overflow_error")));
             // On laisse ce +2 -2 pour l'instant pour suivre le calcul
@@ -241,8 +225,6 @@ public class DeclClass extends AbstractDeclClass {
         compiler.setToMainProgram();
 
         // Codage des méthodes
-        // Ajout de l'etiquette de code.Object.equals
-        // codeGenInitClass(compiler);
         listDeclMethod.codeGenListDeclMethod(compiler);
 
     }
