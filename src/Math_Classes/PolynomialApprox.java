@@ -152,10 +152,10 @@ class Polynomial {
     *
     */
     public float atan(float a) {
-        if(a > 1f){
+        if(a > 1.5f){
             return FastArctan(a);
         } 
-        if(a < -1f){
+        if(a < -1.5f){
             return FastArctan(a);
         }
         float s = a * a, u = fmaf(a, -a, 0x1.fde90cp-1f);
@@ -197,7 +197,7 @@ class Polynomial {
     */
     public float arcsin(float x){
         if(x > 1f || x < -1f){
-            throw new OperationNotSupportedException("the valued entered for arcsin must be in [-1,1]");
+            throw new Error("the valued entered for arcsin must be in [-1,1]");
         }
         else{
             float a = (1f + sqrt(1f-x*x));
@@ -266,13 +266,13 @@ public class PolynomialApprox {
         }
         // // System.out.println(listUlp.toString());
         // // System.out.println(listMathUlp.toString());
-        System.out.println(listFloat.toString());
-        System.out.println(listUlp.toString());
+        System.out.println("x = " + listFloat.toString());
+        System.out.println("ulp = " + listUlp.toString());
         // System.out.println(arrayListAsin.toString());
         // System.out.println(arrayListRAsin.toString());
-        System.out.println(arrayListCos.toString());
-        System.out.println(arrayListRCos.toString());
-        System.out.println(err.toString());
+        System.out.println("cos = "+ arrayListCos.toString());
+        System.out.println("Rcos = " + arrayListRCos.toString());
+        System.out.println("err = " + err.toString());
       
         
         // float poly = p.atan_poly(x);
