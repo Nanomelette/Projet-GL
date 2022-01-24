@@ -25,7 +25,6 @@ public class Plus extends AbstractOpArith {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);
-        // <mnemo(op)> <dval(e2)> Rn
         LOG.debug("    Used : " + compiler.getData().getLastUsedRegister());
         compiler.addInstruction(new ADD(op1, op2));
         if (!(compiler.getCompilerOptions().getNoCheck()) && getType().isFloat()) {

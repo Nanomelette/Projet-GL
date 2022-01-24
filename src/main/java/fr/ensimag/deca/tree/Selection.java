@@ -52,10 +52,8 @@ public class Selection extends AbstractLValue{
             throw new ContextualError(this.field.getName().getName()+" isn't a field", getLocation());
         }
 
-        // condition : field_ident = { visibility : PROTECTED }
-
         if(fieldDef.getVisibility().name().equals("PROTECTED")){
-            //on verifie les subTypes
+   
             if (currentClass == null) {
                 throw new ContextualError("can't access to protected field "+this.field.getName().getName(), getLocation());
             }

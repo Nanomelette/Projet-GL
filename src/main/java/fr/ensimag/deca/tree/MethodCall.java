@@ -8,10 +8,8 @@ import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.NullOperand;
@@ -65,12 +63,6 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // if( this.obj != null){
-        //     this.obj.decompile(s);
-        //     s.print(".");
-        // } else {
-        //     s.print("this.");
-        // }
         obj.decompile(s);
         s.print(".");
         meth.decompile(s);

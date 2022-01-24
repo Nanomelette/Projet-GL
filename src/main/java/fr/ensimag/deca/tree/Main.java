@@ -34,9 +34,6 @@ public class Main extends AbstractMain {
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");
-        // A FAIRE: Appeler méthodes "verify*" de ListDeclVar et ListInst.
-        // Vous avez le droit de changer le profil fourni pour ces méthodes
-        // (mais ce n'est à priori pas nécessaire).
         EnvironmentExp localEnv = new EnvironmentExp(null);
         localEnv = declVariables.verifyListDeclVariable(compiler, localEnv, null);
         Symbol symbVoid = compiler.getSymbolTable().create("void");
@@ -47,11 +44,6 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // for (AbstractDeclVar absDeclVar : declVariables.getList()) {
-        //     DeclVar declVar = (DeclVar) absDeclVar;
-        //     declVar.codeGenDeclVarGlob(compiler);
-        // }
-
         compiler.addComment("------------------------------------------");
         compiler.addComment("    Déclaration des variables globales    ");
         compiler.addComment("------------------------------------------");
@@ -80,8 +72,6 @@ public class Main extends AbstractMain {
         for(AbstractInst inst : insts.getList()){
             inst.iter(f);
         }
-        //declVariables.iter(f);
-        //insts.iter(f);
     }
  
     @Override

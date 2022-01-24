@@ -1,7 +1,6 @@
 package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
-import java.io.ObjectInputStream.GetField;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
