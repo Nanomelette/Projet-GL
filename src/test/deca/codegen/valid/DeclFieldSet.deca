@@ -1,0 +1,17 @@
+
+
+
+
+// 3
+class A {
+    int a=1, b=2, c=3, d=4;
+
+    int get() {
+        return c;
+    }
+}
+
+{
+    A a = new A();
+    print(a.get());
+}
