@@ -1,8 +1,13 @@
+
+
+
+
+// okpas ok
 {
     if (true) {
-        println("ok");
+        print("ok");
     } else {
-        println("pas ok");
+        print("pas ok");
     }
     if (false) {
         println("ok");

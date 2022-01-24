@@ -2,7 +2,6 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
 
@@ -34,6 +33,18 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         LOG.debug("verify listField: end");
     }
 
+    protected void codeGenListDeclFieldSet(DecacCompiler compiler) {
+        for (AbstractDeclField declField : getList()) {
+            declField.codeGenDeclField(compiler);
+        }
+    }
+
+    protected void codeGenListDeclFieldSetZero(DecacCompiler compiler) {
+        for (AbstractDeclField declField : getList()) {
+            declField.codeGenDeclFieldZero(compiler);
+        }
+    }
+    
     void verifyListFieldBody(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe) throws ContextualError {
 
         for(AbstractDeclField c : this.getList()){

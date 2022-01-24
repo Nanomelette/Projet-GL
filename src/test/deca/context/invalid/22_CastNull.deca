@@ -1,0 +1,13 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 12: ContextualError: cannot cast null type
+// 
+// Historique:
+//    cree le 01/01/2022
+
+{
+   // Doit etre refuse.
+   int b = 1 + (int)(null);
+}

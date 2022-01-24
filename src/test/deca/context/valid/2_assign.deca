@@ -1,0 +1,12 @@
+// Description:
+//    Programme minimaliste utilisant une affectation.
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 01/01/2022
+
+{
+        int i = 1;
+}

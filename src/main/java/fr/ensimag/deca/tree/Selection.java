@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import java.io.PrintStream;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
@@ -10,7 +11,15 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import net.bytebuddy.asm.Advice.Thrown;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 public class Selection extends AbstractLValue{
 
@@ -27,50 +36,38 @@ public class Selection extends AbstractLValue{
             throws ContextualError {
 
         Type type = this.obj.verifyExpr(compiler, localEnv, currentClass);
-        ClassType currentType = (ClassType) type;
-        ClassType classType;
-        if(type.isClass()){
-            classType = (ClassType) type;
+        if (!type.isClass()) {
+            throw new ContextualError(type.getName().getName()+" isn't a class", getLocation());
         }
-        else{
-            throw new ContextualError("Must be a class", getLocation());
-        }
-        type = compiler.searchSymbol(type.getName());
-        classType = (ClassType) type;
+        ClassType classType = (ClassType) type;
         EnvironmentExp env_exp2 = classType.getDefinition().getMembers();
         if(env_exp2.get(this.field.getName())==null){
-            throw new ContextualError("env_exp2 is null", getLocation());
+            throw new ContextualError(this.field.getName().getName()+" isn't defined in this class", getLocation());
         }
         FieldDefinition fieldDef ;
         if(env_exp2.get(this.field.getName()).isField()){
             fieldDef = (FieldDefinition) env_exp2.get(this.field.getName());
         }
         else{
-            throw new ContextualError("Not a field", getLocation());
+            throw new ContextualError(this.field.getName().getName()+" isn't a field", getLocation());
         }
 
         // condition : field_ident = { visibility : PROTECTED }
 
         if(fieldDef.getVisibility().name().equals("PROTECTED")){
             //on verifie les subTypes
-            Type protectedType = this.obj.getType();
-            ClassType pclassType;
-            if(protectedType.isClass()){
-                pclassType = (ClassType) protectedType;
+            if (currentClass == null) {
+                throw new ContextualError("can't access to protected field "+this.field.getName().getName(), getLocation());
             }
-            else{
-                throw new ContextualError("Type is not a class", getLocation());
-            }
-            if (classType.isSubClassOf(currentType)){
-                if(currentType.isSubClassOf(pclassType)){
-                    setType(fieldDef.getType());
+            ClassType currentType = currentClass.getType();
+            if (classType.isSubClassOf(currentType) || currentType.isSubClassOf(classType)){
+                setType(fieldDef.getType());
                     this.field.setDefinition(fieldDef);
                     this.obj.setType(fieldDef.getType());
                     return fieldDef.getType();
-                }
             }
             else {
-                throw new ContextualError("current class not of the same class", getLocation());
+                throw new ContextualError("can't access to protected field "+this.field.getName().getName(), getLocation());
             }
         }
         
@@ -101,6 +98,39 @@ public class Selection extends AbstractLValue{
         this.obj.iter(f);
         this.field.iter(f);
         
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        Data data = compiler.getData();
+        obj.codeGenSelect(compiler);
+        // On met dans objRegister l'adresse de l'obj en partie gauche
+        GPRegister objRegister = data.getLastUsedRegister();
+        if (!(compiler.getCompilerOptions().getNoCheck())) {
+            compiler.addInstruction(new CMP(new NullOperand(), objRegister));
+            compiler.addInstruction(new BEQ(new Label("null_dereference")));
+        }
+        // On récupère l'offset du champ concerné
+        compiler.addInstruction(new LOAD(new RegisterOffset(field.getFieldDefinition().getIndex(), objRegister), objRegister));
+        
+    }
+
+    @Override
+    protected void codeGenSelect(DecacCompiler compiler) {
+        codeGenInst(compiler);
+    }
+
+    @Override
+    protected void codeGenAssign(DecacCompiler compiler, Register register) {
+        Data data = compiler.getData();
+        obj.codeGenSelect(compiler);
+        // On met dans objRegister l'adresse de l'obj en partie gauche
+        GPRegister objRegister = data.getLastUsedRegister();
+        if (!(compiler.getCompilerOptions().getNoCheck())) {
+            compiler.addInstruction(new CMP(new NullOperand(), objRegister));
+            compiler.addInstruction(new BEQ(new Label("null_dereference")));
+        }
+        compiler.addInstruction(new STORE(register, new RegisterOffset(field.getFieldDefinition().getIndex(), compiler.getData().getLastUsedRegister())));
     }
     
 }

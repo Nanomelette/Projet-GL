@@ -6,6 +6,10 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -21,7 +25,17 @@ public class Return extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        e.codeGenInst(compiler);
+        compiler.addComment("return de la méthode");
+        compiler.addInstruction(
+            new LOAD(
+                compiler.getData().getLastUsedRegister(),
+                Register.R0
+            )
+        );
+        compiler.addInstruction(
+            new BRA(compiler.getData().getLabelReturn())
+        );
     }
 
     @Override
@@ -30,7 +44,7 @@ public class Return extends AbstractInst {
             throws ContextualError {
 
             if(returnType.isVoid()){
-                throw new ContextualError("return cannot return void type", getLocation());
+                throw new ContextualError("returned type can't be void", getLocation());
             }
             Type typeE = e.verifyExpr(compiler, localEnv, currentClass);
             Type type = compiler.assignCompatible(compiler, typeE, returnType);
@@ -44,8 +58,7 @@ public class Return extends AbstractInst {
     public void decompile(IndentPrintStream s) {
         s.print("return ");
         e.decompile(s);
-        s.println(";");
-        s.indent();
+        s.print(";");
     }
 
     @Override

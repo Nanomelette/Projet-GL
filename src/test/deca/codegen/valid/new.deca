@@ -1,0 +1,12 @@
+
+
+
+
+// 
+class A {
+    protected int x = 1;
+}
+
+{
+    A a = new A();
+}

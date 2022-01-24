@@ -1,0 +1,17 @@
+//
+//
+//
+//
+// 4.00000e+0042
+
+class A {
+    int getA(int b, float y, boolean t, float x) {
+        print(x);
+        return b;
+    }
+}
+
+{
+    A a = new A();
+    print(a.getA(42, 1.0, true, 4.0));
+}

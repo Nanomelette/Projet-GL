@@ -1,0 +1,21 @@
+// Description:
+//    Programme minimaliste: une classe et des Cast dans le Main.
+//
+// Résultats:
+// ok
+//
+// Historique:
+//    cree le 01/01/2022
+
+class A { }
+class B extends A { }
+class C extends B { }
+{
+   A a;
+   B b;
+   a = new C();
+   if (a instanceof B) {
+        b = (B)(a);
+        println("ok");
+   }
+}

@@ -1,0 +1,23 @@
+// Description:
+//     Méthodes de class
+
+// Résultat:
+// 42
+
+class A {
+    int x = 1;
+    
+    int getX() {
+        return x;
+    }
+
+    void setX(int i) {
+        x = i;
+    }
+}
+
+{
+    A a = new A();
+    a.setX(42);
+    println(a.getX());
+}

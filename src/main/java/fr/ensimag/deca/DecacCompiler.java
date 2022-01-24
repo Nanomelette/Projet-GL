@@ -2,7 +2,6 @@ package fr.ensimag.deca;
 
 import fr.ensimag.deca.codegen.Data;
 import fr.ensimag.deca.context.ClassType;
-import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.context.Type;
@@ -23,10 +22,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ConcurrentModificationException;
-
-import javax.naming.ContextNotEmptyException;
-
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -52,7 +47,12 @@ public class DecacCompiler {
     // private static final SymbolTable symbol_table = new SymbolTable();
     private Data data = new Data();
 
+    private Data dataBloc = new Data();
+
     public Data getData() {
+        if (writeInBloc) {
+            return dataBloc;
+        }
         return data;
     }
 
@@ -78,6 +78,7 @@ public class DecacCompiler {
         this.source = source;
         if (compilerOptions != null) {
             this.data.setMaxRegister(compilerOptions.getMaxRegister());
+            this.dataBloc.setMaxRegister(compilerOptions.getMaxRegister());
         }
         this.symbolTable = new SymbolTable();
         this.env_Types = new EnvironmentType(this);
@@ -116,14 +117,22 @@ public class DecacCompiler {
      * fr.ensimag.ima.pseudocode.IMAProgram#add(fr.ensimag.ima.pseudocode.AbstractLine)
      */
     public void add(AbstractLine line) {
-        program.add(line);
+        if (writeInBloc) {
+            bloc.add(line);
+        } else {
+            program.add(line);
+        }
     }
 
     /**
      * @see fr.ensimag.ima.pseudocode.IMAProgram#addComment(java.lang.String)
      */
     public void addComment(String comment) {
-        program.addComment(comment);
+        if (writeInBloc) {
+            bloc.addComment(comment);
+        } else {
+            program.addComment(comment);
+        }
     }
 
     /**
@@ -131,7 +140,23 @@ public class DecacCompiler {
      * fr.ensimag.ima.pseudocode.IMAProgram#addLabel(fr.ensimag.ima.pseudocode.Label)
      */
     public void addLabel(Label label) {
-        program.addLabel(label);
+        if (writeInBloc) {
+            bloc.addLabel(label);
+        } else {
+            program.addLabel(label);
+        }
+    }
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addLabelAtFirst(fr.ensimag.ima.pseudocode.Label)
+     */
+    public void addLabelAtFirst(Label label) {
+        if (writeInBloc) {
+            bloc.addLabelAtFirst(label);
+        } else {
+            program.addLabelAtFirst(label);
+        }
     }
 
     /**
@@ -139,7 +164,11 @@ public class DecacCompiler {
      * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
      */
     public void addInstruction(Instruction instruction) {
-        program.addInstruction(instruction);
+        if (writeInBloc) {
+            bloc.addInstruction(instruction);
+        } else {
+            program.addInstruction(instruction);
+        }
     }
 
     /**
@@ -148,7 +177,11 @@ public class DecacCompiler {
      * java.lang.String)
      */
     public void addInstruction(Instruction instruction, String comment) {
-        program.addInstruction(instruction, comment);
+        if (writeInBloc) {
+            bloc.addInstruction(instruction, comment);
+        } else {
+            program.addInstruction(instruction, comment);
+        }
     }
 
     /**
@@ -156,11 +189,31 @@ public class DecacCompiler {
      * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
      */
     public void addInstructionAtFirst(Instruction instruction) {
-        program.addFirst(instruction);
+        if (writeInBloc) {
+            bloc.addFirst(instruction);
+        } else {
+            program.addFirst(instruction);
+        }
     }
 
     public void addInstructionAtFirst(Instruction instruction, String comment) {
-        program.addFirst(instruction, comment);
+        if (writeInBloc) {
+            bloc.addFirst(instruction, comment);
+        } else {
+            program.addFirst(instruction, comment);
+        }
+    }
+
+    public void appendBlocInstructions() {
+        program.append(bloc);
+    }
+
+    public void addCommentAtFirst(String comment) {
+        if (writeInBloc) {
+            bloc.addFirst(null, comment);
+        } else {
+            program.addFirst(null, comment);
+        }
     }
 
     
@@ -181,6 +234,35 @@ public class DecacCompiler {
      * The main program. Every instruction generated will eventually end up here.
      */
     private final IMAProgram program = new IMAProgram();
+
+    /**
+     * The substiture program. Instructions generated in a bloc will be written
+     * in the bloc then appened to the main program.
+     */
+    private IMAProgram bloc = new IMAProgram();
+
+    /**
+     * A boolean to know where to write
+     */
+    private Boolean writeInBloc = false;
+
+    public void setWriteInBloc(Boolean writeInBloc) {
+        this.writeInBloc = writeInBloc;
+    }
+
+    public void setToMainProgram() {
+        this.writeInBloc = false;
+    }
+
+    public void setToBlocProgram() {
+        this.writeInBloc = true;
+    }
+
+    public void newBloc() {
+        dataBloc = new Data();
+        dataBloc.setMaxRegister(compilerOptions.getMaxRegister());
+        bloc = new IMAProgram();
+    }
  
 
     /**
@@ -244,10 +326,13 @@ public class DecacCompiler {
         }
         // assert(prog.checkAllLocations());
 
+        if (compilerOptions.getTree()) {
+            prog.prettyPrint(System.out);
+            System.exit(0);
+        }
+
         if (compilerOptions.getParse()) {
-            // prog.prettyPrint(System.out);
             prog.decompile(System.out);
-            // TODO : décompiler l'arbre et afficher sa décompilation
             System.exit(0);
         }
 
@@ -255,6 +340,11 @@ public class DecacCompiler {
         prog.verifyProgram(this);
         assert(prog.checkAllDecorations());
         if (compilerOptions.getVerification()) {
+            System.exit(0);
+        }
+
+        if (compilerOptions.getDecoTree()) {
+            prog.prettyPrint(System.out);
             System.exit(0);
         }
 
@@ -270,11 +360,6 @@ public class DecacCompiler {
         } catch (FileNotFoundException e) {
             throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
         }
-        // Ecriture de l'header
-        data.addHeader(this);
-        // Ecriture des Labels
-        data.addBottom(this);
-        
 
         LOG.info("Writing assembler file ...");
 
@@ -322,8 +407,10 @@ public class DecacCompiler {
         if(right.isInt() && left.isFloat()){
             return right;
         }
-        if (right.sameType(left)) {
-            return right;
+        if (!left.isClass()) {
+            if (right.sameType(left)) {
+                return right;
+            }
         }
         if (right.isClass() && left.isClass()) {
             ClassType rightClassType = (ClassType) right;

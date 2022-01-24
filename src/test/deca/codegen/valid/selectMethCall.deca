@@ -1,0 +1,26 @@
+
+
+
+
+// 1
+
+class A {
+    int x = 1;
+
+    int getX() {
+        return x;
+    }
+}
+
+class B {
+    A a = new A();
+
+    A getA() {
+        return a;
+    }
+}
+
+{
+    B b = new B();
+    print(b.getA().getX());
+}

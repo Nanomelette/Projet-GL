@@ -1,0 +1,12 @@
+// Description:
+//     conversion flaot automatique pour int
+
+// Résultat:
+//     4.00000e+00;2.00000e+00
+
+
+{
+    float x = 1.0 + 3;
+    float y = 2;
+    print(x, ";", y);
+}

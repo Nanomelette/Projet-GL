@@ -7,6 +7,10 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+
 import java.io.PrintStream;
 
 /**
@@ -53,6 +57,13 @@ public class Null extends AbstractExpr {
     @Override
     String prettyPrintNode() {
         return "Null";
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        GPRegister register = compiler.getData().getFreeRegister(compiler);
+        compiler.addInstruction(new LOAD(new NullOperand(), register));
+        compiler.getData().setLastUsedRegister(register);
     }
 
 }

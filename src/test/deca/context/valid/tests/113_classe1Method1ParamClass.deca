@@ -1,9 +1,0 @@
-// classe pas très utile, dont le paramètre est de type A.
-
-class A {
-}
-class B {
-	void f(A a) {
-		println("test_pour_A");
-	}
-}

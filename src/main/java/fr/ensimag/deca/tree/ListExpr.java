@@ -7,6 +7,10 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 /**
  * List of expressions (eg list of parameters).
@@ -29,8 +33,28 @@ public class ListExpr extends TreeList<AbstractExpr> {
 
     @Override
     public void decompile(IndentPrintStream s) {
+        int enjolivage = 0;
         for(AbstractExpr c : getList()){
+            if (enjolivage > 0) {
+                s.print(" ");
+            }
             c.decompile(s);
+            if (enjolivage < size() - 1) {
+                s.print(",");
+            }
+            enjolivage++;
+        }
+    }
+
+    public void codeGenListExpr(DecacCompiler compiler) {
+        int i = -1;
+        for (AbstractExpr expr : getList()) {
+            GPRegister restoreRegister = compiler.getData().getLastUsedRegister();
+            expr.codeGenInst(compiler);
+            GPRegister register = compiler.getData().getLastUsedRegister();
+            compiler.addInstruction(new STORE(register, new RegisterOffset(i, Register.SP)));
+            compiler.getData().restoreDataTo(restoreRegister.getNumber());
+            i--;
         }
     }
 }

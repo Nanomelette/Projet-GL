@@ -1,0 +1,13 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 12: ContextualError: left-hand side of assignment is not an lvalue
+// 
+// Historique:
+//    cree le 01/01/2022
+
+{
+	// Doit etre refuse.
+   	null = true;
+}

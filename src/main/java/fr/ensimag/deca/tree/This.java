@@ -5,6 +5,11 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+
 import java.io.PrintStream;
 
 /**
@@ -35,9 +40,7 @@ public class This extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        if(!this.implicit){
-            s.print("this");
-        }
+        s.print("this");
     }
 
     @Override
@@ -56,6 +59,20 @@ public class This extends AbstractExpr {
             return "";
         }
         return "this";
+    }
+
+    @Override
+    protected void codeGenSelect(DecacCompiler compiler) {
+        GPRegister register = compiler.getData().getFreeRegister(compiler);
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), register));
+        compiler.getData().setLastUsedRegister(register);
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        GPRegister register = compiler.getData().getFreeRegister(compiler);
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), register));
+        compiler.getData().setLastUsedRegister(register);
     }
 
 }

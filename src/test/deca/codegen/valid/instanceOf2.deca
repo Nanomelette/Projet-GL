@@ -1,0 +1,17 @@
+
+
+
+
+// ok
+
+class A { }
+class B extends A {}
+
+{
+   A a = new A();
+   B b = new B();
+   if (b instanceof A) {
+      //   b = (B)(a);
+      println("ok");
+   }
+}

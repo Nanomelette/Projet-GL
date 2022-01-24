@@ -6,13 +6,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
-
 import java.io.PrintStream;
-
-
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -53,11 +47,18 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        for (AbstractDeclVar absDeclVar : declVariables.getList()) {
-            DeclVar declVar = (DeclVar) absDeclVar;
-            declVar.codeGenDeclVarGlob(compiler);
-        }
-        compiler.addComment("Beginning of main instructions:");
+        // for (AbstractDeclVar absDeclVar : declVariables.getList()) {
+        //     DeclVar declVar = (DeclVar) absDeclVar;
+        //     declVar.codeGenDeclVarGlob(compiler);
+        // }
+
+        compiler.addComment("------------------------------------------");
+        compiler.addComment("    Déclaration des variables globales    ");
+        compiler.addComment("------------------------------------------");
+        declVariables.codeGenListDeclVarGlob(compiler);
+        compiler.addComment("------------------------------------------");
+        compiler.addComment("      Début des instructions du main      ");
+        compiler.addComment("------------------------------------------");
         insts.codeGenListInst(compiler);
     }
     
@@ -91,9 +92,9 @@ public class Main extends AbstractMain {
 
     public void vTableInitialization(DecacCompiler compiler, ListDeclClass classes) {
         Data data = compiler.getData();
-        // data.newVTable(compiler);
-        for (AbstractDeclClass absDeclClass : classes.getList()) {
-            absDeclClass.addToVTable(compiler);
+        if (!classes.getList().isEmpty()) {
+            data.newVTable(compiler);
         }
+        classes.addToVTable(compiler);
     } 
 }

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+SOURCE=$0
+SOURCE="${SOURCE%/*}/../../deca/codegen/valid"
+# SOURCE="${SOURCE%/*}/../../../deca/codegen/valid/*.deca"
+FILES=`ls $SOURCE/*.deca`
+
+for i in $FILES
+do  
+    test_decompile $i
+    # echo $i
+done

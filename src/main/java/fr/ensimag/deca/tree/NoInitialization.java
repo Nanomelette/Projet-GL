@@ -6,6 +6,13 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+
 import java.io.PrintStream;
 
 /**
@@ -48,4 +55,22 @@ public class NoInitialization extends AbstractInitialization {
         // leaf node => nothing to do
     }
 
+    protected void codeGenInitField(DecacCompiler compiler, Type type) {
+        codeGenInitAux(compiler, type);
+    };
+
+    protected void codeGenInitVar(DecacCompiler compiler, DAddr address, Type type) {
+        codeGenInitAux(compiler, type);
+        compiler.addInstruction(new STORE(Register.R0, address));
+    };
+
+    protected void codeGenInitAux(DecacCompiler compiler, Type type) {
+        if (type.isInt() || type.isBoolean()) {
+            compiler.addInstruction(new LOAD(0, Register.R0));
+        } else if (type.isFloat()) {
+            compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R0));
+        } else {
+            compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+        }
+    }
 }

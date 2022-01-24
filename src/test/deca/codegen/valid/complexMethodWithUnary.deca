@@ -1,0 +1,18 @@
+
+
+
+
+// 
+class A {
+    int m(int a, int b, int c, int d) {
+        int x = 0;
+        x = a + -(-(b*b)+c*(-(a+(b*c*(-a+b+(c*(c-d)*-(a*(a+b*(-c+(-a*b+(a*b+c))))))))))); 
+        println(0.5*(1*1));
+        return x;
+    }
+}
+
+{
+    A a = new A();
+    print(a.m(5,2,3,1));
+}

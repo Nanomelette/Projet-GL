@@ -11,21 +11,15 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
-
 /**
  * @author gl20
  * @date 01/01/2022
  */
 public class DeclVar extends AbstractDeclVar {
-
-    private static final Logger LOG = Logger.getLogger(Main.class);
-
     
     final private AbstractIdentifier type;
     final private AbstractIdentifier varName;
@@ -93,28 +87,22 @@ public class DeclVar extends AbstractDeclVar {
     }
 
     public void codeGenDeclVarGlob(DecacCompiler compiler) {
+        compiler.addComment("Déclaration de la variable globale : " + varName.getName().getName());
+        compiler.getData().restoreData();
         DAddr address = new RegisterOffset(compiler.getData().getGbOffset(), Register.GB);
         Identifier var = (Identifier) getVarName();
         var.getExpDefinition().setOperand(address);
         compiler.getData().incrementGbOffset();
-        if (initialization instanceof Initialization) {
-            Initialization init = (Initialization) initialization;
-            init.getExpression().codeGenInst(compiler);
-            compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
-        }
+        initialization.codeGenInitVar(compiler, address, var.getType());
         compiler.getData().restoreData();
     }
 
     public void codeGenDeclVarLoc(DecacCompiler compiler) {
-        DAddr address = new RegisterOffset(compiler.getData().getlB(), Register.LB);
+        compiler.addComment("Déclaration de la variable locale : " + varName.getName().getName());
+        DAddr address = new RegisterOffset(compiler.getData().getlBOffset(), Register.LB);
         Identifier var = (Identifier) getVarName();
         var.getExpDefinition().setOperand(address);
         compiler.getData().incrementLb();
-        if (initialization instanceof Initialization) {
-            Initialization init = (Initialization) initialization;
-            init.getExpression().codeGenInst(compiler);
-            compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
-        }
-        compiler.getData().restoreData();
+        initialization.codeGenInitVar(compiler, address, var.getType());
     }
 }

@@ -1,0 +1,12 @@
+// Description:
+//    Test creation de plusieurs identifiers (float)
+//
+// Résultats:
+//
+//
+// Historique:
+//    cree le 16/01/2022
+
+{
+        float x,y,z;
+}

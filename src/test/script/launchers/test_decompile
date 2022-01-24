@@ -1,0 +1,25 @@
+#!/bin/sh
+
+for i in $@
+do
+    # echo "$i"
+    decac -p "$i" > tmp_test_1.deca
+    decac -p tmp_test_1.deca > tmp_test_2.deca
+    decac -p tmp_test_2.deca > tmp_test_3.deca
+    decac -p tmp_test_3.deca > tmp_test_4.deca
+    # decac -p tmp_test_4.deca > tmp_test_5.deca
+    # decac -p tmp_test_5.deca > tmp_test_6.deca
+    # decac -p tmp_test_6.deca > tmp_test_7.deca
+    
+    # comm tmp_test_1 tmp_test_2 > comm.txt
+    # (( -eq wc -l tmp_test_1.deca)) 
+    # echo $?
+    if ! cmp tmp_test_1.deca tmp_test_4.deca
+    then
+        echo "Problème de décompilation dans $i"
+    # else
+    #     echo "Pas Ok"
+    fi
+
+    rm tmp_test_*
+done

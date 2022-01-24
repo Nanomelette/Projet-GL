@@ -1,0 +1,19 @@
+//
+//
+//
+//
+// 42
+
+class A {
+    int x = 42;
+
+    int getX() {
+        int a = 1;
+        return x;
+    }
+}
+
+{
+    A a = new A();
+    print(a.getX());
+}

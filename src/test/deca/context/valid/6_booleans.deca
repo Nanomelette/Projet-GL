@@ -1,0 +1,16 @@
+// Description:
+//    Programme minimaliste traitant des booléens.
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 01/01/2022
+
+{
+        boolean a = true;
+        boolean b = false;
+        boolean c;
+        c = a && b;
+        
+}

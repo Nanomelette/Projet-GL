@@ -1,3 +1,0 @@
-#include "TestIncludeChaine.decah"
-
-println("L'include a marché !");

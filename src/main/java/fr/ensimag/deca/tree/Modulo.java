@@ -43,7 +43,9 @@ public class Modulo extends AbstractOpArith {
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);
         compiler.addInstruction(new REM(op1, op2));
-        compiler.addInstruction(new BOV(new Label("zero_division")));
+        if (!(compiler.getCompilerOptions().getNoCheck())) {
+            compiler.addInstruction(new BOV(new Label("zero_division")));
+        }
         compiler.getData().setLastUsedRegister(op2);
     }
 

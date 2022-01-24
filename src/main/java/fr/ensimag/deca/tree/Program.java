@@ -47,13 +47,23 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        compiler.addComment("Main program");
-
+        // compiler.addComment("Main program");
+        
         // Table des méthodes
         main.vTableInitialization(compiler, getClasses());
         // Génération du code
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
+        // Ecriture des messages d'erreur
+        compiler.getData().addBottom(compiler);
+        
+        compiler.addComment("------------------------------------------");
+        compiler.addComment("            Codage des méthodes           ");
+        compiler.addComment("------------------------------------------");
+        classes.codeGenListDeclClass(compiler);
+        
+        // Ecriture de l'header
+        compiler.getData().addHeader(compiler);
     }
 
     @Override

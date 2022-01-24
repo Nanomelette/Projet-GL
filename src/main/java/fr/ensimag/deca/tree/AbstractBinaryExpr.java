@@ -125,7 +125,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 compiler.addInstruction(new LOAD(op2, GPRegister.R0));
                 // POP Rn;
                 compiler.addInstruction(new POP((GPRegister) op2), "restauration");
-                data.decrementFreeStoragePointer();
+                // data.decrementFreeStoragePointer();
                 op1 = (DVal) GPRegister.R0;
             }
         }

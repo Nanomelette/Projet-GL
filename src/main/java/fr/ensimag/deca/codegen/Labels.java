@@ -1,0 +1,37 @@
+package fr.ensimag.deca.codegen;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import fr.ensimag.ima.pseudocode.Label;
+
+public class Labels {
+    public final Label stack_overflow_error  = new Label("stack_overflow_error");
+    public final Label io_error = new Label("io_error");
+    public final Label overflow_error = new Label("overflow_error");
+    public final Label zero_division = new Label("zero_division");
+    public final Label null_dereference = new Label("null_dereference");
+    public final Label heap_overflow = new Label("heap_overflow");
+    public final Label cast_error = new Label("cast_error");
+    
+
+    private HashSet<Label> usedLabels = new HashSet<Label>();
+
+    public Labels() {
+        addLabel(stack_overflow_error);
+        addLabel(overflow_error);
+        addLabel(heap_overflow);
+        addLabel(zero_division);
+        addLabel(null_dereference);
+        addLabel(cast_error);
+        addLabel(io_error);
+    }
+
+    public void addLabel(Label label) {
+        usedLabels.add(label);
+    }
+
+    public Iterator<Label> getUsedLabels() {
+        return usedLabels.iterator();
+    }
+
+}

@@ -10,12 +10,12 @@ import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.deca.tree.Visibility;
-
 import java.io.PrintStream;
-import java.io.ObjectInputStream.GetField;
-
 import org.apache.commons.lang.Validate;
 
 public class DeclField extends AbstractDeclField {
@@ -61,12 +61,14 @@ public class DeclField extends AbstractDeclField {
             if (envExpSup.equals(envExp.getParent())) {
                 ExpDefinition ExpDef = envExpSup.get(fieldName);
                 if (ExpDef != null) {
-                    Validate.isTrue(ExpDef.isField(), fieldName.getName() + " isn't a field");
+                    if (!ExpDef.isField()) {
+                        throw new ContextualError(fieldName.getName() + " isn't a field", this.type.getLocation());
+                    }
                 }
             }
             Type fType = type.verifyType(compiler);
             if (fType.isVoid()){
-                throw new ContextualError("type void", this.type.getLocation());
+                throw new ContextualError("field void", this.type.getLocation());
             }
             try {
                 int index = classDefSup.getNumberOfFields() + def.getNumberOfFields() + 1;
@@ -100,7 +102,9 @@ public class DeclField extends AbstractDeclField {
             if (envExpSup.equals(envExp.getParent())) {
                 ExpDefinition ExpDef = envExpSup.get(fieldName);
                 if (ExpDef != null) {
-                    Validate.isTrue(compiler.subType(compiler, this.type.getType(), ExpDef.getType()), "Incompatible extension of field "+this.field.getName());
+                    if (!compiler.subType(compiler, this.type.getType(), ExpDef.getType())) {
+                        throw new ContextualError("Incompatible extension of field "+this.field.getName(), this.getLocation());
+                    }
                 }
             }
         }
@@ -108,6 +112,11 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     public void decompile(IndentPrintStream s) {
+        if (v.toString().equals("PROTECTED")) {
+            s.print("protected");
+        }
+        s.print(" ");
+        type.decompile(s);
         s.print(" ");
     	this.field.decompile(s);
     	s.print(" ");
@@ -128,6 +137,22 @@ public class DeclField extends AbstractDeclField {
         type.iter(f);
         field.iter(f);
         init.iter(f);
+    }
+
+    @Override
+    protected void codeGenDeclField(DecacCompiler compiler) {
+        compiler.addComment("Initialisation du champ " + field.getName().getName());
+        init.codeGenInitField(compiler, field.getType());
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(field.getFieldDefinition().getIndex(), Register.R1)));
+    }
+
+    @Override
+    protected void codeGenDeclFieldZero(DecacCompiler compiler) {
+        compiler.addComment("Initialisation du champ " + field.getName().getName() + " à zero");
+        compiler.addInstruction(new LOAD(0, Register.R0));
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(field.getFieldDefinition().getIndex(), Register.R1)));
     }
     
 }

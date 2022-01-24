@@ -1,0 +1,15 @@
+// Description:
+//    Programme minimaliste: une classe vérifiant que l'environnement de B est en lien avec celui de A.
+//
+// Résultats:
+//
+//
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	int i, j = 1;
+}
+class B extends A {
+	int i, j = 3;
+}

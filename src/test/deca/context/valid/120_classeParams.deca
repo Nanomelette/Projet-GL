@@ -1,0 +1,19 @@
+// Description:
+//    Programme minimaliste: une classe et un Main vérifiant l'index des paramètres.
+//
+// Résultats:
+// 1.20000e+01
+//
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	float f(int a, float b, boolean c) {
+		return 2*b;
+	}
+}
+
+{
+	A a = new A();
+	print(a.f(5, 6.0, true));
+}

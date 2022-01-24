@@ -2,7 +2,6 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
 
@@ -13,7 +12,7 @@ import org.apache.log4j.Logger;
  */
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     private static final Logger LOG = Logger.getLogger(ListDeclMethod.class);
-    
+
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclMethod c : getList()) {
@@ -25,18 +24,26 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     /**
      * Pass 2 of [SyntaxeContextuelle]
      */
-    void verifyListMethod(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe) throws ContextualError {
+    void verifyListMethod(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
+            throws ContextualError {
         LOG.debug("verify listMethod: start");
 
-        for(AbstractDeclMethod c : this.getList()){
+        for (AbstractDeclMethod c : this.getList()) {
             c.verifyMethod(compiler, classeSup, classe);
         }
         LOG.debug("verify listMethod: end");
     }
 
-    void verifyListMethodBody(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe) throws ContextualError {
+    public void codeGenListDeclMethod(DecacCompiler compiler) {
+        for (AbstractDeclMethod declMethod : getList()) {
+            declMethod.codeGenDeclMethod(compiler);
+        }
+    }
 
-        for(AbstractDeclMethod c : this.getList()){
+    public void verifyListMethodBody(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
+            throws ContextualError {
+
+        for (AbstractDeclMethod c : this.getList()) {
             c.verifyMethodBody(compiler, classeSup, classe);
         }
     }

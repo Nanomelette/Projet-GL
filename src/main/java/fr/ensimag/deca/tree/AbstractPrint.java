@@ -52,7 +52,7 @@ public abstract class AbstractPrint extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         for (AbstractExpr a : getArguments().getList()) {
-            a.codeGenPrint(compiler);
+            a.codeGenPrint(compiler, printHex);
         }
     }
 
@@ -81,7 +81,9 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        arguments.iter(f);
+        for (AbstractExpr i : arguments.getList()) {
+            i.iter(f);
+        }
     }
 
     @Override

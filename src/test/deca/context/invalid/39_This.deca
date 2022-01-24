@@ -1,0 +1,13 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 12: ContextualError: Current class must not be null
+// 
+// Historique:
+//    cree le 01/01/2022
+
+{
+   // Doit etre refuse.
+   int x = this.x;
+}

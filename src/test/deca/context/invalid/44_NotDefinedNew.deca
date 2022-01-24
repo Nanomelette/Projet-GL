@@ -1,0 +1,13 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//	Ligne 12: ContextualError: class A not defined
+// 
+// Historique:
+//    cree le 01/01/2022
+
+{
+   // Doit etre refuse.
+   int x = new A();
+}

@@ -1,0 +1,15 @@
+
+
+
+
+// ok
+
+class A { }
+
+{
+   A a = new A();
+   if (a instanceof A) {
+      //   b = (B)(a);
+      println("ok");
+   }
+}

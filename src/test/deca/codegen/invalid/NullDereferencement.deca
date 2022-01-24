@@ -1,0 +1,17 @@
+// Description:
+//    Erreur du 11.1 : deferencement null
+//
+// Resultats:
+// Error: null_dereference
+
+class A {
+    int x = 1;
+    int getX() {
+        int b = 2;
+        return x;
+    }
+}
+{
+    A a;
+    print(a.getX());
+}

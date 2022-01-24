@@ -6,6 +6,11 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -60,4 +65,15 @@ public class Initialization extends AbstractInitialization {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         expression.prettyPrint(s, prefix, false);
     }
+
+    @Override
+    protected void codeGenInitField(DecacCompiler compiler, Type type) {
+        expression.codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(compiler.getData().getLastUsedRegister(), Register.R0));
+    }
+
+    protected void codeGenInitVar(DecacCompiler compiler, DAddr address, Type type) {
+        expression.codeGenInst(compiler);
+        compiler.addInstruction(new STORE(compiler.getData().getLastUsedRegister(), address));
+    };
 }

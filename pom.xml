@@ -269,6 +269,26 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>test-auto</id>
+                        <configuration>
+                            <executable> ./src/test/deca/testauto.py</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test-decompilation</id>
+                        <configuration>
+                            <executable> ./src/test/script/launchers/decompilation-codegen-valid</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
 

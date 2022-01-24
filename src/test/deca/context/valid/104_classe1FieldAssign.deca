@@ -1,0 +1,12 @@
+// Description:
+//    Programme minimaliste: une classe pas très utile avec un seul champ initialisé.
+//
+// Résultats:
+//
+//
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	float i = 1;
+}

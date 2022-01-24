@@ -13,8 +13,19 @@ import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.LabelOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
+
 
 import java.io.PrintStream;
 
@@ -49,32 +60,38 @@ public class DeclMethod extends AbstractDeclMethod{
             ClassDefinition classDefSup = classTypeSup.getDefinition();
             EnvironmentExp envExpSup = classDefSup.getMembers();
             ExpDefinition ExpDef = envExpSup.get(method);
+            Symbol symb = classe.getName();
+            ClassType classType = (ClassType) env_Types.getType(symb);
+            ClassDefinition classDef = classType.getDefinition();
+            int index = classDef.getIndexMethods();
             if (ExpDef != null) {
-                Validate.isTrue(ExpDef.isMethod(), method.getName() + " isn't a method");
+                if (!ExpDef.isMethod()) {
+                    throw new ContextualError(method.getName() + " isn't a method", this.getLocation());
+                }
                 MethodDefinition methodDef = (MethodDefinition) ExpDef;
                 Type typeSup = methodDef.getType();
                 if (compiler.subType(compiler, mType, typeSup)) {
                     Signature sig = methodDef.getSignature();
-                    if (!sig.sameSignature(sig2)) {
+                    if (sig.sameSignature(compiler, sig2)) {
+                        index = methodDef.getIndex();
+                    } else {
                         throw new ContextualError(method.getName()+" must have same signature", this.getLocation());
                     }
                 } else {
                     throw new ContextualError(method.getName()+" must have same type", this.getLocation());
                 }
+            } else {
+                classDef.incIndexMethods();
             }
             try {
-                Symbol symb = classe.getName();
-                ClassType classType = (ClassType) env_Types.getType(symb);
-                ClassDefinition classDef = classType.getDefinition();
                 EnvironmentExp envExp = classDef.getMembers();
-                int index = classDefSup.getNumberOfFields() + classDef.getNumberOfFields() + 1;
                 MethodDefinition newDef = new MethodDefinition(mType, name.getLocation(), sig2, index);
+                Label label = new Label(symb.getName() +"."+ method.getName());
+                newDef.setLabel(label);
                 name.setDefinition(newDef);
                 name.setType(mType);
                 envExp.declare(method, newDef);
                 classDef.incNumberOfMethods();
-                Label label = new Label(symb.getName() +"."+ method.getName());
-                newDef.setLabel(label);
             } catch (EnvironmentExp.DoubleDefException e) {
                 String message = "can't defined method identifier several times in a class";
                 throw new ContextualError(message, name.getLocation());
@@ -103,7 +120,7 @@ public class DeclMethod extends AbstractDeclMethod{
         name.decompile(s);
         s.print("(");
         listDeclParam.decompile(s);
-        s.print(")");
+        s.print(") ");
         methodBody.decompile(s);
     }
 
@@ -123,5 +140,84 @@ public class DeclMethod extends AbstractDeclMethod{
         listDeclParam.iter(f);
         
     }
+    @Override
+    public AbstractIdentifier getName() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj instanceof DeclMethod) {
+            DeclMethod other = (DeclMethod)obj;
+            return other.getName().getName().getName().equals(this.getName().getName().getName());
+        }
+        return false;
+    }
     
+    public void codeGenDeclMethod(DecacCompiler compiler) {
+        // Début de bloc
+        compiler.newBloc(); compiler.setToBlocProgram();
+        Label labelReturn = new Label(
+            "fin." + name.getMethodDefinition().getLabel().toString()
+        );
+        compiler.getData().setLabelReturn(labelReturn);
+
+        // Calcul de methodBody
+        /**
+         * TODO : le nmbre maximal de paramètres des méthodes appelees
+         */
+        methodBody.codeGenMethodBody(compiler);
+
+        if (!(name.getMethodDefinition().getType().isVoid())) {
+            if (!(compiler.getCompilerOptions().getNoCheck())) {
+                compiler.addInstruction(
+                    new WSTR(
+                        "Error: method " + name.getMethodDefinition().getLabel().toString() + " needs a return"
+                    )
+                );
+            }
+            compiler.addInstruction(new WNL());
+            compiler.addInstruction(new ERROR());
+        }
+
+        compiler.addLabel(labelReturn);
+
+        // Restauration et sauvegarde des registres si besoin
+        methodBody.codeGenSaveRestore(compiler);
+
+        // TSTO
+        /**
+         * TODO : TSTO
+         * 
+         * nombre de registres sauvegardés en début de bloc = 
+         *          compiler.getData().getNumberOfUsedRegister()
+         * nombre de variables du bloc =
+         *          ?
+         * nombre maximal de temporaires nécessaires à l’évaluation des expressions =
+         *          compiler.getData().getMaxStackLength()
+         * nombre maximal de paramètres des méthodes appelées (chaque instruction BSR effectuant deux empilements) =
+         *          2 <- Il faut retenir le PC et l'objet
+         * 
+         */
+        if (!(compiler.getCompilerOptions().getNoCheck())) {
+            compiler.addInstructionAtFirst(new BOV(new Label("stack_overflow_error")));
+            compiler.addInstructionAtFirst(
+                new TSTO(
+                    compiler.getData().getNumberOfUsedRegister() +
+                    compiler.getData().getMaxStackLength() +
+                    ((AbstractMethodBody)methodBody).getNbrVarMethodBody()
+                )
+            );
+        }
+        compiler.addLabelAtFirst(new Label("code."+name.getMethodDefinition().getLabel().toString()));
+
+        // Fin de bloc 
+        compiler.appendBlocInstructions();
+        compiler.getData().restoreData();
+        compiler.setToMainProgram();
+
+    }   
 }
