@@ -197,10 +197,13 @@ class Polynomial {
     */
     public float arcsin(float x){
         if(x > 1f || x < -1f){
-            return 0;
+            throw new OperationNotSupportedException("the valued entered for arcsin must be in [-1,1]");
         }
-        float a = (1f + sqrt(1f-x*x));
-        return 2 * atan(x/a);
+        else{
+            float a = (1f + sqrt(1f-x*x));
+            return 2 * atan(x/a); 
+        }
+
     }
 
     /*
