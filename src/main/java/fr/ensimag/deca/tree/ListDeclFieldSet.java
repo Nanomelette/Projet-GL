@@ -8,8 +8,7 @@ public class ListDeclFieldSet extends TreeList<AbstractDeclFieldSet>{
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO Auto-generated method stub
-        
+        // nothing
     }
 
     protected void codeGenListDeclFieldSet(DecacCompiler compiler) {

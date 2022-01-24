@@ -30,11 +30,4 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
                 }
     }
 
-    // @Override
-    // protected void codeGenInst(DecacCompiler compiler) {
-    //     Label E = new Label("E");
-    //     // codeBoolean(getLeftOperand(), b2, label, compiler);
-        
-    // }
-
 }

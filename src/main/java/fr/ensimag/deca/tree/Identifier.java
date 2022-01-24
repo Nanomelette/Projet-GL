@@ -28,7 +28,6 @@ import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
-// import org.apache.log4j.Logger;
 
 /**
  * Deca Identifier
@@ -37,7 +36,6 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2022
  */
 public class Identifier extends AbstractIdentifier {
-    // private static final Logger LOG = Logger.getLogger(Identifier.class);
 
     @Override
     protected void checkDecoration() {
@@ -304,12 +302,8 @@ public class Identifier extends AbstractIdentifier {
     protected void codeGenAssign(DecacCompiler compiler, Register register) {
         if (getDefinition().isField()) {
             GPRegister tmpRegister = compiler.getData().getFreeRegister(compiler);
-            // compiler.getData().decrementFreeStoragePointer();
             compiler.addInstruction(
                 new LOAD(new RegisterOffset(-2, Register.LB), tmpRegister));
-            // compiler.addInstruction(
-            //     new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), tmpRegister), tmpRegister));
-            // compiler.addInstruction(new STORE(register, new RegisterOffset(0, tmpRegister)));
             compiler.addInstruction(new STORE(register, new RegisterOffset(getFieldDefinition().getIndex(), tmpRegister)));
         } else if (getDefinition().isParam()) {
             int offset = getParamDefinition().getIndex() + 2;

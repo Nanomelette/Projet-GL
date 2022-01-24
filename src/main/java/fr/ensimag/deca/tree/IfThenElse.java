@@ -60,7 +60,6 @@ public class IfThenElse extends AbstractInst {
         Label E_else = new Label("E_Else."+compiler.getNLabel());
         Label E_end = new Label("E_End."+compiler.getNLabel());
         compiler.incrNLabel();
-        // condition.codeGenInst(compiler); // on ne donne pas l'info des etiquettes
         condition.codeBoolean(false, E_else, compiler);
         thenBranch.codeGenListInst(compiler);
         compiler.addInstruction(new BRA(E_end));

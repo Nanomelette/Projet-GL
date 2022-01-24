@@ -82,9 +82,6 @@ public class BooleanLiteral extends AbstractExpr {
         if (getValue() == b) {
             compiler.addInstruction(new BRA(E));
         }
-        // codeGenInst(compiler);
-        // compiler.addInstruction(new CMP(new ImmediateInteger(b ? 1 : 0), compiler.getData().getLastUsedRegister()));
-        // compiler.addInstruction(new BEQ(E));
     }
 
     @Override

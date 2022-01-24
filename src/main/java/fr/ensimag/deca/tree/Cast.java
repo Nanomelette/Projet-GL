@@ -117,7 +117,6 @@ public class Cast extends AbstractExpr {
             compiler.addInstruction(new FLOAT(lastUsed, lastUsed));
         } else if (type.getType().isClass()) {
             if (e.getType().isNull()) {
-                // TODO : a est la valeur null
             } else {
                 Label doCast = new Label("do_cast."+compiler.getNLabel());
                 compiler.incrNLabel();
