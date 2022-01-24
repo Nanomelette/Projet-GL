@@ -63,13 +63,17 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        if( this.obj != null){
-            this.obj.decompile(s);
-            s.print(".");
-        }
-        this.meth.decompile(s);
+        // if( this.obj != null){
+        //     this.obj.decompile(s);
+        //     s.print(".");
+        // } else {
+        //     s.print("this.");
+        // }
+        obj.decompile(s);
+        s.print(".");
+        meth.decompile(s);
         s.print("(");
-        this.param.decompile(s);
+        param.decompile(s);
         s.print(")");
     }
 
@@ -102,7 +106,7 @@ public class MethodCall extends AbstractExpr {
         // On reserve la place pour les parametres
         compiler.addInstruction(new ADDSP(param.size() + 1));
         GPRegister register = data.getFreeRegister(compiler);
-        data.decrementFreeStoragePointer();
+        // data.decrementFreeStoragePointer();
 
         // On empile le parametre implicite
         compiler.addInstruction(new LOAD(addresseClassRegister, register));
@@ -111,7 +115,7 @@ public class MethodCall extends AbstractExpr {
         // On empile les autres parametres
         param.codeGenListExpr(compiler);
         
-        register = data.getFreeRegister(compiler);
+        // register = data.getFreeRegister(compiler);
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), register));
         if (!(compiler.getCompilerOptions().getNoCheck())) {
             compiler.addInstruction(new CMP(new NullOperand(), register));

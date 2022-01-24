@@ -40,9 +40,7 @@ public class This extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        if(!this.implicit){
-            s.print("this");
-        }
+        s.print("this");
     }
 
     @Override
