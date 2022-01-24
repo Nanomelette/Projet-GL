@@ -1,10 +1,56 @@
 #include "Math.decah"
 
+// class A {
+//     float fmaf(float a, float b, float c){
+//         return a*b+c;
+//     }
+
+//     float atan(float a) {
+//         float r1, r2, r3, r4, r5, r6, r7, r8, r9, r10;
+//         float s = a * a, u = fmaf(a, -a, 0x1.fde90cp-1f);
+//         println("s ",s);
+//         r1 =               0x1.74dfb6p-9f;
+//         println("r1 ",r1);
+//         r2 = fmaf (r1, u,  0x1.3a1c7cp-8f);
+//         println("r2 ", r2);
+//         r3 = fmaf (r2, s, -0x1.7f24b6p-7f);
+//         println("r3 ", r3);
+//         r4 = fmaf (r3, u, -0x1.eb3900p-7f);
+//         println("r4 ", r4);
+//         r5 = fmaf (r4, s,  0x1.1ab95ap-5f);
+//         r6 = fmaf (r5, u,  0x1.80e87cp-5f);
+//         r7 = fmaf (r6, s, -0x1.e71aa4p-4f);
+//         r8 = fmaf (r7, u, -0x1.b81b44p-3f);
+//         r9 = r8 * s;
+//         r10 = fmaf (r9, a, a);
+//         return r10;
+//     }
+// }
+
 {
+    // A a = new A();
+    // println(a.atan(1.0));
+
+    Polynomial p = new Polynomial();
     Math m = new Math();
-    println(m.cos(0.0));
-    println(m.sin(0.0));
-    println(m.asin(1.0));
+    // float r1, r2, r3, r4, r5, r6, r7, r8, r9, r10;
+    // float a = 1.0;
+    // float s = a * a;
+    // float u = p.fmaf(a, -a, 0x1.fde90cp-1f);
+    // r1 =               0x1.74dfb6p-9f;
+    // r2 = p.fmaf (r1, u,  0x1.3a1c7cp-8f);
+    // r3 = p.fmaf (r2, s, -0x1.7f24b6p-7f);
+    // r4 = p.fmaf (r3, u, -0x1.eb3900p-7f);
+    // r5 = p.fmaf (r4, s,  0x1.1ab95ap-5f);
+    // r6 = p.fmaf (r5, u,  0x1.80e87cp-5f);
+    // r7 = p.fmaf (r6, s, -0x1.e71aa4p-4f);
+    // r8 = p.fmaf (r7, u, -0x1.b81b44p-3f);
+    // r9 = r8 * s;
+    // r10 = p.fmaf (r9, a, a);
+    // println("r10 ", r10);
     println(m.atan(1.0));
-    println(m.ulp(1.0));
+    // println(m.cos(0.0));
+    // println(m.sin(0.0));
+    // println(m.asin(1.0));
+    // println(m.ulp(1.0));
 }

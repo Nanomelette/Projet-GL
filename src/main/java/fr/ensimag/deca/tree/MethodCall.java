@@ -54,22 +54,28 @@ public class MethodCall extends AbstractExpr {
         this.meth.setType(methodDef.getType());
         this.meth.setDefinition(methodDef);
         this.setType(methodDef.getType());
-        Signature sig = this.param.verifyListExp(compiler, localEnv, currentClass);
-        if (!methodDef.getSignature().sameSignature(sig)) {
-            throw new ContextualError(this.meth.getName()+": unmatched signature", this.getLocation());
+        try {
+            this.param.verifyListExp(compiler, localEnv, currentClass, methodDef.getSignature());
+        } catch (ContextualError e) {
+            String message = e.getMessage();
+            throw new ContextualError(message, this.getLocation());
         }
         return methodDef.getType();
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        if( this.obj != null){
-            this.obj.decompile(s);
-            s.print(".");
-        }
-        this.meth.decompile(s);
+        // if( this.obj != null){
+        //     this.obj.decompile(s);
+        //     s.print(".");
+        // } else {
+        //     s.print("this.");
+        // }
+        obj.decompile(s);
+        s.print(".");
+        meth.decompile(s);
         s.print("(");
-        this.param.decompile(s);
+        param.decompile(s);
         s.print(")");
     }
 
@@ -93,25 +99,32 @@ public class MethodCall extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Data data = compiler.getData();
+        compiler.addInstruction(new ADDSP(param.size() + 1));
+        
         obj.codeGenInst(compiler);
         
         // On calcul l'emplacement de la méthode
         Register addresseClassRegister = data.getLastUsedRegister();
+        data.decrementFreeStoragePointer();
+
         // DAddr addr = new RegisterOffset(0, addresseClassRegister);
 
         // On reserve la place pour les parametres
-        compiler.addInstruction(new ADDSP(param.size() + 1));
-        GPRegister register = data.getFreeRegister(compiler);
-        data.decrementFreeStoragePointer();
-
+        // GPRegister register = data.getFreeRegister(compiler);
+        // data.decrementFreeStoragePointer();
+        
         // On empile le parametre implicite
-        compiler.addInstruction(new LOAD(addresseClassRegister, register));
-        compiler.addInstruction(new STORE(register, new RegisterOffset(0, Register.SP)));
-
+        // compiler.addInstruction(new LOAD(addresseClassRegister, register));
+        // compiler.addInstruction(new STORE(register, new RegisterOffset(0, Register.SP)));
+        // Ajout
+        compiler.addInstruction(new STORE(addresseClassRegister, new RegisterOffset(0, Register.SP)));
+        
         // On empile les autres parametres
         param.codeGenListExpr(compiler);
         
-        register = data.getFreeRegister(compiler);
+        // GPRegister register = data.getFreeRegister(compiler);
+        GPRegister register = data.getLastUsedRegister();
+        // register = data.getFreeRegister(compiler);
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), register));
         if (!(compiler.getCompilerOptions().getNoCheck())) {
             compiler.addInstruction(new CMP(new NullOperand(), register));

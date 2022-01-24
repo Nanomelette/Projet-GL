@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
@@ -30,16 +31,19 @@ public class Divide extends AbstractOpArith {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);
-        GPRegister freeRegister = compiler.getData().getFreeRegister(compiler);
-        // Division par zéro
-        compiler.addInstruction(new LOAD(op1, freeRegister));
-        if (this.getType().isInt() && !(compiler.getCompilerOptions().getNoCheck())) {
-            compiler.addInstruction(new CMP(0, freeRegister));
-            compiler.addInstruction(new BEQ(new Label("zero_division")));
-        } else {
-            compiler.addInstruction(new CMP(new ImmediateFloat(0), freeRegister));
-            if (!(compiler.getCompilerOptions().getNoCheck())) {
-                compiler.addInstruction(new BOV(new Label("overflow_error")));
+        if (!(compiler.getCompilerOptions().getNoCheck())) {
+            // GPRegister freeRegister = compiler.getData().getFreeRegister(compiler);
+            // Division par zéro
+            GPRegister freeRegister = Register.R0;
+            compiler.addInstruction(new LOAD(op1, freeRegister));
+            if (this.getType().isInt()) {
+                compiler.addInstruction(new CMP(0, freeRegister));
+                compiler.addInstruction(new BEQ(new Label("zero_division")));
+            } else {
+                if (!(compiler.getCompilerOptions().getNoCheck())) {
+                    compiler.addInstruction(new CMP(new ImmediateFloat(0), freeRegister));
+                    compiler.addInstruction(new BEQ(new Label("overflow_error")));
+                }
             }
         }
 

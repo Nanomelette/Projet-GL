@@ -6,6 +6,7 @@ import fr.ensimag.ima.pseudocode.instructions.BGE;
 import fr.ensimag.ima.pseudocode.instructions.BLT;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.SGE;
+import fr.ensimag.ima.pseudocode.instructions.SLT;
 
 /**
  * Operator "x >= y"

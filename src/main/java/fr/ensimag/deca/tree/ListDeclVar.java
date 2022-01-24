@@ -52,6 +52,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
         compiler.getData().restorelBOffset();
         for (AbstractDeclVar declVar : getList()) {
             declVar.codeGenDeclVarLoc(compiler);
+            compiler.getData().restoreData();
         }
     }
 

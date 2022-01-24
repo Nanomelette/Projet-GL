@@ -72,7 +72,7 @@ public class DeclMethod extends AbstractDeclMethod{
                 Type typeSup = methodDef.getType();
                 if (compiler.subType(compiler, mType, typeSup)) {
                     Signature sig = methodDef.getSignature();
-                    if (sig.sameSignature(sig2)) {
+                    if (sig.sameSignature(compiler, sig2)) {
                         index = methodDef.getIndex();
                     } else {
                         throw new ContextualError(method.getName()+" must have same signature", this.getLocation());
@@ -143,20 +143,6 @@ public class DeclMethod extends AbstractDeclMethod{
     @Override
     public AbstractIdentifier getName() {
         return name;
-    }
-
-    @Override
-    protected void addToVTable(DecacCompiler compiler, String debName) {
-        Label labelName = new Label(debName + name.getName().getName());
-        compiler.addInstruction(
-            new LOAD(new LabelOperand(labelName), Register.R0)
-            );
-        compiler.addInstruction(new STORE(Register.R0, 
-                                    new RegisterOffset(
-                                        compiler.getData().getGbOffset(), Register.GB)
-                                    )
-                                );
-        
     }
 
     @Override

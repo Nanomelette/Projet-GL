@@ -24,6 +24,7 @@
 	    g=m;
 	    fg = fm;
 	}
+
     }
     print (g, " = "); printlnx(g);
 

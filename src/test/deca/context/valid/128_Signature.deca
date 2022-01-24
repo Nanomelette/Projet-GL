@@ -2,12 +2,17 @@
 //    Affectation et typage
 //
 // Resultats:
-//	Ligne 12: ContextualError: cannot cast null type
+// 1.00000e+00
 // 
 // Historique:
 //    cree le 01/01/2022
 
+class A {
+	float f(float x) {
+		return x;
+	}
+}
 {
-   // Doit etre refuse.
-   int b = 1 + (int)(null);
+	A a = new A();
+	println(a.f(1));
 }

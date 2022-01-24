@@ -1,0 +1,13 @@
+
+
+
+
+// ok
+
+
+{
+    boolean x = (true != false);
+    if (x) {
+        print("ok");
+    }
+}

@@ -5,11 +5,14 @@
 // ok
 
 class A { }
-
+class B extends A { }
+class C extends B { }
 {
-   A a = new A();
-   if (a instanceof A) {
-      //   b = (B)(a);
-      println("ok");
+   A a;
+   B b;
+   a = new C();
+   if (a instanceof B) {
+        b = (B)(a);
+        println("ok");
    }
 }

@@ -98,9 +98,9 @@ public abstract class AbstractExpr extends AbstractInst {
                 cf.setType(typeCf);
                 return cf;
             }
-            if(type.isFloat() && expectedType.isInt() || type.sameType(expectedType)){
+            if (compiler.assignCompatible(compiler, expectedType, type) != null) {
                 return this;
-            }        
+            }
         throw new ContextualError("Assignment error", getLocation());
     }
     

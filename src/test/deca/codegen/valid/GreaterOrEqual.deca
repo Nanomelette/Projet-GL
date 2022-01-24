@@ -1,0 +1,12 @@
+
+
+
+
+// ok
+
+{
+    boolean x = 2 >= 1;
+    if (x) {
+        print("ok");
+    }
+}
