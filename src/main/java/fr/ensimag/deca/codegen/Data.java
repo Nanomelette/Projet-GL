@@ -139,8 +139,8 @@ public class Data {
     }
 
     public void addHeader(DecacCompiler compiler) {
+        compiler.addInstructionAtFirst(new ADDSP(gBOffset - 1));
         if (!(compiler.getCompilerOptions().getNoCheck())) {
-            compiler.addInstructionAtFirst(new ADDSP(gBOffset - 1));
             compiler.addInstructionAtFirst(new BOV(labels.stack_overflow_error));
             compiler.addInstructionAtFirst(new TSTO(gBOffset + maxStackLength - 1));
         }

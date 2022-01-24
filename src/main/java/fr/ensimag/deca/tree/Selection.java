@@ -106,8 +106,10 @@ public class Selection extends AbstractLValue{
         obj.codeGenSelect(compiler);
         // On met dans objRegister l'adresse de l'obj en partie gauche
         GPRegister objRegister = data.getLastUsedRegister();
-        compiler.addInstruction(new CMP(new NullOperand(), objRegister));
-        compiler.addInstruction(new BEQ(new Label("null_dereference")));
+        if (!(compiler.getCompilerOptions().getNoCheck())) {
+            compiler.addInstruction(new CMP(new NullOperand(), objRegister));
+            compiler.addInstruction(new BEQ(new Label("null_dereference")));
+        }
         // On récupère l'offset du champ concerné
         compiler.addInstruction(new LOAD(new RegisterOffset(field.getFieldDefinition().getIndex(), objRegister), objRegister));
         
