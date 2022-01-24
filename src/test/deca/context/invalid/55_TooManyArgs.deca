@@ -2,7 +2,7 @@
 //    Affectation et typage
 //
 // Resultats:
-// 	Ligne 18: ContextualError: Assignment error
+// 	Ligne 18: ContextualError: too many args
 // 
 // Historique:
 //    cree le 01/01/2022
@@ -15,5 +15,5 @@ class A {
 {
 	A a = new A();
 	// Doit etre refuse.
-	println(a.f(1.0));
+	println(a.f(1, 2));
 }

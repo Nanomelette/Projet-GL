@@ -20,14 +20,22 @@ import fr.ensimag.ima.pseudocode.instructions.STORE;
  */
 public class ListExpr extends TreeList<AbstractExpr> {
 
-    public Signature verifyListExp(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+    public void verifyListExp(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Signature sig)
         throws ContextualError {
-        Signature sig = new Signature();
-            for (AbstractExpr e : getList()){
-            Type type = e.verifyExpr(compiler, localEnv, currentClass);
-            sig.add(type);
+        int i = 0;
+        if (getList().size() > sig.size()) {
+            throw new ContextualError("MethodCall: too many args", getLocation());
         }
-        return sig;
+        if (getList().size() < sig.size()) {
+            throw new ContextualError("MethodCall: too few args", getLocation());
+        }
+        for (AbstractExpr e : getList()){
+            e = e.verifyRValue(compiler, localEnv, currentClass, sig.paramNumber(i));
+            Type type = e.verifyExpr(compiler, localEnv, currentClass);
+            e.setType(type);
+            this.set(i, e);
+            i++;
+        }
     }
 
 

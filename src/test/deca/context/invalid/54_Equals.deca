@@ -2,7 +2,7 @@
 //    Affectation et typage
 //
 // Resultats:
-// 	Ligne 15: ContextualError: equals: unmatched signature
+// 	Ligne 15: ContextualError: Assignment error
 // 
 // Historique:
 //    cree le 01/01/2022
