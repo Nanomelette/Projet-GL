@@ -7,34 +7,69 @@ print("Ce programme lance")
 print("1. La compilation de tous les fichiers .deca situés dans valid ou invalid")
 print("2. L'execution des fichiers assembleurs crées")
 print("3. La verification de la sortie VS la sortie attendue")
-#On commence par compiler tous les fichiers en .deca
+
 i=0
 j=0
 k=0
+
+#Suppression des ancien .ass
+print("Suppression des anciens fichiers .ass")
+files = glob.glob('./src/test/deca/**/valid/*.ass',recursive = True)
+for file in files:
+    subprocess.run(['rm',file])
+    #print("Fichier en cours de suppr valid : " + file)
+
+files = glob.glob('./src/test/deca/**/invalid/*.ass',recursive = True)
+for file in files:
+    subprocess.run(['rm',file])
+    #print("Fichier en cours de suppr invalid : " + file)
+
+#On commence par compiler tous les fichiers en .deca
 #Lancement des fichiers situés dans invalid
 
+print("Compilation des fichiers")
 files = glob.glob('./src/test/deca/**/invalid/*.deca',
                    recursive = True)
 
 for file in files:
-    i+=1
+#    i+=1
     #print("Fichier en cours de compilation invalid : " + file)
-    subprocess.run(['decac','-r','4',file])
+    cmd = subprocess.run(['decac','-r','4',file],capture_output=True)
+    #print(cmd)
+    res1 = cmd.stdout.decode('ascii')
+    if (file[:24]=='./src/test/deca/context/'):
+        if (res1!=''):
+            head, _sep, tail = file.rpartition('.')
+            head=head+'.deca'
+            filin = open(head, "r")
+            lignes = filin.readlines()
+            if (len(lignes)>=5):
+                res2 = lignes[4][3:]
+            else :
+                res2="Pas de résultat prévu"
+            filin.close()
+            if(res1!=res2):
+                #k+=1
+                print("le fichier "+head+" ne compile pas bien")
+                print("Résultat obtenu : ")
+                print (res1)
+                print("Résultat attendu : ")
+                print (res2)
 
 #Lancement des fichiers situés dans valid
 
 files = glob.glob('./src/test/deca/**/valid/*.deca',
                    recursive = True)
 for file in files:
-    i+=1
+#    i+=1
     #print("Fichier en cours de compilation valid : " + file)
-    subprocess.run(['decac','-r','4',file])
-
+    cmd = subprocess.run(['decac','-r','4',file],capture_output=True)
 
 #On lance ensuite les tests des .ass qui sont dans valid
 files = glob.glob('./src/test/deca/**/valid/*.ass',recursive = True)
 for file in files:
-    j+=1
+#    j+=1
+
     #print("Fichier en cours d'execution : " + file)
 
     #if listant tous les fichiers spéciaux qui nécssitent des inputs pour être testés
@@ -73,7 +108,7 @@ for file in files:
             res2="Pas de résultat prévu"
         filin.close()
         if(res1!=res2):
-            k+=1
+#            k+=1
             print("le fichier "+head+" ne donne pas le résultat attendu")
             print("Résultat obtenu : ")
             print (res1)
@@ -85,30 +120,31 @@ for file in files:
 files = glob.glob('./src/test/deca/**/invalid/*.ass',
                    recursive = True)
 for file in files:
-    j+=1
+    #j+=1
     #print("Fichier en cours d'execution : " + file)
     cmd = subprocess.run(['ima',file], capture_output=True)
-    res1 = cmd.stdout.decode('ascii')
-    head, _sep, tail = file.rpartition('.')
-    head=head+'.deca'
-    filin = open(head, "r")
-    lignes = filin.readlines()
-    if (len(lignes)>=5):
-        res2 = lignes[4][3:]
-    else :
-        res2="Pas de résultat prévu"
-    filin.close()
-    if(res1!=res2):
-        k+=1
-        print("le fichier "+head+" ne donne pas le résultat attendu")
-        print("Résultat obtenu : ")
-        print (res1)
-        print("Résultat attendu : ")
-        print (res2)
-print('----------------BILAN----------------')
-print("Nombre de fichiers .deca : ",i)
-print("Nombre de fichiers ayant compilé correctement : ",j)
-print("Nombre d'erreurs restantes : ",k)
+    if (file[:24]!='./src/test/deca/context/'):
+        res1 = cmd.stdout.decode('ascii')
+        head, _sep, tail = file.rpartition('.')
+        head=head+'.deca'
+        filin = open(head, "r")
+        lignes = filin.readlines()
+        if (len(lignes)>=5):
+            res2 = lignes[4][3:]
+        else :
+            res2="Pas de résultat prévu"
+        filin.close()
+        if(res1!=res2):
+    #        k+=1
+            print("le fichier "+head+" ne donne pas le résultat attendu")
+            print("Résultat obtenu : ")
+            print (res1)
+            print("Résultat attendu : ")
+            print (res2)
+#print('----------------BILAN----------------')
+#print("Nombre de fichiers .deca : ",i)
+#print("Nombre de fichiers ayant compilé correctement : ",j)
+#print("Nombre d'erreurs restantes : ",k)
 
 '''
 ### NOTES MEMO

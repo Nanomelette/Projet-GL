@@ -2,7 +2,7 @@
 //    Erreur du 11.1 : Division entière par zéro
 //
 // Resultats:
-// Error: zero_division.
+// Error: zero_division
 
 {
     int num = 1;
