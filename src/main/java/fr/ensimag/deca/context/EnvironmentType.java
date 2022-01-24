@@ -1,12 +1,16 @@
 package fr.ensimag.deca.context;
 
 import java.util.HashMap;
+import fr.ensimag.deca.tree.*;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.AbstractDeclParam;
+import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.AbstractIdentifier;
 import fr.ensimag.deca.tree.DeclParam;
 import fr.ensimag.deca.tree.Identifier;
+import fr.ensimag.deca.tree.ListDeclField;
 import fr.ensimag.deca.tree.ListDeclParam;
 import fr.ensimag.deca.tree.Location;
 import fr.ensimag.ima.pseudocode.Label;
@@ -47,11 +51,34 @@ public class EnvironmentType {
         setEnvironmentType(symbObject, classTypeObject, Location.BUILTIN);
 
     	ClassDefinition defObject = classTypeObject.getDefinition();
+        EnvironmentExp envExp = defObject.getMembers();
+        // Ajout de la méthode equals
+        Symbol equals = compiler.getSymbolTable().create("equals");
+        Signature sig = new Signature();
+        sig.add(classTypeObject);
+        Type boolType = new BooleanType(compiler.getSymbolTable().create("boolean"));
+        MethodDefinition newDef = new MethodDefinition(boolType, Location.BUILTIN, sig, 1);
+        Label label = new Label("Object.equals");
+        newDef.setLabel(label);
+        try {
+            envExp.declare(equals, newDef);
+            defObject.incNumberOfMethods();
+        } catch (EnvironmentExp.DoubleDefException e) {}
+        // Ajout du paramètre other
+        EnvironmentExp localEnvExp = newDef.getMembers();
+        ParamDefinition defOther = new ParamDefinition(classTypeObject, Location.BUILTIN);
+        defOther.setIndex(1);
+        try {
+            localEnvExp.declare(symbOther, defOther);
+        } catch (EnvironmentExp.DoubleDefException e) {}
+        // Ajout du corps de la méthode
+        AbstractIdentifier identOther  = new Identifier(symbOther);
+        identOther.setDefinition(defOther);
+        AbstractExpr expr = new Equals(new This(false), (AbstractExpr) identOther);
+        AbstractInst inst = new Return(expr);
 
-		AbstractIdentifier identObject = new Identifier (symbObject) ;
-		AbstractIdentifier identOther  = new Identifier(symbOther);
+		AbstractIdentifier identObject = new Identifier (symbObject);
 		
-		ParamDefinition defOther = new ParamDefinition(classTypeObject, Location.BUILTIN);
 		
         classTypeObject.getDefinition().setIndexMethods(2);
         identOther.setDefinition(defOther);

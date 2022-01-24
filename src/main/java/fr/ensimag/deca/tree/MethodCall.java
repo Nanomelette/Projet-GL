@@ -55,7 +55,7 @@ public class MethodCall extends AbstractExpr {
         this.meth.setDefinition(methodDef);
         this.setType(methodDef.getType());
         Signature sig = this.param.verifyListExp(compiler, localEnv, currentClass);
-        if (!methodDef.getSignature().sameSignature(sig)) {
+        if (!methodDef.getSignature().sameSignature(compiler, sig)) {
             throw new ContextualError(this.meth.getName()+": unmatched signature", this.getLocation());
         }
         return methodDef.getType();
@@ -105,16 +105,19 @@ public class MethodCall extends AbstractExpr {
 
         // On reserve la place pour les parametres
         compiler.addInstruction(new ADDSP(param.size() + 1));
-        GPRegister register = data.getFreeRegister(compiler);
+        // GPRegister register = data.getFreeRegister(compiler);
         // data.decrementFreeStoragePointer();
-
+        
         // On empile le parametre implicite
-        compiler.addInstruction(new LOAD(addresseClassRegister, register));
-        compiler.addInstruction(new STORE(register, new RegisterOffset(0, Register.SP)));
-
+        // compiler.addInstruction(new LOAD(addresseClassRegister, register));
+        // compiler.addInstruction(new STORE(register, new RegisterOffset(0, Register.SP)));
+        // Ajout
+        compiler.addInstruction(new STORE(addresseClassRegister, new RegisterOffset(0, Register.SP)));
+        
         // On empile les autres parametres
         param.codeGenListExpr(compiler);
         
+        GPRegister register = data.getFreeRegister(compiler);
         // register = data.getFreeRegister(compiler);
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), register));
         if (!(compiler.getCompilerOptions().getNoCheck())) {
