@@ -21,7 +21,7 @@ import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 public class Data {
 
-    private int maxRegister = 15;
+    private int maxRegister = 16;
     // When storagePointer < maxRegister, the storage is in a register,
     // otherwise it is in the stack.
     private int freeStoragePointer = 2;
