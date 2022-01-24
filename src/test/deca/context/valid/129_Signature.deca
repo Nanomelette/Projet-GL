@@ -1,0 +1,18 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+// 1.0
+// 
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+	float f(float x) {
+		return x;
+	}
+}
+{
+	A a = new A();
+	println(a.f(1));
+}

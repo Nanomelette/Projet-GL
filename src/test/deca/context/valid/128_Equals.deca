@@ -1,0 +1,20 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+// égalité
+// 
+// Historique:
+//    cree le 01/01/2022
+
+class A {
+}
+{
+	A a = new A();
+	A b = new A();
+	if (a.equals(b)) {
+		println("égalité");
+	} else {
+		println("en fait, NON !!");
+	}
+}
