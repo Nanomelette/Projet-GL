@@ -146,20 +146,6 @@ public class DeclMethod extends AbstractDeclMethod{
     }
 
     @Override
-    protected void addToVTable(DecacCompiler compiler, String debName) {
-        Label labelName = new Label(debName + name.getName().getName());
-        compiler.addInstruction(
-            new LOAD(new LabelOperand(labelName), Register.R0)
-            );
-        compiler.addInstruction(new STORE(Register.R0, 
-                                    new RegisterOffset(
-                                        compiler.getData().getGbOffset(), Register.GB)
-                                    )
-                                );
-        
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
