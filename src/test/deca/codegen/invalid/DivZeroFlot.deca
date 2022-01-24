@@ -2,7 +2,7 @@
 //    Erreur du 11.1 : Division flottante par zéro
 //
 // Resultats:
-// Error: zero_division
+// Error: overflow_error
 
 {
     float res = 1.0 / 0.0;

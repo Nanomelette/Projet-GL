@@ -2,7 +2,7 @@
 
 
 
-// 
+// ok
 class A { }
 
 class B extends A { }
@@ -14,4 +14,5 @@ class C extends B { }
     B b;
     a = new C();
     b = (B)(a);
+    print("ok");
 }
