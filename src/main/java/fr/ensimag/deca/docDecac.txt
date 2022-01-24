@@ -1,6 +1,8 @@
 Decac : compilateur pour le langage Deca.
 
   -b (banner)       : affiche une bannière indiquant le nom de l’équipe
+                      (le terminal doit être dézoomé si la banière semble 
+                      illisible)
 
   -p (parse)        : arrête decac après l’étape de construction de
                       l’arbre, et affiche la décompilation de ce dernier
