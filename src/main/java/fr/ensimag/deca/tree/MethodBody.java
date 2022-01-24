@@ -62,6 +62,7 @@ public class MethodBody extends AbstractMethodBody{
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler) {
         var.codeGenListDeclVarLoc(compiler);
+        compiler.addComment("Debut des instruction de la methode");
         inst.codeGenListInst(compiler);
     }
 
@@ -75,7 +76,7 @@ public class MethodBody extends AbstractMethodBody{
     @Override
     protected void codeGenSaveRestore(DecacCompiler compiler) {
         // Restauration des registres
-        if (compiler.getData().getNumberOfUsedRegister() > 1) {
+        if (compiler.getData().getNumberOfUsedRegister() > 0) {
             compiler.addComment("Restauration des registres");
         }
         compiler.getData().popUsedRegisters(compiler);
@@ -84,7 +85,7 @@ public class MethodBody extends AbstractMethodBody{
 
         // Sauvegarde des registres
         compiler.getData().pushUsedRegisters(compiler);
-        if (compiler.getData().getNumberOfUsedRegister() > 1) {
+        if (compiler.getData().getNumberOfUsedRegister() > 0) {
             compiler.addCommentAtFirst("Sauvegarde des registres");
         }
     }

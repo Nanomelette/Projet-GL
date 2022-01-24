@@ -76,9 +76,17 @@ class Polynomial {
     //  Multiply the first two values and add the third one.
     //
 
-    float fmaf(float a, float b, float c){
-        return a*b+c;
-    }
+    //float fmaf(float a, float b, float c){
+    //    return a*b+c;
+    //}
+
+    // ajouter bov
+    float fmaf(float a, float b, float c) asm(
+        "LOAD -5(LB), R1
+    LOAD -4(LB), R0
+    FMA -3(LB), R0
+    RTS"
+    );
 
     //
     //  Returns the absolute value of a float.

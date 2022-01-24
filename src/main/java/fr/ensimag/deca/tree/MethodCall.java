@@ -97,14 +97,17 @@ public class MethodCall extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Data data = compiler.getData();
+        compiler.addInstruction(new ADDSP(param.size() + 1));
+        
         obj.codeGenInst(compiler);
         
         // On calcul l'emplacement de la méthode
         Register addresseClassRegister = data.getLastUsedRegister();
+        data.decrementFreeStoragePointer();
+
         // DAddr addr = new RegisterOffset(0, addresseClassRegister);
 
         // On reserve la place pour les parametres
-        compiler.addInstruction(new ADDSP(param.size() + 1));
         // GPRegister register = data.getFreeRegister(compiler);
         // data.decrementFreeStoragePointer();
         
@@ -117,7 +120,8 @@ public class MethodCall extends AbstractExpr {
         // On empile les autres parametres
         param.codeGenListExpr(compiler);
         
-        GPRegister register = data.getFreeRegister(compiler);
+        // GPRegister register = data.getFreeRegister(compiler);
+        GPRegister register = data.getLastUsedRegister();
         // register = data.getFreeRegister(compiler);
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), register));
         if (!(compiler.getCompilerOptions().getNoCheck())) {

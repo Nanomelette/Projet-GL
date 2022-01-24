@@ -204,14 +204,14 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addInstruction(new RTS());
 
         // Restauration des registres
-        if (compiler.getData().getNumberOfUsedRegister() > 1) {
+        if (compiler.getData().getNumberOfUsedRegister() > 0) {
             compiler.addComment("Restauration des registres");
         }
         compiler.getData().popUsedRegisters(compiler);
 
         // Sauvegarde des registres
         compiler.getData().pushUsedRegisters(compiler);
-        if (compiler.getData().getNumberOfUsedRegister() > 1) {
+        if (compiler.getData().getNumberOfUsedRegister() > 0) {
             compiler.addCommentAtFirst("Sauvegarde des registres");
         }
 
