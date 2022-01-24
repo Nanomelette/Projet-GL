@@ -1,0 +1,16 @@
+// Description:
+//     Table de vérité pour NOT
+
+// Résultats:
+// ok
+
+
+{
+    boolean res1 = !false;
+
+    if (res1) {
+        println("ok");
+    } else {
+        println("pas ok");
+    }
+}

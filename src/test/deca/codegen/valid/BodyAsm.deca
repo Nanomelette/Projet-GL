@@ -1,0 +1,13 @@
+
+
+
+
+// Oui
+class A {
+    void a() asm("WSTR \"Oui\"");
+}
+
+{
+    A a = new A();
+    a.a();
+}

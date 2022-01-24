@@ -1,0 +1,16 @@
+// Description:
+//     Table de vérité pour OR
+
+// Résultats:
+// pas ok
+
+
+{
+    boolean res1 = false || false;
+
+    if (res1) {
+        println("ok");
+    } else {
+        println("pas ok");
+    }
+}
