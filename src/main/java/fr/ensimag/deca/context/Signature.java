@@ -3,6 +3,8 @@ package fr.ensimag.deca.context;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.ensimag.deca.DecacCompiler;
+
 /**
  * Signature of a method (i.e. list of arguments)
  *
@@ -24,13 +26,13 @@ public class Signature {
         return args.size();
     }
 
-    public boolean sameSignature(Signature s) {
+    public boolean sameSignature(DecacCompiler compiler, Signature s) {
         if (s.size() != this.size()) {
             return false;
         }
         int n = this.size();
         for (int i = 0; i < n; i++) {
-            if (!this.paramNumber(i).sameType(s.paramNumber(i))) {
+            if (compiler.assignCompatible(compiler, paramNumber(i), s.paramNumber(i)) == null) {
                 return false;
             }
         }

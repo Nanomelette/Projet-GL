@@ -72,7 +72,7 @@ public class DeclMethod extends AbstractDeclMethod{
                 Type typeSup = methodDef.getType();
                 if (compiler.subType(compiler, mType, typeSup)) {
                     Signature sig = methodDef.getSignature();
-                    if (sig.sameSignature(sig2)) {
+                    if (sig.sameSignature(compiler, sig2)) {
                         index = methodDef.getIndex();
                     } else {
                         throw new ContextualError(method.getName()+" must have same signature", this.getLocation());

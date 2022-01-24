@@ -55,7 +55,7 @@ public class MethodCall extends AbstractExpr {
         this.meth.setDefinition(methodDef);
         this.setType(methodDef.getType());
         Signature sig = this.param.verifyListExp(compiler, localEnv, currentClass);
-        if (!methodDef.getSignature().sameSignature(sig)) {
+        if (!methodDef.getSignature().sameSignature(compiler, sig)) {
             throw new ContextualError(this.meth.getName()+": unmatched signature", this.getLocation());
         }
         return methodDef.getType();
