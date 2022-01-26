@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import fr.ensimag.ima.pseudocode.Label;
 
+/**
+ * Class used in order to keep track of the used labels
+ */
 public class Labels {
     public final Label stack_overflow_error  = new Label("stack_overflow_error");
     public final Label io_error = new Label("io_error");
@@ -26,10 +29,18 @@ public class Labels {
         addLabel(io_error);
     }
 
+    /**
+     * Add a label
+     * @param label
+     */
     public void addLabel(Label label) {
         usedLabels.add(label);
     }
 
+    /**
+     * Getter of the used labels
+     * @return
+     */
     public Iterator<Label> getUsedLabels() {
         return usedLabels.iterator();
     }
