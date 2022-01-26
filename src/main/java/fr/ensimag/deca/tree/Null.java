@@ -14,22 +14,33 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import java.io.PrintStream;
 
 /**
+ * Null object
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Null extends AbstractExpr {
 
     private Object value;
 
+    /**
+     * <p>Constructor for Null.</p>
+     */
     public Null() {
         this.value = null;
     }
 
+    /**
+     * <p>Getter for the field <code>value</code>.</p>
+     *
+     * @return a {@link java.lang.Object} object
+     */
     public Object getValue() {
         return value;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -39,16 +50,19 @@ public class Null extends AbstractExpr {
     }
 
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("null");
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         // leaf node => nothing to do
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
@@ -59,6 +73,7 @@ public class Null extends AbstractExpr {
         return "Null";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         GPRegister register = compiler.getData().getFreeRegister(compiler);

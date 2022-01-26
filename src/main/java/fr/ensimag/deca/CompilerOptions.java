@@ -16,48 +16,103 @@ import org.apache.log4j.Logger;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class CompilerOptions {
+    /** Constant <code>QUIET=0</code> */
     public static final int QUIET = 0;
+    /** Constant <code>INFO=1</code> */
     public static final int INFO  = 1;
+    /** Constant <code>DEBUG=2</code> */
     public static final int DEBUG = 2;
+    /** Constant <code>TRACE=3</code> */
     public static final int TRACE = 3;
+    /**
+     * <p>Getter for the field <code>debug</code>.</p>
+     *
+     * @return a int
+     */
     public int getDebug() {
         return debug;
     }
 
+    /**
+     * <p>Getter for the field <code>parallel</code>.</p>
+     *
+     * @return a boolean
+     */
     public boolean getParallel() {
         return parallel;
     }
 
+    /**
+     * <p>Getter for the field <code>printBanner</code>.</p>
+     *
+     * @return a boolean
+     */
     public boolean getPrintBanner() {
         return printBanner;
     }
     
+    /**
+     * <p>Getter for the field <code>sourceFiles</code>.</p>
+     *
+     * @return a {@link java.util.List} object
+     */
     public List<File> getSourceFiles() {
         return Collections.unmodifiableList(sourceFiles);
     }
 
+    /**
+     * <p>Getter for the field <code>parse</code>.</p>
+     *
+     * @return a boolean
+     */
     public boolean getParse() {
         return parse;
     }
 
+    /**
+     * <p>Getter for the field <code>verification</code>.</p>
+     *
+     * @return a boolean
+     */
     public boolean getVerification() {
         return verification;
     }
 
+    /**
+     * <p>Getter for the field <code>maxRegister</code>.</p>
+     *
+     * @return a int
+     */
     public int getMaxRegister() {
         return maxRegister;
     }
 
+    /**
+     * <p>Getter for the field <code>noCheck</code>.</p>
+     *
+     * @return a boolean
+     */
     public boolean getNoCheck() {
         return noCheck;
     }
 
+    /**
+     * <p>Getter for the field <code>tree</code>.</p>
+     *
+     * @return a boolean
+     */
     public boolean getTree() {
         return tree;
     }
 
+    /**
+     * <p>Getter for the field <code>decoTree</code>.</p>
+     *
+     * @return a boolean
+     */
     public boolean getDecoTree() {
         return decoTree;
     }
@@ -73,6 +128,12 @@ public class CompilerOptions {
     private boolean tree = false;
     private boolean decoTree = false;
     
+    /**
+     * <p>parseArgs.</p>
+     *
+     * @param args an array of {@link java.lang.String} objects
+     * @throws fr.ensimag.deca.CLIException if any.
+     */
     public void parseArgs(String[] args) throws CLIException {
         if (args.length != 0) {
             if ((args.length == 1)) {
@@ -183,6 +244,9 @@ public class CompilerOptions {
         }
     }
 
+    /**
+     * <p>displayUsage.</p>
+     */
     protected void displayUsage() {
         URL location = DecacMain.class.getProtectionDomain().getCodeSource().getLocation();
         try (Scanner input = new Scanner(new File(location.getPath()+"../../src/main/java/fr/ensimag/deca/docDecac.txt"))) {

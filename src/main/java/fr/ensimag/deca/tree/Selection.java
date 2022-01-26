@@ -21,16 +21,29 @@ import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
+/**
+ * Selection of a field
+ *
+ * @author oscarmaggiori
+ * @version $Id: $Id
+ */
 public class Selection extends AbstractLValue{
 
     private AbstractExpr obj;
     private AbstractIdentifier field;
 
+    /**
+     * <p>Constructor for Selection.</p>
+     *
+     * @param obj a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param field a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     */
     public Selection(AbstractExpr obj, AbstractIdentifier field){
         this.obj = obj;
         this.field = field;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
@@ -79,6 +92,7 @@ public class Selection extends AbstractLValue{
 
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         obj.decompile(s);
@@ -86,6 +100,7 @@ public class Selection extends AbstractLValue{
         field.decompile(s);        
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         this.obj.prettyPrint(s, prefix, false);
@@ -93,6 +108,7 @@ public class Selection extends AbstractLValue{
         
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         this.obj.iter(f);
@@ -100,6 +116,7 @@ public class Selection extends AbstractLValue{
         
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Data data = compiler.getData();
@@ -115,11 +132,13 @@ public class Selection extends AbstractLValue{
         
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenSelect(DecacCompiler compiler) {
         codeGenInst(compiler);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenAssign(DecacCompiler compiler, Register register) {
         Data data = compiler.getData();

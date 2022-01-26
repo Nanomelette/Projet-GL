@@ -24,10 +24,11 @@ import fr.ensimag.deca.tree.LocationException;
 /**
  * This is the super class for the lexer. It is extended by the lexer class
  * generated from DecaLexer.g.
- * 
+ *
  * @author gl20, Based on template by Jim Idle - Temporal Wave LLC
  *         (jimi@idle.ws)
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public abstract class AbstractDecaLexer extends Lexer {
     private static final Logger LOG = Logger.getLogger(AbstractDecaLexer.class);
@@ -35,14 +36,29 @@ public abstract class AbstractDecaLexer extends Lexer {
     private DecacCompiler decacCompiler;
     private File source;
 
+    /**
+     * <p>Setter for the field <code>source</code>.</p>
+     *
+     * @param source a {@link java.io.File} object
+     */
     public void setSource(File source) {
         this.source = source;
     }
 
+    /**
+     * <p>Getter for the field <code>decacCompiler</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.DecacCompiler} object
+     */
     protected DecacCompiler getDecacCompiler() {
         return decacCompiler;
     }
 
+    /**
+     * <p>Setter for the field <code>decacCompiler</code>.</p>
+     *
+     * @param decacCompiler a {@link fr.ensimag.deca.DecacCompiler} object
+     */
     public void setDecacCompiler(DecacCompiler decacCompiler) {
         this.decacCompiler = decacCompiler;
     }
@@ -51,6 +67,9 @@ public abstract class AbstractDecaLexer extends Lexer {
      * If e is linked to an input stream, return the source name for this
      * stream. Otherwise (e.g. user-defined RecognitionException that do not set
      * the input field), return the source name for this Lexer.
+     *
+     * @param e a {@link org.antlr.v4.runtime.RecognitionException} object
+     * @return a {@link java.lang.String} object
      */
     public String getSourceName(RecognitionException e) {
         final IntStream inputStream = e.getInputStream();
@@ -63,10 +82,10 @@ public abstract class AbstractDecaLexer extends Lexer {
 
     /**
      * Display the list of tokens for the lexer in semi-human-readable form.
-     * 
+     *
      * This consumes the stream of tokens, hence should never be called if the
      * parser has to read these tokens afterwards.
-     * 
+     *
      * @return true if the lexer raised an error.
      */
     public boolean debugTokenStream() {
@@ -91,6 +110,8 @@ public abstract class AbstractDecaLexer extends Lexer {
 
     /**
      * Default constructor for the lexer.
+     *
+     * @param input a {@link org.antlr.v4.runtime.CharStream} object
      */
     public AbstractDecaLexer(CharStream input) {
         super(input);
@@ -101,12 +122,12 @@ public abstract class AbstractDecaLexer extends Lexer {
     /**
      * Helper for test drivers, that creates a lexer from command-line
      * arguments.
-     * 
+     *
      * @param args
      *            Either empty (read from stdin), or 1-element array (the file
      *            to read from)
      * @return The lexer built from args
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public static DecaLexer createLexerFromArgs(String[] args)
             throws IOException {
@@ -122,6 +143,11 @@ public abstract class AbstractDecaLexer extends Lexer {
         return lex;
     }
 
+    /**
+     * <p>Getter for the field <code>source</code>.</p>
+     *
+     * @return a {@link java.io.File} object
+     */
     protected File getSource() {
         if (getDecacCompiler() != null
                 && getDecacCompiler().getSource() != null) {
@@ -242,9 +268,9 @@ public abstract class AbstractDecaLexer extends Lexer {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Override method nextToken for <code>#include</code> management.
-     * @return the next Token which is read in an included files on
-     *    a <code>#include</code>
      */
     @Override
     @SuppressWarnings("InfiniteRecursion")

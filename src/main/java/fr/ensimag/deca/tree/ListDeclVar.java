@@ -9,12 +9,14 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
  * List of declarations (e.g. int x; float y,z).
- * 
+ *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclVar declVar : getList()){
@@ -24,16 +26,11 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     /**
      * Implements non-terminal "list_decl_var" of [SyntaxeContextuelle] in pass 3
+     *
      * @param compiler contains the "env_types" attribute
-     * @param localEnv 
-     *   its "parentEnvironment" corresponds to "env_exp_sup" attribute
-     *   in precondition, its "current" dictionary corresponds to 
-     *      the "env_exp" attribute
-     *   in postcondition, its "current" dictionary corresponds to 
-     *      the "env_exp_r" attribute
-     * @param currentClass 
-     *          corresponds to "class" attribute (null in the main bloc).
-     */    
+     * @return a {@link fr.ensimag.deca.context.EnvironmentExp} object
+     * @throws fr.ensimag.deca.context.ContextualError if any.
+     */
     public EnvironmentExp verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
                 for (AbstractDeclVar v : getList()) {
@@ -42,11 +39,21 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
                 return localEnv;
     }
 
+    /**
+     * <p>codeGenListDeclVarGlob.</p>
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     */
     public void codeGenListDeclVarGlob(DecacCompiler compiler) {
         for (AbstractDeclVar declVar : getList()) {
             declVar.codeGenDeclVarGlob(compiler);
         }
     }
+    /**
+     * <p>codeGenListDeclVarLoc.</p>
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     */
     public void codeGenListDeclVarLoc(DecacCompiler compiler) {
         compiler.getData().restorelBOffset();
         for (AbstractDeclVar declVar : getList()) {

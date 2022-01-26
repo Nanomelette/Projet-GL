@@ -8,9 +8,11 @@ import java.util.List;
 import org.apache.commons.lang.Validate;
 
 /**
+ * List of tree
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public abstract class TreeList<TreeType extends Tree> extends Tree {
     /*
@@ -22,12 +24,19 @@ public abstract class TreeList<TreeType extends Tree> extends Tree {
 
     private List<TreeType> list = new ArrayList<TreeType>();
 
+    /**
+     * <p>add.</p>
+     *
+     * @param i a TreeType object
+     */
     public void add(TreeType i) {
         Validate.notNull(i);
         list.add(i);
     }
 
     /**
+     * <p>Getter for the field <code>list</code>.</p>
+     *
      * @return the list contained in the class, read-only. Use getModifiableList()
      *         if you need to change elements of the list.
      */
@@ -35,25 +44,49 @@ public abstract class TreeList<TreeType extends Tree> extends Tree {
         return Collections.unmodifiableList(list);
     }
 
+    /**
+     * <p>set.</p>
+     *
+     * @param index a int
+     * @param element a TreeType object
+     * @return a TreeType object
+     */
     public TreeType set(int index, TreeType element) {
         return list.set(index, element);
     }
 
+    /**
+     * <p>isEmpty.</p>
+     *
+     * @return a boolean
+     */
     public boolean isEmpty() {
         return list.isEmpty();
     }
 
+    /**
+     * <p>iterator.</p>
+     *
+     * @return a {@link java.util.Iterator} object
+     */
     public Iterator<TreeType> iterator() {
         return list.iterator();
     }
 
+    /**
+     * <p>size.</p>
+     *
+     * @return a int
+     */
     public int size() {
         return list.size();
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Do not check anything about the location.
-     * 
+     *
      * It is possible to use setLocation() on a list, but it is also OK not to
      * set it.
      */
@@ -62,12 +95,14 @@ public abstract class TreeList<TreeType extends Tree> extends Tree {
         // nothing
     }
 
+    /** {@inheritDoc} */
     @Override
     protected String prettyPrintNode() {
         return super.prettyPrintNode() +
                 " [List with " + getList().size() + " elements]";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         int count = getList().size();
@@ -77,6 +112,7 @@ public abstract class TreeList<TreeType extends Tree> extends Tree {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         for (TreeType i : getList()) {

@@ -21,9 +21,11 @@ import java.io.PrintStream;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class NoInitialization extends AbstractInitialization {
 
+    /** {@inheritDoc} */
     @Override
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
@@ -33,6 +35,8 @@ public class NoInitialization extends AbstractInitialization {
 
 
     /**
+     * {@inheritDoc}
+     *
      * Node contains no real information, nothing to check.
      */
     @Override
@@ -40,30 +44,41 @@ public class NoInitialization extends AbstractInitialization {
         // nothing
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         // nothing
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         // leaf node => nothing to do
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
     }
 
+    /** {@inheritDoc} */
     protected void codeGenInitField(DecacCompiler compiler, Type type) {
         codeGenInitAux(compiler, type);
     };
 
+    /** {@inheritDoc} */
     protected void codeGenInitVar(DecacCompiler compiler, DAddr address, Type type) {
         codeGenInitAux(compiler, type);
         compiler.addInstruction(new STORE(Register.R0, address));
     };
 
+    /**
+     * <p>codeGenInitAux.</p>
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     * @param type a {@link fr.ensimag.deca.context.Type} object
+     */
     protected void codeGenInitAux(DecacCompiler compiler, Type type) {
         if (type.isInt() || type.isBoolean()) {
             compiler.addInstruction(new LOAD(0, Register.R0));

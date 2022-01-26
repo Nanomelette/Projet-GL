@@ -18,10 +18,16 @@ import org.apache.log4j.Logger;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class DecacMain {
     private static Logger LOG = Logger.getLogger(DecacMain.class);
     
+    /**
+     * <p>main.</p>
+     *
+     * @param args an array of {@link java.lang.String} objects
+     */
     public static void main(String[] args) {
         // example log4j message.
         LOG.info("Decac compiler started");

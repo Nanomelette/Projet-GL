@@ -8,22 +8,32 @@ import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.SNE;
 
 /**
+ * Operator "!="
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class NotEquals extends AbstractOpExactCmp {
 
+    /**
+     * <p>Constructor for NotEquals.</p>
+     *
+     * @param leftOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param rightOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public NotEquals(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
 
 
+    /** {@inheritDoc} */
     @Override
     protected String getOperatorName() {
         return "!=";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);
@@ -32,6 +42,7 @@ public class NotEquals extends AbstractOpExactCmp {
         compiler.getData().setLastUsedRegister(op2);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
         super.codeGenInst(compiler);

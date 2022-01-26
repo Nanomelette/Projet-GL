@@ -19,22 +19,44 @@ import org.apache.log4j.Logger;
  *
  * @author gl20, Based on template by Jim Idle - Temporal Wave LLC - jimi@temporal-wave.com
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public abstract class AbstractDecaParser extends Parser {
     Logger LOG = Logger.getLogger(AbstractDecaParser.class);
 
     private DecacCompiler decacCompiler;
 
+    /**
+     * <p>Getter for the field <code>decacCompiler</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.DecacCompiler} object
+     */
     protected DecacCompiler getDecacCompiler() {
         return decacCompiler;
     }
 
+    /**
+     * <p>Setter for the field <code>decacCompiler</code>.</p>
+     *
+     * @param decacCompiler a {@link fr.ensimag.deca.DecacCompiler} object
+     */
     public void setDecacCompiler(DecacCompiler decacCompiler) {
         this.decacCompiler = decacCompiler;
     }
 
+    /**
+     * <p>parseProgram.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tree.AbstractProgram} object
+     */
     protected abstract AbstractProgram parseProgram();
     
+    /**
+     * <p>parseProgramAndManageErrors.</p>
+     *
+     * @param err a {@link java.io.PrintStream} object
+     * @return a {@link fr.ensimag.deca.tree.AbstractProgram} object
+     */
     public AbstractProgram parseProgramAndManageErrors(PrintStream err) {
         try {
             AbstractProgram result = parseProgram();
@@ -56,6 +78,9 @@ public abstract class AbstractDecaParser extends Parser {
 
     /**
      * Extract the Location of a token.
+     *
+     * @param token a {@link org.antlr.v4.runtime.Token} object
+     * @return a {@link fr.ensimag.deca.tree.Location} object
      */
     protected Location tokenLocation(Token token) {
         return new Location(token.getLine(),
@@ -66,7 +91,10 @@ public abstract class AbstractDecaParser extends Parser {
     /**
      * Sets the location of Tree to the one in Token.
      *
-     * This is a simple convenience wrapper around {@link Tree#setLocation(Location)}.
+     * This is a simple convenience wrapper around {@link fr.ensimag.deca.tree.Tree#setLocation(Location)}.
+     *
+     * @param tree a {@link fr.ensimag.deca.tree.Tree} object
+     * @param token a {@link org.antlr.v4.runtime.Token} object
      */
     protected void setLocation(Tree tree, Token token) {
         tree.setLocation(tokenLocation(token));

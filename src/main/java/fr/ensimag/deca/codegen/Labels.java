@@ -6,6 +6,9 @@ import fr.ensimag.ima.pseudocode.Label;
 
 /**
  * Class used in order to keep track of the used labels
+ *
+ * @author oscarmaggiori
+ * @version $Id: $Id
  */
 public class Labels {
     public final Label stack_overflow_error  = new Label("stack_overflow_error");
@@ -19,6 +22,9 @@ public class Labels {
 
     private HashSet<Label> usedLabels = new HashSet<Label>();
 
+    /**
+     * <p>Constructor for Labels.</p>
+     */
     public Labels() {
         addLabel(stack_overflow_error);
         addLabel(overflow_error);
@@ -31,7 +37,8 @@ public class Labels {
 
     /**
      * Add a label
-     * @param label
+     *
+     * @param label a {@link fr.ensimag.ima.pseudocode.Label} object
      */
     public void addLabel(Label label) {
         usedLabels.add(label);
@@ -39,7 +46,8 @@ public class Labels {
 
     /**
      * Getter of the used labels
-     * @return
+     *
+     * @return a {@link java.util.Iterator} object
      */
     public Iterator<Label> getUsedLabels() {
         return usedLabels.iterator();

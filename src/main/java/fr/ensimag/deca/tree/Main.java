@@ -11,13 +11,22 @@ import org.apache.commons.lang.Validate;
 
 
 /**
+ * Main class
+ *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Main extends AbstractMain {
     
     private ListDeclVar declVariables;
     private ListInst insts;
+    /**
+     * <p>Constructor for Main.</p>
+     *
+     * @param declVariables a {@link fr.ensimag.deca.tree.ListDeclVar} object
+     * @param insts a {@link fr.ensimag.deca.tree.ListInst} object
+     */
     public Main(ListDeclVar declVariables,
             ListInst insts) {
         Validate.notNull(declVariables);
@@ -26,10 +35,16 @@ public class Main extends AbstractMain {
         this.insts = insts;
     }
 
+    /**
+     * <p>Getter for the field <code>declVariables</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tree.ListDeclVar} object
+     */
     public ListDeclVar getDeclVariables() {
         return declVariables;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         EnvironmentExp localEnv = new EnvironmentExp(null);
@@ -38,6 +53,7 @@ public class Main extends AbstractMain {
         insts.verifyListInst(compiler,localEnv,null,compiler.searchSymbol(symbVoid));
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
 
@@ -51,6 +67,7 @@ public class Main extends AbstractMain {
         insts.codeGenListInst(compiler);
     }
     
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         s.println("{");
@@ -61,6 +78,7 @@ public class Main extends AbstractMain {
         s.println("}");
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         for(AbstractDeclVar var : declVariables.getList()){
@@ -71,12 +89,14 @@ public class Main extends AbstractMain {
         }
     }
  
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         declVariables.prettyPrint(s, prefix, false);
         insts.prettyPrint(s, prefix, true);
     }
 
+    /** {@inheritDoc} */
     public void vTableInitialization(DecacCompiler compiler, ListDeclClass classes) {
         Data data = compiler.getData();
         if (!classes.getList().isEmpty()) {

@@ -23,15 +23,28 @@ import fr.ensimag.ima.pseudocode.instructions.INT;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
+/**
+ * <p>Cast class.</p>
+ *
+ * @author oscarmaggiori
+ * @version $Id: $Id
+ */
 public class Cast extends AbstractExpr {
     private AbstractIdentifier type;
     private AbstractExpr e;
 
+    /**
+     * <p>Constructor for Cast.</p>
+     *
+     * @param type a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     * @param e a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public Cast (AbstractIdentifier type, AbstractExpr e){
         this.type = type;
         this.e = e;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
@@ -61,6 +74,7 @@ public class Cast extends AbstractExpr {
         throw new ContextualError("impossible cast", getLocation());
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("(");
@@ -70,6 +84,7 @@ public class Cast extends AbstractExpr {
         s.print(")");        
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         type.prettyPrint(s, prefix, false);
@@ -77,6 +92,7 @@ public class Cast extends AbstractExpr {
         
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         type.iter(f);
@@ -107,6 +123,7 @@ public class Cast extends AbstractExpr {
         compiler.addInstruction(new BNE(W_Start));
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         e.codeGenInst(compiler);

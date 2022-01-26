@@ -8,16 +8,24 @@ import fr.ensimag.deca.context.EnvironmentExp;
 
 /**
  * Arithmetic binary operations (+, -, /, ...)
- * 
+ *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
+    /**
+     * <p>Constructor for AbstractOpArith.</p>
+     *
+     * @param leftOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param rightOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public AbstractOpArith(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {

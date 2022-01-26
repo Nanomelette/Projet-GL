@@ -5,8 +5,10 @@ package fr.ensimag.ima.pseudocode;
  *
  * @author Ensimag
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public abstract class Operand {
+    /** {@inheritDoc} */
     @Override
     public abstract String toString();
 }

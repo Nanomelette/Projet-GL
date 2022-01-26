@@ -8,14 +8,21 @@ import org.apache.commons.lang.Validate;
  *
  * @author Ensimag
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Label extends Operand {
 
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return name;
     }
 
+    /**
+     * <p>Constructor for Label.</p>
+     *
+     * @param name a {@link java.lang.String} object
+     */
     public Label(String name) {
         super();
         Validate.isTrue(name.length() <= 1024, "Label name too long, not supported by IMA");

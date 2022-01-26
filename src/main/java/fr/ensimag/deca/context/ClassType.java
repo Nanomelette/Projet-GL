@@ -8,25 +8,34 @@ import fr.ensimag.deca.tree.Location;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class ClassType extends Type {
     
     protected ClassDefinition definition;
     
+    /**
+     * <p>Getter for the field <code>definition</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.context.ClassDefinition} object
+     */
     public ClassDefinition getDefinition() {
         return this.definition;
     }
             
+    /** {@inheritDoc} */
     @Override
     public ClassType asClassType(String errorMessage, Location l) {
         return this;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isClass() {
         return true;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isClassOrNull() {
         return true;
@@ -34,6 +43,10 @@ public class ClassType extends Type {
 
     /**
      * Standard creation of a type class.
+     *
+     * @param className a {@link fr.ensimag.deca.tools.SymbolTable.Symbol} object
+     * @param location a {@link fr.ensimag.deca.tree.Location} object
+     * @param superClass a {@link fr.ensimag.deca.context.ClassDefinition} object
      */
     public ClassType(Symbol className, Location location, ClassDefinition superClass) {
         super(className);
@@ -43,12 +56,16 @@ public class ClassType extends Type {
     /**
      * Creates a type representing a class className.
      * (To be used by subclasses only)
+     *
+     * @param className a {@link fr.ensimag.deca.tools.SymbolTable.Symbol} object
      */
     protected ClassType(Symbol className) {
         super(className);
     }
     
     /**
+     * {@inheritDoc}
+     *
      * True if this and otherType represent the same type (in the case of
      * classes, this means they represent the same class).
      */
@@ -63,6 +80,9 @@ public class ClassType extends Type {
 
     /**
      * Return true if potentialSuperClass is a superclass of this class.
+     *
+     * @param potentialSuperClass a {@link fr.ensimag.deca.context.ClassType} object
+     * @return a boolean
      */
     public boolean isSubClassOf(ClassType potentialSuperClass) {
         if(this.getName().equals(potentialSuperClass.getName())){

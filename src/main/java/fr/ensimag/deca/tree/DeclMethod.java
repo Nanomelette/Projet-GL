@@ -24,6 +24,12 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 import java.io.PrintStream;
 
+/**
+ * Declaration of a method
+ *
+ * @author oscarmaggiori
+ * @version $Id: $Id
+ */
 public class DeclMethod extends AbstractDeclMethod{
 
     private AbstractIdentifier type;
@@ -31,6 +37,14 @@ public class DeclMethod extends AbstractDeclMethod{
     private ListDeclParam listDeclParam;
     private AbstractMethodBody methodBody;
 
+    /**
+     * <p>Constructor for DeclMethod.</p>
+     *
+     * @param type a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     * @param name a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     * @param listDeclParam a {@link fr.ensimag.deca.tree.ListDeclParam} object
+     * @param methodBody a {@link fr.ensimag.deca.tree.AbstractMethodBody} object
+     */
     public DeclMethod(AbstractIdentifier type, AbstractIdentifier name, ListDeclParam listDeclParam, AbstractMethodBody methodBody){
         Validate.notNull(type);
         Validate.notNull(name);
@@ -41,6 +55,7 @@ public class DeclMethod extends AbstractDeclMethod{
         this.methodBody = methodBody;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void verifyMethod(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
             throws ContextualError{
@@ -96,6 +111,7 @@ public class DeclMethod extends AbstractDeclMethod{
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void verifyMethodBody(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
             throws ContextualError{
@@ -108,6 +124,7 @@ public class DeclMethod extends AbstractDeclMethod{
                 this.methodBody.verifyMethodBody(compiler, localEnv, currentClass, this.type.getType());
             }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         type.decompile(s);
@@ -119,6 +136,7 @@ public class DeclMethod extends AbstractDeclMethod{
         methodBody.decompile(s);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         this.type.prettyPrint(s, prefix, false);
@@ -128,6 +146,7 @@ public class DeclMethod extends AbstractDeclMethod{
         
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         type.iter(f);
@@ -135,11 +154,13 @@ public class DeclMethod extends AbstractDeclMethod{
         listDeclParam.iter(f);
         
     }
+    /** {@inheritDoc} */
     @Override
     public AbstractIdentifier getName() {
         return name;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -152,6 +173,7 @@ public class DeclMethod extends AbstractDeclMethod{
         return false;
     }
     
+    /** {@inheritDoc} */
     public void codeGenDeclMethod(DecacCompiler compiler) {
         // Début de bloc
         compiler.newBloc(); compiler.setToBlocProgram();

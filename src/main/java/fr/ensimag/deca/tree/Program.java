@@ -13,25 +13,43 @@ import org.apache.log4j.Logger;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Program extends AbstractProgram {
     private static final Logger LOG = Logger.getLogger(Program.class);
     
+    /**
+     * <p>Constructor for Program.</p>
+     *
+     * @param classes a {@link fr.ensimag.deca.tree.ListDeclClass} object
+     * @param main a {@link fr.ensimag.deca.tree.AbstractMain} object
+     */
     public Program(ListDeclClass classes, AbstractMain main) {
         Validate.notNull(classes);
         Validate.notNull(main);
         this.classes = classes;
         this.main = main;
     }
+    /**
+     * <p>Getter for the field <code>classes</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tree.ListDeclClass} object
+     */
     public ListDeclClass getClasses() {
         return classes;
     }
+    /**
+     * <p>Getter for the field <code>main</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tree.AbstractMain} object
+     */
     public AbstractMain getMain() {
         return main;
     }
     private ListDeclClass classes;
     private AbstractMain main;
 
+    /** {@inheritDoc} */
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
@@ -45,6 +63,7 @@ public class Program extends AbstractProgram {
         LOG.debug("verify program: end");
     }
 
+    /** {@inheritDoc} */
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
         
@@ -65,17 +84,20 @@ public class Program extends AbstractProgram {
         compiler.getData().addHeader(compiler);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         getClasses().decompile(s);
         getMain().decompile(s);
     }
     
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         classes.iter(f);
         main.iter(f);
     }
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         classes.prettyPrint(s, prefix, false);

@@ -9,10 +9,17 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
+/**
+ * <p>Lvalue_ident class.</p>
+ *
+ * @author oscarmaggiori
+ * @version $Id: $Id
+ */
 public class Lvalue_ident extends AbstractLValue {
 
     private AbstractIdentifier ident;
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
@@ -20,18 +27,21 @@ public class Lvalue_ident extends AbstractLValue {
         return null;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         
         
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // nothing
         
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         // nothing

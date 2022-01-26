@@ -2,16 +2,23 @@ package fr.ensimag.ima.pseudocode;
 
 /**
  * Register operand (including special registers like SP).
- * 
+ *
  * @author Ensimag
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Register extends DVal {
     private String name;
+    /**
+     * <p>Constructor for Register.</p>
+     *
+     * @param name a {@link java.lang.String} object
+     */
     protected Register(String name) {
         this.name = name;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return name;
@@ -36,6 +43,9 @@ public class Register extends DVal {
     private static final GPRegister[] R = initRegisters();
     /**
      * General Purpose Registers
+     *
+     * @param i a int
+     * @return a {@link fr.ensimag.ima.pseudocode.GPRegister} object
      */
     public static GPRegister getR(int i) {
         return R[i];

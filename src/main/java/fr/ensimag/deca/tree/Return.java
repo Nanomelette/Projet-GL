@@ -13,16 +13,28 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
+/**
+ * Operator "return"
+ *
+ * @author oscarmaggiori
+ * @version $Id: $Id
+ */
 public class Return extends AbstractInst {
 
     private AbstractExpr e;
 
+    /**
+     * <p>Constructor for Return.</p>
+     *
+     * @param condition a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public Return(AbstractExpr condition) {
         Validate.notNull(condition);
         this.e = condition;
     }
 
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         e.codeGenInst(compiler);
@@ -38,6 +50,7 @@ public class Return extends AbstractInst {
         );
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
@@ -54,6 +67,7 @@ public class Return extends AbstractInst {
             e.setType(type);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("return ");
@@ -61,12 +75,14 @@ public class Return extends AbstractInst {
         s.print(";");
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         e.iter(f);
 
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         e.prettyPrint(s, prefix, true);

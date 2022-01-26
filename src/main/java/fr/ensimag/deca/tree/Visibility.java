@@ -5,8 +5,8 @@ package fr.ensimag.deca.tree;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
-
 public enum Visibility {
     PUBLIC,
     PROTECTED

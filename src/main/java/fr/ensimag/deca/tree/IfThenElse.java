@@ -17,6 +17,7 @@ import org.apache.commons.lang.Validate;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class IfThenElse extends AbstractInst {
     
@@ -24,6 +25,13 @@ public class IfThenElse extends AbstractInst {
     private final ListInst thenBranch;
     private ListInst elseBranch;
 
+    /**
+     * <p>Constructor for IfThenElse.</p>
+     *
+     * @param condition a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param thenBranch a {@link fr.ensimag.deca.tree.ListInst} object
+     * @param elseBranch a {@link fr.ensimag.deca.tree.ListInst} object
+     */
     public IfThenElse(AbstractExpr condition, ListInst thenBranch, ListInst elseBranch) {
         Validate.notNull(condition);
         Validate.notNull(thenBranch);
@@ -34,14 +42,25 @@ public class IfThenElse extends AbstractInst {
     }
 
 
+    /**
+     * <p>Getter for the field <code>elseBranch</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tree.ListInst} object
+     */
     public ListInst getElseBranch(){
         return this.elseBranch;
     }
 
+    /**
+     * <p>Setter for the field <code>elseBranch</code>.</p>
+     *
+     * @param elseBranch a {@link fr.ensimag.deca.tree.ListInst} object
+     */
     public void setElseBranch(ListInst elseBranch){
         this.elseBranch = elseBranch;
     }
     
+    /** {@inheritDoc} */
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
@@ -55,6 +74,7 @@ public class IfThenElse extends AbstractInst {
             }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Label E_else = new Label("E_Else."+compiler.getNLabel());
@@ -68,6 +88,7 @@ public class IfThenElse extends AbstractInst {
         compiler.addLabel(E_end);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("if (");
@@ -88,6 +109,7 @@ public class IfThenElse extends AbstractInst {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected
     void iterChildren(TreeFunction f) {
@@ -96,6 +118,7 @@ public class IfThenElse extends AbstractInst {
         elseBranch.iter(f);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         condition.prettyPrint(s, prefix, false);

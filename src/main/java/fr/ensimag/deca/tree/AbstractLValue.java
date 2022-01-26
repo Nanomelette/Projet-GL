@@ -8,9 +8,10 @@ import fr.ensimag.deca.context.EnvironmentExp;
 
 /**
  * Left-hand side value of an assignment.
- * 
+ *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public abstract class AbstractLValue extends AbstractExpr {
 }

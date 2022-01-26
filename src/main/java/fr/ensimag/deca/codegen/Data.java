@@ -20,6 +20,9 @@ import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 /**
  * Representation of the data of an IMAProgram.
+ *
+ * @author oscarmaggiori
+ * @version $Id: $Id
  */
 public class Data {
 
@@ -62,12 +65,16 @@ public class Data {
      */
     private Labels labels = new Labels();
 
+    /**
+     * <p>Constructor for Data.</p>
+     */
     public Data() {
     };
 
     /**
      * Setter of the numberOfUsedRegister
-     * @param numberOfUsedRegister
+     *
+     * @param numberOfUsedRegister a int
      */
     public void setNumberOfUsedRegister(int numberOfUsedRegister) {
         this.numberOfUsedRegister = numberOfUsedRegister;
@@ -82,7 +89,8 @@ public class Data {
 
     /**
      * Getter of the maxStackLength
-     * @return
+     *
+     * @return a int
      */
     public int getMaxStackLength() {
         return maxStackLength;
@@ -90,7 +98,8 @@ public class Data {
 
     /**
      * Getter of the numberOfUsedRegister
-     * @return
+     *
+     * @return a int
      */
     public int getNumberOfUsedRegister() {
         return numberOfUsedRegister;
@@ -98,7 +107,8 @@ public class Data {
 
     /**
      * Getter of the labels
-     * @return
+     *
+     * @return a {@link fr.ensimag.deca.codegen.Labels} object
      */
     public Labels getLabels() {
         return labels;
@@ -106,7 +116,8 @@ public class Data {
 
     /**
      * Getter of the lBOffset
-     * @return
+     *
+     * @return a int
      */
     public int getlBOffset() {
         return lBOffset;
@@ -121,13 +132,15 @@ public class Data {
 
     /**
      * Setter of the maxRegister
-     * @param maxRegister
+     *
+     * @param maxRegister a int
      */
     public void setMaxRegister(int maxRegister) {
         this.maxRegister = maxRegister;
     }
 
     /**
+     * <p>hasFreeRegister.</p>
      *
      * @return whether the data has still a free register
      */
@@ -137,7 +150,8 @@ public class Data {
 
     /**
      * Getter of the max register
-     * @return
+     *
+     * @return a {@link fr.ensimag.ima.pseudocode.GPRegister} object
      */
     public GPRegister getMaxRegister() {
         return GPRegister.getR(maxRegister - 1);
@@ -146,7 +160,8 @@ public class Data {
     /**
      * If there isn't any free register, return the last one, a PUSH/POP instructions
      * will be needed.
-     * @param compiler
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
      * @return a free register
      */
     public GPRegister getFreeRegister(DecacCompiler compiler) {
@@ -160,7 +175,8 @@ public class Data {
     }
 
     /**
-     * 
+     * <p>nbFreeRegsiter.</p>
+     *
      * @return the number of free register
      */
     public int nbFreeRegsiter() {
@@ -180,7 +196,8 @@ public class Data {
 
     /**
      * Increments the freeStoragePointer by all elements from incrementList + 1
-     * @param incrementList
+     *
+     * @param incrementList a int
      */
     public void incrementFreeStoragePointer(int... incrementList) {
         freeStoragePointer++;
@@ -202,7 +219,8 @@ public class Data {
 
     /**
      * Restore the element to the int i
-     * @param i
+     *
+     * @param i a int
      */
     public void restoreDataTo(int i) {
         freeStoragePointer = i;
@@ -210,7 +228,8 @@ public class Data {
 
     /**
      * Setter of the lastUsedRegister
-     * @param lastUsedRegister
+     *
+     * @param lastUsedRegister a {@link fr.ensimag.ima.pseudocode.GPRegister} object
      */
     public void setLastUsedRegister(GPRegister lastUsedRegister) {
         this.lastUsedRegister = lastUsedRegister;
@@ -218,7 +237,8 @@ public class Data {
 
     /**
      * Getter of the lastUsedRegister
-     * @return
+     *
+     * @return a {@link fr.ensimag.ima.pseudocode.GPRegister} object
      */
     public GPRegister getLastUsedRegister() {
         return lastUsedRegister;
@@ -226,7 +246,8 @@ public class Data {
 
     /**
      * Increments the gBOffset by all the element from incrementList +1
-     * @param incrementList
+     *
+     * @param incrementList a int
      */
     public void incrementGbOffset(int... incrementList) {
         gBOffset++;
@@ -237,7 +258,8 @@ public class Data {
 
     /**
      * Getter of the GBOffset
-     * @return
+     *
+     * @return a int
      */
     public int getGbOffset() {
         return gBOffset;
@@ -245,7 +267,8 @@ public class Data {
 
     /**
      * Add the header of a program
-     * @param compiler
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
      */
     public void addHeader(DecacCompiler compiler) {
         compiler.addInstructionAtFirst(new ADDSP(gBOffset - 1));
@@ -256,6 +279,11 @@ public class Data {
         compiler.addInstructionAtFirst(null, "Début du programme");
     }
 
+    /**
+     * <p>addBottom.</p>
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     */
     public void addBottom(DecacCompiler compiler) {
         compiler.addComment("------------------------------------------");
         compiler.addComment("            Messages d'erreurs            ");
@@ -280,7 +308,8 @@ public class Data {
 
     /**
      * Getter of the freeStoragePointer
-     * @return
+     *
+     * @return a int
      */
     public int getFreeStoragePointer() {
         return freeStoragePointer;
@@ -288,7 +317,8 @@ public class Data {
 
     /**
      * Add the header of a VTable
-     * @param compiler
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
      */
     public void newVTable(DecacCompiler compiler) {
         compiler.addComment("------------------------------------------");
@@ -307,7 +337,8 @@ public class Data {
 
     /**
      * Used to POP all used register in a methodbody
-     * @param compiler
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
      */
     public void popUsedRegisters(DecacCompiler compiler) {
         int tmp = getNumberOfUsedRegister();
@@ -319,7 +350,8 @@ public class Data {
 
     /**
      * Used to PUSH all used register in a methodbody
-     * @param compiler
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
      */
     public void pushUsedRegisters(DecacCompiler compiler) {
         int tmp = getNumberOfUsedRegister();
@@ -338,14 +370,16 @@ public class Data {
 
     /**
      * Setter of the return Label
-     * @param labelReturn
+     *
+     * @param labelReturn a {@link fr.ensimag.ima.pseudocode.Label} object
      */
     public void setLabelReturn(Label labelReturn) {
         this.labelReturn = labelReturn;
     }
     /**
      * Getter of the return Label
-     * @return
+     *
+     * @return a {@link fr.ensimag.ima.pseudocode.Label} object
      */
     public Label getLabelReturn() {
         return labelReturn;

@@ -10,16 +10,25 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 
 /**
+ * Operator "%"
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Modulo extends AbstractOpArith {
 
+    /**
+     * <p>Constructor for Modulo.</p>
+     *
+     * @param leftOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param rightOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public Modulo(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -34,11 +43,13 @@ public class Modulo extends AbstractOpArith {
     }
 
 
+    /** {@inheritDoc} */
     @Override
     protected String getOperatorName() {
         return "%";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);

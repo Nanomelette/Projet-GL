@@ -17,9 +17,19 @@ import fr.ensimag.ima.pseudocode.instructions.STORE;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class ListExpr extends TreeList<AbstractExpr> {
 
+    /**
+     * <p>verifyListExp.</p>
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     * @param localEnv a {@link fr.ensimag.deca.context.EnvironmentExp} object
+     * @param currentClass a {@link fr.ensimag.deca.context.ClassDefinition} object
+     * @param sig a {@link fr.ensimag.deca.context.Signature} object
+     * @throws fr.ensimag.deca.context.ContextualError if any.
+     */
     public void verifyListExp(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Signature sig)
         throws ContextualError {
         int i = 0;
@@ -39,6 +49,7 @@ public class ListExpr extends TreeList<AbstractExpr> {
     }
 
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         int enjolivage = 0;
@@ -54,6 +65,11 @@ public class ListExpr extends TreeList<AbstractExpr> {
         }
     }
 
+    /**
+     * <p>codeGenListExpr.</p>
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     */
     public void codeGenListExpr(DecacCompiler compiler) {
         int i = -1;
         for (AbstractExpr expr : getList()) {

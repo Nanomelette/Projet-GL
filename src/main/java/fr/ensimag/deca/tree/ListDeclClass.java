@@ -14,13 +14,16 @@ import fr.ensimag.ima.pseudocode.instructions.SEQ;
 import org.apache.log4j.Logger;
 
 /**
+ * <p>ListDeclClass class.</p>
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class ListDeclClass extends TreeList<AbstractDeclClass> {
     private static final Logger LOG = Logger.getLogger(ListDeclClass.class);
     
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclClass c : getList()) {
@@ -43,6 +46,9 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
 
     /**
      * Pass 2 of [SyntaxeContextuelle]
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     * @throws fr.ensimag.deca.context.ContextualError if any.
      */
     public void verifyListClassMembers(DecacCompiler compiler) throws ContextualError {
 
@@ -53,6 +59,9 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
     
     /**
      * Pass 3 of [SyntaxeContextuelle]
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     * @throws fr.ensimag.deca.context.ContextualError if any.
      */
     public void verifyListClassBody(DecacCompiler compiler) throws ContextualError {
         
@@ -63,6 +72,8 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
 
     /**
      * Pass 1 of [GenCode]
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
      */
     public void addToVTable(DecacCompiler compiler) {
         for (AbstractDeclClass absDeclClass : this.getList()) {
@@ -94,6 +105,8 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
 
     /**
      * Pass 2 of [genCode]
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
      */
     public void codeGenListDeclClass(DecacCompiler compiler) {
         codeGenInitClass(compiler);

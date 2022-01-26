@@ -16,6 +16,7 @@ import org.apache.commons.lang.Validate;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public abstract class AbstractPrint extends AbstractInst {
 
@@ -24,16 +25,28 @@ public abstract class AbstractPrint extends AbstractInst {
     
     abstract String getSuffix();
 
+    /**
+     * <p>Constructor for AbstractPrint.</p>
+     *
+     * @param printHex a boolean
+     * @param arguments a {@link fr.ensimag.deca.tree.ListExpr} object
+     */
     public AbstractPrint(boolean printHex, ListExpr arguments) {
         Validate.notNull(arguments);
         this.arguments = arguments;
         this.printHex = printHex;
     }
 
+    /**
+     * <p>Getter for the field <code>arguments</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tree.ListExpr} object
+     */
     public ListExpr getArguments() {
         return arguments;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
@@ -49,6 +62,7 @@ public abstract class AbstractPrint extends AbstractInst {
 		}
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         for (AbstractExpr a : getArguments().getList()) {
@@ -60,6 +74,7 @@ public abstract class AbstractPrint extends AbstractInst {
         return printHex;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("print");
@@ -79,6 +94,7 @@ public abstract class AbstractPrint extends AbstractInst {
     	s.print(");");
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         for (AbstractExpr i : arguments.getList()) {
@@ -86,6 +102,7 @@ public abstract class AbstractPrint extends AbstractInst {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         arguments.prettyPrint(s, prefix, true);

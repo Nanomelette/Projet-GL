@@ -23,14 +23,27 @@ import fr.ensimag.ima.pseudocode.instructions.NEW;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
+
+/**
+ * Operator "new"
+ *
+ * @author oscarmaggiori
+ * @version $Id: $Id
+ */
 public class New extends AbstractExpr {
 
     private AbstractIdentifier class_;
 
+    /**
+     * <p>Constructor for New.</p>
+     *
+     * @param class_ a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     */
     public New(AbstractIdentifier class_){
         this.class_ = class_;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
@@ -48,6 +61,7 @@ public class New extends AbstractExpr {
         return classType;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {     
         s.print("new ");
@@ -55,17 +69,20 @@ public class New extends AbstractExpr {
         s.print("()");
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         class_.prettyPrint(s, prefix, false);        
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         class_.iter(f);
         
     }
     
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Label heap_overflow = new Label("heap_overflow");

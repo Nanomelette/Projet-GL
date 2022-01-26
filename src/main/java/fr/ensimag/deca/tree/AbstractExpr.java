@@ -24,6 +24,7 @@ import org.apache.commons.lang.Validate;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public abstract class AbstractExpr extends AbstractInst {
 
@@ -37,17 +38,25 @@ public abstract class AbstractExpr extends AbstractInst {
 
     /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
+     *
+     * @return a {@link fr.ensimag.deca.context.Type} object
      */
     public Type getType() {
         return type;
     }
 
+    /**
+     * <p>Setter for the field <code>type</code>.</p>
+     *
+     * @param type a {@link fr.ensimag.deca.context.Type} object
+     */
     protected void setType(Type type) {
         Validate.notNull(type);
         this.type = type;
     }
     private Type type;
 
+    /** {@inheritDoc} */
     @Override
     protected void checkDecoration() {
         if (getType() == null) {
@@ -57,8 +66,8 @@ public abstract class AbstractExpr extends AbstractInst {
 
     /**
      * Verify the expression for contextual error.
-     * 
-     * implements non-terminals "expr" and "lvalue" 
+     *
+     * implements non-terminals "expr" and "lvalue"
      *    of [SyntaxeContextuelle] in pass 3
      *
      * @param compiler  (contains the "env_types" attribute)
@@ -71,21 +80,23 @@ public abstract class AbstractExpr extends AbstractInst {
      *             is null in the main bloc.
      * @return the Type of the expression
      *            (corresponds to the "type" attribute)
+     * @throws fr.ensimag.deca.context.ContextualError if any.
      */
     public abstract Type verifyExpr(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError;
 
     /**
-     * Verify the expression in right hand-side of (implicit) assignments 
-     * 
+     * Verify the expression in right hand-side of (implicit) assignments
+     *
      * implements non-terminal "rvalue" of [SyntaxeContextuelle] in pass 3
      *
      * @param compiler  contains the "env_types" attribute
      * @param localEnv corresponds to the "env_exp" attribute
      * @param currentClass corresponds to the "class" attribute
-     * @param expectedType corresponds to the "type1" attribute            
+     * @param expectedType corresponds to the "type1" attribute
      * @return this with an additional ConvFloat if needed...
+     * @throws fr.ensimag.deca.context.ContextualError if any.
      */
     public AbstractExpr verifyRValue(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass, 
@@ -105,6 +116,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
     
     
+    /** {@inheritDoc} */
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
@@ -134,7 +146,8 @@ public abstract class AbstractExpr extends AbstractInst {
     /**
      * Generate code to print the expression
      *
-     * @param compiler
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     * @param printHex a boolean
      */
     protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
         this.codeGenInst(compiler);
@@ -152,18 +165,21 @@ public abstract class AbstractExpr extends AbstractInst {
         } 
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
     
 
+    /** {@inheritDoc} */
     @Override
     protected void decompileInst(IndentPrintStream s) {
         decompile(s);
         s.print(";");
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintType(PrintStream s, String prefix) {
         Type t = getType();
@@ -175,16 +191,40 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
+    /**
+     * <p>getDVal.</p>
+     *
+     * @param <Optional> a Optional class
+     * @return a {@link fr.ensimag.ima.pseudocode.DVal} object
+     */
     protected <Optional>DVal getDVal() {
         return null;
     }
 
+    /**
+     * <p>codeBoolean.</p>
+     *
+     * @param b a boolean
+     * @param E a {@link fr.ensimag.ima.pseudocode.Label} object
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     */
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {}
 
+    /**
+     * <p>codeGenAssign.</p>
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     * @param register a {@link fr.ensimag.ima.pseudocode.Register} object
+     */
     protected void codeGenAssign(DecacCompiler compiler, Register register) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    /**
+     * <p>codeGenSelect.</p>
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     */
     protected void codeGenSelect(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }

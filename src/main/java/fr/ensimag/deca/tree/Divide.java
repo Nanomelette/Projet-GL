@@ -13,21 +13,31 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.QUO;
 
 /**
+ * Division
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Divide extends AbstractOpArith {
+    /**
+     * <p>Constructor for Divide.</p>
+     *
+     * @param leftOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param rightOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public Divide(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
 
 
+    /** {@inheritDoc} */
     @Override
     protected String getOperatorName() {
         return "/";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);

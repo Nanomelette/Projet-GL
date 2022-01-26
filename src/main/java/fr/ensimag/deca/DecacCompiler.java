@@ -40,6 +40,7 @@ import org.apache.log4j.Logger;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
@@ -49,6 +50,11 @@ public class DecacCompiler {
 
     private Data dataBloc = new Data();
 
+    /**
+     * <p>Getter for the field <code>data</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.codegen.Data} object
+     */
     public Data getData() {
         if (writeInBloc) {
             return dataBloc;
@@ -58,10 +64,18 @@ public class DecacCompiler {
 
     private int nLabel = 0;
     
+    /**
+     * <p>Getter for the field <code>nLabel</code>.</p>
+     *
+     * @return a int
+     */
     public int getNLabel() {
         return nLabel;
     }
 
+    /**
+     * <p>incrNLabel.</p>
+     */
     public void incrNLabel() {
         nLabel++;
     }
@@ -72,6 +86,12 @@ public class DecacCompiler {
      */
     private static final String nl = System.getProperty("line.separator", "\n");
 
+    /**
+     * <p>Constructor for DecacCompiler.</p>
+     *
+     * @param compilerOptions a {@link fr.ensimag.deca.CompilerOptions} object
+     * @param source a {@link java.io.File} object
+     */
     public DecacCompiler(CompilerOptions compilerOptions, File source) {
         super();
         this.compilerOptions = compilerOptions;
@@ -85,20 +105,38 @@ public class DecacCompiler {
         this.Env_exp= new EnvironmentExp(null);
     }
 
+    /**
+     * <p>Getter for the field <code>symbolTable</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tools.SymbolTable} object
+     */
     public SymbolTable getSymbolTable(){
         return this.symbolTable;
     }
 
+    /**
+     * <p>GetEnvTypes.</p>
+     *
+     * @return a {@link fr.ensimag.deca.context.EnvironmentType} object
+     */
     public EnvironmentType GetEnvTypes(){
         return this.env_Types ;
     }
     
+	/**
+	 * <p>searchSymbol.</p>
+	 *
+	 * @param type a {@link fr.ensimag.deca.tools.SymbolTable.Symbol} object
+	 * @return a {@link fr.ensimag.deca.context.Type} object
+	 */
 	public Type searchSymbol(Symbol type) {
 		return env_Types.getType(type);
 	}
 
     /**
      * Source file associated with this compiler instance.
+     *
+     * @return a {@link java.io.File} object
      */
     public File getSource() {
         return source;
@@ -107,14 +145,17 @@ public class DecacCompiler {
     /**
      * Compilation options (e.g. when to stop compilation, number of registers
      * to use, ...).
+     *
+     * @return a {@link fr.ensimag.deca.CompilerOptions} object
      */
     public CompilerOptions getCompilerOptions() {
         return compilerOptions;
     }
 
     /**
-     * @see
-     * fr.ensimag.ima.pseudocode.IMAProgram#add(fr.ensimag.ima.pseudocode.AbstractLine)
+     * <p>add.</p>
+     *
+     * @param line a {@link fr.ensimag.ima.pseudocode.AbstractLine} object
      */
     public void add(AbstractLine line) {
         if (writeInBloc) {
@@ -125,7 +166,10 @@ public class DecacCompiler {
     }
 
     /**
+     * <p>addComment.</p>
+     *
      * @see fr.ensimag.ima.pseudocode.IMAProgram#addComment(java.lang.String)
+     * @param comment a {@link java.lang.String} object
      */
     public void addComment(String comment) {
         if (writeInBloc) {
@@ -136,8 +180,9 @@ public class DecacCompiler {
     }
 
     /**
-     * @see
-     * fr.ensimag.ima.pseudocode.IMAProgram#addLabel(fr.ensimag.ima.pseudocode.Label)
+     * <p>addLabel.</p>
+     *
+     * @param label a {@link fr.ensimag.ima.pseudocode.Label} object
      */
     public void addLabel(Label label) {
         if (writeInBloc) {
@@ -148,8 +193,9 @@ public class DecacCompiler {
     }
 
     /**
-     * @see
-     * fr.ensimag.ima.pseudocode.IMAProgram#addLabelAtFirst(fr.ensimag.ima.pseudocode.Label)
+     * <p>addLabelAtFirst.</p>
+     *
+     * @param label a {@link fr.ensimag.ima.pseudocode.Label} object
      */
     public void addLabelAtFirst(Label label) {
         if (writeInBloc) {
@@ -160,8 +206,9 @@ public class DecacCompiler {
     }
 
     /**
-     * @see
-     * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
+     * <p>addInstruction.</p>
+     *
+     * @param instruction a {@link fr.ensimag.ima.pseudocode.Instruction} object
      */
     public void addInstruction(Instruction instruction) {
         if (writeInBloc) {
@@ -172,9 +219,10 @@ public class DecacCompiler {
     }
 
     /**
-     * @see
-     * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction,
-     * java.lang.String)
+     * <p>addInstruction.</p>
+     *
+     * @param instruction a {@link fr.ensimag.ima.pseudocode.Instruction} object
+     * @param comment a {@link java.lang.String} object
      */
     public void addInstruction(Instruction instruction, String comment) {
         if (writeInBloc) {
@@ -185,8 +233,9 @@ public class DecacCompiler {
     }
 
     /**
-     * @see
-     * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
+     * <p>addInstructionAtFirst.</p>
+     *
+     * @param instruction a {@link fr.ensimag.ima.pseudocode.Instruction} object
      */
     public void addInstructionAtFirst(Instruction instruction) {
         if (writeInBloc) {
@@ -196,6 +245,12 @@ public class DecacCompiler {
         }
     }
 
+    /**
+     * <p>addInstructionAtFirst.</p>
+     *
+     * @param instruction a {@link fr.ensimag.ima.pseudocode.Instruction} object
+     * @param comment a {@link java.lang.String} object
+     */
     public void addInstructionAtFirst(Instruction instruction, String comment) {
         if (writeInBloc) {
             bloc.addFirst(instruction, comment);
@@ -204,10 +259,18 @@ public class DecacCompiler {
         }
     }
 
+    /**
+     * <p>appendBlocInstructions.</p>
+     */
     public void appendBlocInstructions() {
         program.append(bloc);
     }
 
+    /**
+     * <p>addCommentAtFirst.</p>
+     *
+     * @param comment a {@link java.lang.String} object
+     */
     public void addCommentAtFirst(String comment) {
         if (writeInBloc) {
             bloc.addFirst(null, comment);
@@ -218,8 +281,9 @@ public class DecacCompiler {
 
     
     /**
-     * @see 
-     * fr.ensimag.ima.pseudocode.IMAProgram#display()
+     * <p>displayIMAProgram.</p>
+     *
+     * @return a {@link java.lang.String} object
      */
     public String displayIMAProgram() {
         return program.display();
@@ -246,18 +310,32 @@ public class DecacCompiler {
      */
     private Boolean writeInBloc = false;
 
+    /**
+     * <p>Setter for the field <code>writeInBloc</code>.</p>
+     *
+     * @param writeInBloc a {@link java.lang.Boolean} object
+     */
     public void setWriteInBloc(Boolean writeInBloc) {
         this.writeInBloc = writeInBloc;
     }
 
+    /**
+     * <p>setToMainProgram.</p>
+     */
     public void setToMainProgram() {
         this.writeInBloc = false;
     }
 
+    /**
+     * <p>setToBlocProgram.</p>
+     */
     public void setToBlocProgram() {
         this.writeInBloc = true;
     }
 
+    /**
+     * <p>newBloc.</p>
+     */
     public void newBloc() {
         dataBloc = new Data();
         dataBloc.setMaxRegister(compilerOptions.getMaxRegister());
@@ -375,11 +453,9 @@ public class DecacCompiler {
      * @param sourceName Name of the file to parse
      * @param err Stream to send error messages to
      * @return the abstract syntax tree
-     * @throws DecacFatalError When an error prevented opening the source file
-     * @throws DecacInternalError When an inconsistency was detected in the
+     * @throws fr.ensimag.deca.DecacFatalError When an error prevented opening the source file
+     * @throws fr.ensimag.deca.tools.DecacInternalError When an inconsistency was detected in the
      * compiler.
-     * @throws LocationException When a compilation error (incorrect program)
-     * occurs.
      */
     protected AbstractProgram doLexingAndParsing(String sourceName, PrintStream err)
             throws DecacFatalError, DecacInternalError {
@@ -396,10 +472,23 @@ public class DecacCompiler {
         return parser.parseProgramAndManageErrors(err);
     }
 
+    /**
+     * <p>GetEnvExp.</p>
+     *
+     * @return a {@link fr.ensimag.deca.context.EnvironmentExp} object
+     */
     public EnvironmentExp GetEnvExp() {
         return Env_exp;
     }
 
+    /**
+     * <p>assignCompatible.</p>
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     * @param left a {@link fr.ensimag.deca.context.Type} object
+     * @param right a {@link fr.ensimag.deca.context.Type} object
+     * @return a {@link fr.ensimag.deca.context.Type} object
+     */
     public Type assignCompatible(DecacCompiler compiler, Type left, Type right){
         if(left == null || right == null){
             return null;
@@ -421,6 +510,14 @@ public class DecacCompiler {
         return null;
     }
 
+    /**
+     * <p>subType.</p>
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
+     * @param type a {@link fr.ensimag.deca.context.Type} object
+     * @param typeSup a {@link fr.ensimag.deca.context.Type} object
+     * @return a boolean
+     */
     public boolean subType(DecacCompiler compiler, Type type, Type typeSup){
         if (type == null) {
             return false;

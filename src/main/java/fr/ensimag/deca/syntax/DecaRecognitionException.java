@@ -30,6 +30,12 @@ class DecaRecognitionException extends RecognitionException {
                 );
     }
 
+    /**
+     * <p>Constructor for DecaRecognitionException.</p>
+     *
+     * @param recognizer a {@link fr.ensimag.deca.syntax.AbstractDecaLexer} object
+     * @param input a {@link org.antlr.v4.runtime.IntStream} object
+     */
     public DecaRecognitionException(AbstractDecaLexer recognizer,
                 IntStream input) {
         super(recognizer, input, null);
@@ -37,11 +43,23 @@ class DecaRecognitionException extends RecognitionException {
         setOffendingToken(recognizer.getToken());
     }
 
+    /**
+     * <p>Constructor for DecaRecognitionException.</p>
+     *
+     * @param recognizer a {@link fr.ensimag.deca.syntax.DecaParser} object
+     * @param ctx a {@link org.antlr.v4.runtime.ParserRuleContext} object
+     */
     public DecaRecognitionException(DecaParser recognizer, ParserRuleContext ctx) {
         super(recognizer, recognizer.getInputStream(), ctx);
         setOffendingToken(ctx.getStart());
     }
 
+    /**
+     * <p>Constructor for DecaRecognitionException.</p>
+     *
+     * @param recognizer a {@link fr.ensimag.deca.syntax.DecaParser} object
+     * @param offendingToken a {@link org.antlr.v4.runtime.Token} object
+     */
     public DecaRecognitionException(DecaParser recognizer, Token offendingToken) {
         super(recognizer, recognizer.getInputStream(), recognizer.getContext());
         setOffendingToken(offendingToken);

@@ -23,11 +23,23 @@ import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
+/**
+ * Operator "x instanceof y"
+ *
+ * @author oscarmaggiori
+ * @version $Id: $Id
+ */
 public class InstanceOf extends AbstractExpr {
 
     private AbstractExpr e;
     private AbstractIdentifier type;
 
+    /**
+     * <p>Constructor for InstanceOf.</p>
+     *
+     * @param e a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param type a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     */
     public InstanceOf(AbstractExpr e, AbstractIdentifier type) {
         super();
         Validate.notNull(e);
@@ -36,6 +48,7 @@ public class InstanceOf extends AbstractExpr {
         this.e = e;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
@@ -49,6 +62,7 @@ public class InstanceOf extends AbstractExpr {
         throw new ContextualError("Incorrect types", getLocation());
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         e.decompile(s);
@@ -56,12 +70,14 @@ public class InstanceOf extends AbstractExpr {
         type.decompile(s);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         e.prettyPrint(s, prefix, false);
         type.prettyPrint(s, prefix, true);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         e.iter(f);
@@ -94,6 +110,7 @@ public class InstanceOf extends AbstractExpr {
         compiler.addInstruction(new BNE(W_Start));
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
         Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());
@@ -105,6 +122,7 @@ public class InstanceOf extends AbstractExpr {
         compiler.incrNLabel();
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Label true_instanceof = new Label("true.instanceof."+compiler.getNLabel());

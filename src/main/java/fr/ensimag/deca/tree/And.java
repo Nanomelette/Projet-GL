@@ -9,21 +9,31 @@ import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
+ * <p>And class.</p>
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class And extends AbstractOpBool {
 
+    /**
+     * <p>Constructor for And.</p>
+     *
+     * @param leftOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param rightOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public And(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected String getOperatorName() {
         return "&&";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);
@@ -44,6 +54,7 @@ public class And extends AbstractOpBool {
         compiler.incrNLabel();
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
         if (b) {

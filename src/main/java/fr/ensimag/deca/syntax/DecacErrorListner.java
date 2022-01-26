@@ -19,16 +19,23 @@ import org.apache.log4j.Logger;
  * ParseCancellationException.
  *
  * @author Ensimag
+ * @version $Id: $Id
  */
 public class DecacErrorListner implements ANTLRErrorListener {
     private static final Logger LOG = Logger.getLogger(DecacErrorListner.class);
 
     private IntStream input;
 
+    /**
+     * <p>Constructor for DecacErrorListner.</p>
+     *
+     * @param input a {@link org.antlr.v4.runtime.IntStream} object
+     */
     public DecacErrorListner(IntStream input) {
         this.input = input;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
         // When trying to recover from an error, e can actually be null
@@ -63,16 +70,19 @@ public class DecacErrorListner implements ANTLRErrorListener {
                 new LocationException(msg, l));
     }
 
+    /** {@inheritDoc} */
     @Override
     public void reportAmbiguity(Parser recognizer, DFA dfa, int startIndex, int stopIndex, boolean exact, BitSet ambigAlts, ATNConfigSet configs) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public void reportAttemptingFullContext(Parser recognizer, DFA dfa, int startIndex, int stopIndex, BitSet conflictingAlts, ATNConfigSet configs) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /** {@inheritDoc} */
     @Override
     public void reportContextSensitivity(Parser recognizer, DFA dfa, int startIndex, int stopIndex, int prediction, ATNConfigSet configs) {
         throw new UnsupportedOperationException("Not supported yet.");

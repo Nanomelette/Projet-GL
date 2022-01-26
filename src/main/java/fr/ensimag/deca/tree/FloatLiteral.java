@@ -20,15 +20,26 @@ import org.apache.commons.lang.Validate;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class FloatLiteral extends AbstractExpr {
 
+    /**
+     * <p>Getter for the field <code>value</code>.</p>
+     *
+     * @return a float
+     */
     public float getValue() {
         return value;
     }
 
     private float value;
 
+    /**
+     * <p>Constructor for FloatLiteral.</p>
+     *
+     * @param value a float
+     */
     public FloatLiteral(float value) {
         Validate.isTrue(!Float.isInfinite(value),
                 "literal values cannot be infinite");
@@ -37,6 +48,7 @@ public class FloatLiteral extends AbstractExpr {
         this.value = value;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -46,6 +58,7 @@ public class FloatLiteral extends AbstractExpr {
     }
 
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(java.lang.Float.toHexString(value));
@@ -56,16 +69,19 @@ public class FloatLiteral extends AbstractExpr {
         return "Float (" + getValue() + ")";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         // leaf node => nothing to do
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         GPRegister lastRegister = compiler.getData().getFreeRegister(compiler);
@@ -73,6 +89,7 @@ public class FloatLiteral extends AbstractExpr {
         compiler.getData().setLastUsedRegister(lastRegister);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected DVal getDVal() {
         return new ImmediateFloat(value);

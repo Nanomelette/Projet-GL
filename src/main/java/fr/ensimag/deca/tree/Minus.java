@@ -8,21 +8,32 @@ import fr.ensimag.ima.pseudocode.instructions.SUB;
 
 
 /**
+ * Operator "-"
+ *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Minus extends AbstractOpArith {
     private static final Logger LOG = Logger.getLogger(Minus.class);
+    /**
+     * <p>Constructor for Minus.</p>
+     *
+     * @param leftOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param rightOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public Minus(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
 
 
+    /** {@inheritDoc} */
     @Override
     protected String getOperatorName() {
         return "-";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);

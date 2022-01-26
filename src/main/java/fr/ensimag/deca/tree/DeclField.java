@@ -18,6 +18,12 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
+/**
+ * Declaration of a field
+ *
+ * @author oscarmaggiori
+ * @version $Id: $Id
+ */
 public class DeclField extends AbstractDeclField {
 
     private Visibility v;
@@ -26,6 +32,14 @@ public class DeclField extends AbstractDeclField {
     private AbstractInitialization init;
     
 
+    /**
+     * <p>Constructor for DeclField.</p>
+     *
+     * @param v a {@link fr.ensimag.deca.tree.Visibility} object
+     * @param type a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     * @param field a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     * @param init a {@link fr.ensimag.deca.tree.AbstractInitialization} object
+     */
     public DeclField(Visibility v, AbstractIdentifier type, AbstractIdentifier field, AbstractInitialization init){
         Validate.notNull(v);
         Validate.notNull(type);
@@ -37,13 +51,26 @@ public class DeclField extends AbstractDeclField {
         this.init = init;
     }
 
+    /**
+     * <p>Constructor for DeclField.</p>
+     *
+     * @param tree a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     * @param tree2 a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param init2 a {@link fr.ensimag.deca.tree.AbstractInitialization} object
+     */
     public DeclField(AbstractIdentifier tree, AbstractExpr tree2, AbstractInitialization init2) {
     }
 
+    /**
+     * <p>Getter for the field <code>field</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     */
     public AbstractIdentifier getField(){
         return this.field;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void verifyField(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
     throws ContextualError {
@@ -85,6 +112,7 @@ public class DeclField extends AbstractDeclField {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void verifyFieldBody(DecacCompiler compiler, AbstractIdentifier classeSup, AbstractIdentifier classe)
     throws ContextualError {
@@ -110,6 +138,7 @@ public class DeclField extends AbstractDeclField {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         if (v.toString().equals("PROTECTED")) {
@@ -124,6 +153,7 @@ public class DeclField extends AbstractDeclField {
     	s.println(";");	
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         this.type.prettyPrint(s, prefix, false);
@@ -132,6 +162,7 @@ public class DeclField extends AbstractDeclField {
         
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         type.iter(f);
@@ -139,6 +170,7 @@ public class DeclField extends AbstractDeclField {
         init.iter(f);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenDeclField(DecacCompiler compiler) {
         compiler.addComment("Initialisation du champ " + field.getName().getName());
@@ -147,6 +179,7 @@ public class DeclField extends AbstractDeclField {
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(field.getFieldDefinition().getIndex(), Register.R1)));
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenDeclFieldZero(DecacCompiler compiler) {
         compiler.addComment("Initialisation du champ " + field.getName().getName() + " à zero");

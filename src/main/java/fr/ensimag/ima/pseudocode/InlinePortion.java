@@ -8,10 +8,16 @@ import java.io.PrintStream;
  *
  * @author Ensimag
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class InlinePortion extends AbstractLine {
     private final String asmCode;
     
+    /**
+     * <p>Constructor for InlinePortion.</p>
+     *
+     * @param asmCode a {@link java.lang.String} object
+     */
     public InlinePortion(String asmCode) {
         super();
         this.asmCode = asmCode;

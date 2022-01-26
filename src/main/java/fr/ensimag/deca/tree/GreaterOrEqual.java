@@ -9,22 +9,31 @@ import fr.ensimag.ima.pseudocode.instructions.SGE;
 
 /**
  * Operator "x >= y"
- * 
+ *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class GreaterOrEqual extends AbstractOpIneq {
 
+    /**
+     * <p>Constructor for GreaterOrEqual.</p>
+     *
+     * @param leftOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param rightOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public GreaterOrEqual(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
 
 
+    /** {@inheritDoc} */
     @Override
     protected String getOperatorName() {
         return ">=";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);
@@ -33,6 +42,7 @@ public class GreaterOrEqual extends AbstractOpIneq {
         compiler.getData().setLastUsedRegister(op2);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
         super.codeGenInst(compiler);

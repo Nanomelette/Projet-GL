@@ -34,9 +34,11 @@ import org.apache.commons.lang.Validate;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Identifier extends AbstractIdentifier {
 
+    /** {@inheritDoc} */
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -44,20 +46,20 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public Definition getDefinition() {
         return definition;
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Like {@link #getDefinition()}, but works only if the definition is a
      * ClassDefinition.
-     * 
+     *
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a class definition.
      */
     @Override
     public ClassDefinition getClassDefinition() {
@@ -72,14 +74,13 @@ public class Identifier extends AbstractIdentifier {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Like {@link #getDefinition()}, but works only if the definition is a
      * MethodDefinition.
-     * 
+     *
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a method definition.
      */
     @Override
     public MethodDefinition getMethodDefinition() {
@@ -94,14 +95,13 @@ public class Identifier extends AbstractIdentifier {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Like {@link #getDefinition()}, but works only if the definition is a
      * FieldDefinition.
-     * 
+     *
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a field definition.
      */
     @Override
     public FieldDefinition getFieldDefinition() {
@@ -116,14 +116,13 @@ public class Identifier extends AbstractIdentifier {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Like {@link #getDefinition()}, but works only if the definition is a
      * VariableDefinition.
-     * 
+     *
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a field definition.
      */
     @Override
     public VariableDefinition getVariableDefinition() {
@@ -138,14 +137,13 @@ public class Identifier extends AbstractIdentifier {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Like {@link #getDefinition()}, but works only if the definition is a
      * ExpDefinition.
-     * 
+     *
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a field definition.
      */
     @Override
     public ExpDefinition getExpDefinition() {
@@ -159,6 +157,11 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
+    /**
+     * <p>getParamDefinition.</p>
+     *
+     * @return a {@link fr.ensimag.deca.context.ParamDefinition} object
+     */
     public ParamDefinition getParamDefinition() {
         try {
             return (ParamDefinition) definition;
@@ -170,11 +173,13 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setDefinition(Definition definition) {
         this.definition = definition;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Symbol getName() {
         return name;
@@ -182,11 +187,17 @@ public class Identifier extends AbstractIdentifier {
 
     private Symbol name;
 
+    /**
+     * <p>Constructor for Identifier.</p>
+     *
+     * @param name a {@link fr.ensimag.deca.tools.SymbolTable.Symbol} object
+     */
     public Identifier(Symbol name) {
         Validate.notNull(name);
         this.name = name;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -202,9 +213,9 @@ public class Identifier extends AbstractIdentifier {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes
-     * 
-     * @param compiler contains "env_types" attribute
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
@@ -220,16 +231,19 @@ public class Identifier extends AbstractIdentifier {
 
     private Definition definition;
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         // leaf node => nothing to do
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(name.getName());
@@ -240,6 +254,7 @@ public class Identifier extends AbstractIdentifier {
         return "Identifier (" + getName() + ")";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintType(PrintStream s, String prefix) {
         Definition d = getDefinition();
@@ -251,11 +266,13 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected DVal getDVal() {
         return this.getExpDefinition().getOperand();
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
         Data data = compiler.getData();
@@ -265,6 +282,7 @@ public class Identifier extends AbstractIdentifier {
         compiler.addInstruction(new BEQ(E));
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Data data = compiler.getData();
@@ -284,6 +302,7 @@ public class Identifier extends AbstractIdentifier {
         data.setLastUsedRegister(register);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenSelect(DecacCompiler compiler) {
         Data data = compiler.getData();
@@ -293,10 +312,10 @@ public class Identifier extends AbstractIdentifier {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Methode used to generate code that assign the result
      * saved in lastUsedRegister to this identifer
-     * 
-     * @param compiler
      */
     @Override
     protected void codeGenAssign(DecacCompiler compiler, Register register) {

@@ -20,24 +20,45 @@ import org.apache.commons.lang.Validate;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public abstract class AbstractBinaryExpr extends AbstractExpr {
 
     // private static final Logger LOG = Logger.getLogger(AbstractBinaryExpr.class);
 
+    /**
+     * <p>Getter for the field <code>leftOperand</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public AbstractExpr getLeftOperand() {
         return leftOperand;
     }
 
+    /**
+     * <p>Getter for the field <code>rightOperand</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public AbstractExpr getRightOperand() {
         return rightOperand;
     }
 
+    /**
+     * <p>Setter for the field <code>leftOperand</code>.</p>
+     *
+     * @param leftOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     protected void setLeftOperand(AbstractExpr leftOperand) {
         Validate.notNull(leftOperand);
         this.leftOperand = leftOperand;
     }
 
+    /**
+     * <p>Setter for the field <code>rightOperand</code>.</p>
+     *
+     * @param rightOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     protected void setRightOperand(AbstractExpr rightOperand) {
         Validate.notNull(rightOperand);
         this.rightOperand = rightOperand;
@@ -46,6 +67,12 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     private AbstractExpr leftOperand;
     private AbstractExpr rightOperand;
 
+    /**
+     * <p>Constructor for AbstractBinaryExpr.</p>
+     *
+     * @param leftOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param rightOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public AbstractBinaryExpr(AbstractExpr leftOperand,
             AbstractExpr rightOperand) {
         Validate.notNull(leftOperand, "left operand cannot be null");
@@ -55,6 +82,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         this.rightOperand = rightOperand;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         if (getOperatorName() != "=") {
@@ -68,14 +96,21 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         }
     }
 
+    /**
+     * <p>getOperatorName.</p>
+     *
+     * @return a {@link java.lang.String} object
+     */
     abstract protected String getOperatorName();
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         leftOperand.iter(f);
         rightOperand.iter(f);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         leftOperand.prettyPrint(s, prefix, false);
@@ -85,6 +120,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     protected DVal op1;
     protected GPRegister op2;
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         AbstractExpr leftOperand = getLeftOperand();

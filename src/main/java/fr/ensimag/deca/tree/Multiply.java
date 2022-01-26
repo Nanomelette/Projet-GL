@@ -9,21 +9,32 @@ import fr.ensimag.ima.pseudocode.instructions.MUL;
 
 
 /**
+ * Operator "*"
+ *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Multiply extends AbstractOpArith {
 
+    /**
+     * <p>Constructor for Multiply.</p>
+     *
+     * @param leftOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param rightOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public Multiply(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
 
 
+    /** {@inheritDoc} */
     @Override
     protected String getOperatorName() {
         return "*";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);

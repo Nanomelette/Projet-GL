@@ -13,9 +13,11 @@ import fr.ensimag.deca.context.EnvironmentExp;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Assign extends AbstractBinaryExpr {
 
+    /** {@inheritDoc} */
     @Override
     public AbstractLValue getLeftOperand() {
         // The cast succeeds by construction, as the leftOperand has been set
@@ -23,10 +25,17 @@ public class Assign extends AbstractBinaryExpr {
         return (AbstractLValue)super.getLeftOperand();
     }
 
+    /**
+     * <p>Constructor for Assign.</p>
+     *
+     * @param leftOperand a {@link fr.ensimag.deca.tree.AbstractLValue} object
+     * @param rightOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public Assign(AbstractLValue leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -40,11 +49,13 @@ public class Assign extends AbstractBinaryExpr {
     }
 
 
+    /** {@inheritDoc} */
     @Override
     protected String getOperatorName() {
         return "=";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         getRightOperand().codeGenInst(compiler);

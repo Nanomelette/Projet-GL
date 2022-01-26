@@ -17,21 +17,38 @@ import org.apache.commons.lang.Validate;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public abstract class AbstractUnaryExpr extends AbstractExpr {
 
+    /**
+     * <p>Getter for the field <code>operand</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public AbstractExpr getOperand() {
         return operand;
     }
     private AbstractExpr operand;
+    /**
+     * <p>Constructor for AbstractUnaryExpr.</p>
+     *
+     * @param operand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public AbstractUnaryExpr(AbstractExpr operand) {
         Validate.notNull(operand);
         this.operand = operand;
     }
 
 
+    /**
+     * <p>getOperatorName.</p>
+     *
+     * @return a {@link java.lang.String} object
+     */
     protected abstract String getOperatorName();
   
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         if (getOperatorName().equals("-")) {
@@ -44,11 +61,13 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         s.print(")");
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         operand.iter(f);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         operand.prettyPrint(s, prefix, true);
@@ -56,6 +75,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
 
     protected GPRegister op;
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Data data = compiler.getData();

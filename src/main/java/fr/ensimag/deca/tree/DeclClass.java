@@ -27,9 +27,10 @@ import java.io.PrintStream;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
- * 
+ *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class DeclClass extends AbstractDeclClass {
 
@@ -38,6 +39,14 @@ public class DeclClass extends AbstractDeclClass {
     private ListDeclField listDeclField;
     private ListDeclMethod listDeclMethod;
 
+    /**
+     * <p>Constructor for DeclClass.</p>
+     *
+     * @param tree a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     * @param tree2 a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     * @param listField a {@link fr.ensimag.deca.tree.ListDeclField} object
+     * @param listDeclMethod a {@link fr.ensimag.deca.tree.ListDeclMethod} object
+     */
     public DeclClass(AbstractIdentifier tree, AbstractIdentifier tree2, ListDeclField listField,
             ListDeclMethod listDeclMethod) {
         Validate.notNull(tree);
@@ -50,6 +59,7 @@ public class DeclClass extends AbstractDeclClass {
         this.listDeclMethod = listDeclMethod;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("class ");
@@ -65,6 +75,7 @@ public class DeclClass extends AbstractDeclClass {
         s.print("}");
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         Symbol parent = this.classeSup.getName();
@@ -83,6 +94,7 @@ public class DeclClass extends AbstractDeclClass {
         compiler.GetEnvTypes().setEnvironmentType(this.classe.getName(), type, this.classe.getLocation());
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
@@ -105,12 +117,14 @@ public class DeclClass extends AbstractDeclClass {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
         this.listDeclField.verifyListFieldBody(compiler, classeSup, classe);
         this.listDeclMethod.verifyListMethodBody(compiler, classeSup, classe);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         this.classe.prettyPrint(s, prefix, false);
@@ -121,6 +135,7 @@ public class DeclClass extends AbstractDeclClass {
         this.listDeclMethod.prettyPrint(s, prefix, true);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         classe.iter(f);
@@ -129,6 +144,7 @@ public class DeclClass extends AbstractDeclClass {
         listDeclMethod.iter(f);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void addToVTable(DecacCompiler compiler) {
         DAddr addressClassSup = classeSup.getClassDefinition().getAddressVTable();
@@ -173,6 +189,7 @@ public class DeclClass extends AbstractDeclClass {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenDeclClass(DecacCompiler compiler) {
         // Codage de l'initialisation des champs

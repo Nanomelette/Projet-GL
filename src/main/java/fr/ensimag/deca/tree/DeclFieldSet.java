@@ -10,12 +10,25 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
+/**
+ * Declaration of a set of field.
+ *
+ * @author oscarmaggiori
+ * @version $Id: $Id
+ */
 public class DeclFieldSet extends AbstractDeclFieldSet{
 
     private ListDeclField declField;
     private AbstractIdentifier type;
     private Visibility visibility;
 
+    /**
+     * <p>Constructor for DeclFieldSet.</p>
+     *
+     * @param type a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     * @param declField a {@link fr.ensimag.deca.tree.ListDeclField} object
+     * @param visibility a {@link fr.ensimag.deca.tree.Visibility} object
+     */
     public DeclFieldSet(AbstractIdentifier type, ListDeclField declField, Visibility visibility) {
         super();
         Validate.notNull(type);
@@ -26,14 +39,25 @@ public class DeclFieldSet extends AbstractDeclFieldSet{
         this.visibility = visibility;
     }
 
+    /**
+     * <p>Getter for the field <code>type</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     */
     public AbstractIdentifier getType() {
         return type;
     }
 
+    /**
+     * <p>Getter for the field <code>declField</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tree.ListDeclField} object
+     */
     public ListDeclField getDeclField() {
         return declField;
     }
     
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
     	if ( !this.getVisibility().name().equals("PUBLIC")) {
@@ -46,6 +70,7 @@ public class DeclFieldSet extends AbstractDeclFieldSet{
     	s.println(";");	
     }
 
+    /** {@inheritDoc} */
     @Override
     protected
     void iterChildren(TreeFunction f) {
@@ -53,12 +78,14 @@ public class DeclFieldSet extends AbstractDeclFieldSet{
         declField.iter(f);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         type.prettyPrint(s, prefix, false);
         declField.prettyPrint(s, prefix, true);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void verifyDeclFieldSet(DecacCompiler compiler, AbstractIdentifier superClass,
             AbstractIdentifier name) throws ContextualError {
@@ -69,6 +96,7 @@ public class DeclFieldSet extends AbstractDeclFieldSet{
                 
     }
 
+    /** {@inheritDoc} */
     @Override
     public void verifyClassBody(DecacCompiler compiler, EnvironmentExp members, AbstractIdentifier name)
             throws ContextualError {
@@ -76,17 +104,20 @@ public class DeclFieldSet extends AbstractDeclFieldSet{
         
     }
 
+    /** {@inheritDoc} */
     @Override
     public Visibility getVisibility() {
         return this.visibility;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void codeGenSetOperandField(DecacCompiler compiler) {
         // TODO Auto-generated method stub
         
     }
 
+    /** {@inheritDoc} */
     @Override
     public void codeGenDeclFieldSet(DecacCompiler compiler) {
         for (AbstractDeclField field : declField.getList()) {
@@ -94,6 +125,7 @@ public class DeclFieldSet extends AbstractDeclFieldSet{
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void codeGenDeclFieldSetZero(DecacCompiler compiler) {
         for (AbstractDeclField field : declField.getList()) {

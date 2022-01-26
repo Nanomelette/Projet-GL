@@ -15,20 +15,37 @@ import org.apache.log4j.Logger;
  *
  * @author gl20
  * @date 01/01/2022
- *
+ * @version $Id: $Id
  */
 public abstract class Tree {
 
     private static final Logger LOG = Logger.getLogger(Main.class);
 
+    /**
+     * <p>Getter for the field <code>location</code>.</p>
+     *
+     * @return a {@link fr.ensimag.deca.tree.Location} object
+     */
     public Location getLocation() {
         return location;
     }
 
+    /**
+     * <p>Setter for the field <code>location</code>.</p>
+     *
+     * @param location a {@link fr.ensimag.deca.tree.Location} object
+     */
     public void setLocation(Location location) {
         this.location = location;
     }
 
+    /**
+     * <p>Setter for the field <code>location</code>.</p>
+     *
+     * @param line a int
+     * @param column a int
+     * @param filename a {@link java.lang.String} object
+     */
     public void setLocation(int line, int column, String filename) {
         this.location = new Location(line, column, filename);
     }
@@ -41,12 +58,19 @@ public abstract class Tree {
      */
     public abstract void decompile(IndentPrintStream s);
 
+    /**
+     * <p>decompile.</p>
+     *
+     * @param s a {@link java.io.PrintStream} object
+     */
     public void decompile(PrintStream s) {
         decompile(new IndentPrintStream(s));
     }
 
     /**
      * Display the tree as a (compilable) source program
+     *
+     * @return a {@link java.lang.String} object
      */
     public String decompile() {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -59,11 +83,11 @@ public abstract class Tree {
      * wrapper for
      * {@link #printNodeLine(PrintStream, String, boolean, boolean, String)},
      * calling {@link #prettyPrintNode()} to display the node element.
-     * 
-     * @param s
-     * @param prefix
-     * @param last
-     * @param inlist
+     *
+     * @param s a {@link java.io.PrintStream} object
+     * @param prefix a {@link java.lang.String} object
+     * @param last a boolean
+     * @param inlist a boolean
      * @return The prefix to use for the next recursive calls to
      *         {@link #prettyPrint()}.
      */
@@ -122,6 +146,9 @@ public abstract class Tree {
 
     /**
      * Pretty-print the type of the tree, if applicable
+     *
+     * @param s a {@link java.io.PrintStream} object
+     * @param prefix a {@link java.lang.String} object
      */
     protected void prettyPrintType(PrintStream s, String prefix) {
         // Nothing by default
@@ -129,6 +156,9 @@ public abstract class Tree {
 
     /**
      * Pretty-print the definition of the tree, if applicable
+     *
+     * @param s a {@link java.io.PrintStream} object
+     * @param newPrefix a {@link java.lang.String} object
      */
     protected void prettyPrintDefinition(PrintStream s, String newPrefix) {
         // Nothing by default
@@ -147,7 +177,7 @@ public abstract class Tree {
      * Pretty-print tree (see {@link #prettyPrint()}), sending output to
      * PrintStream s.
      *
-     * @param s
+     * @param s a {@link java.io.PrintStream} object
      */
     public final void prettyPrint(PrintStream s) {
         prettyPrint(s, "", true, false);
@@ -156,6 +186,8 @@ public abstract class Tree {
     /**
      * Pretty-print the tree as a String, using ASCII-art to show the tree
      * hierarchy. Useful for debugging.
+     *
+     * @return a {@link java.lang.String} object
      */
     public final String prettyPrint() {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -164,6 +196,13 @@ public abstract class Tree {
         return out.toString();
     }
 
+    /**
+     * <p>prettyPrint.</p>
+     *
+     * @param s a {@link java.io.PrintStream} object
+     * @param prefix a {@link java.lang.String} object
+     * @param last a boolean
+     */
     protected final void prettyPrint(PrintStream s, String prefix,
             boolean last) {
         prettyPrint(s, prefix, last, false);
@@ -189,15 +228,15 @@ public abstract class Tree {
      * Used internally by {@link #prettyPrint}. Must call prettyPrint() on each
      * children.
      *
-     * @param s
-     * @param prefix
+     * @param s a {@link java.io.PrintStream} object
+     * @param prefix a {@link java.lang.String} object
      */
     protected abstract void prettyPrintChildren(PrintStream s, String prefix);
 
     /**
      * Call function f on each node of the tree.
      *
-     * @param f
+     * @param f a {@link fr.ensimag.deca.tree.TreeFunction} object
      */
     public void iter(TreeFunction f) {
         f.apply(this);
@@ -208,7 +247,7 @@ public abstract class Tree {
      * Function used internally by {@link #iter(TreeFunction)}. Must call iter() on each
      * child of the tree.
      *
-     * @param f
+     * @param f a {@link fr.ensimag.deca.tree.TreeFunction} object
      */
     protected abstract void iterChildren(TreeFunction f);
 
@@ -281,10 +320,10 @@ public abstract class Tree {
 
     /**
      * Call decompile() if the compiler has a debug level greater than 1.
-     * 
+     *
      * Useful for debugging.
-     * 
-     * @param compiler
+     *
+     * @param compiler a {@link fr.ensimag.deca.DecacCompiler} object
      * @return Decompilation, or the empty string.
      */
     protected String decompileIfDebug(DecacCompiler compiler) {

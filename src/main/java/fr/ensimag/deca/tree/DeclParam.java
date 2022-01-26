@@ -9,11 +9,23 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+/**
+ * Declaration of a parameter.
+ *
+ * @author oscarmaggiori
+ * @version $Id: $Id
+ */
 public class DeclParam extends AbstractDeclParam{
 
     private AbstractIdentifier type;
     private AbstractIdentifier name;
 
+    /**
+     * <p>Constructor for DeclParam.</p>
+     *
+     * @param type a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     * @param name a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     */
     public DeclParam(AbstractIdentifier type, AbstractIdentifier name){
         Validate.notNull(type);
         Validate.notNull(name);
@@ -21,6 +33,7 @@ public class DeclParam extends AbstractDeclParam{
         this.name = name;
     }
 
+    /** {@inheritDoc} */
     protected Type verifyParam(DecacCompiler compiler)
             throws ContextualError{
             Type paramType = type.verifyType(compiler);
@@ -30,6 +43,7 @@ public class DeclParam extends AbstractDeclParam{
             return paramType;
         }
     
+    /** {@inheritDoc} */
     protected void verifyDeclParam(DecacCompiler compiler, EnvironmentExp localEnv, int index)
             throws ContextualError{
             try {
@@ -44,6 +58,7 @@ public class DeclParam extends AbstractDeclParam{
             }
         }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         type.decompile(s);
@@ -52,12 +67,14 @@ public class DeclParam extends AbstractDeclParam{
         
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         type.prettyPrint(s, prefix, false);
         name.prettyPrint(s, prefix, false); 
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         type.iter(f);

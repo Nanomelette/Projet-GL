@@ -7,12 +7,15 @@ import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
+ * List of parameter declaration.
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class ListDeclParam extends TreeList<AbstractDeclParam> {
     
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         int enjolivage = 0;

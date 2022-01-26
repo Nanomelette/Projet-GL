@@ -7,6 +7,7 @@ import java.io.Serializable;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Location implements Serializable {
     /*
@@ -15,10 +16,14 @@ public class Location implements Serializable {
      */
     private static final long serialVersionUID = -2906437663480660298L;
 
+    /** Constant <code>NO_SOURCE_NAME="&lt;no source file&gt;"</code> */
     public static final String NO_SOURCE_NAME = "<no source file>";
+    /** Constant <code>BUILTIN</code> */
     public static final Location BUILTIN = new Location(-1, -1, NO_SOURCE_NAME);
 
     /**
+     * {@inheritDoc}
+     *
      * Display the (line, positionInLine) as a String. The file is not
      * displayed.
      */
@@ -31,14 +36,29 @@ public class Location implements Serializable {
         }
     }
 
+    /**
+     * <p>Getter for the field <code>line</code>.</p>
+     *
+     * @return a int
+     */
     public int getLine() {
         return line;
     }
 
+    /**
+     * <p>Getter for the field <code>positionInLine</code>.</p>
+     *
+     * @return a int
+     */
     public int getPositionInLine() {
         return positionInLine;
     }
 
+    /**
+     * <p>Getter for the field <code>filename</code>.</p>
+     *
+     * @return a {@link java.lang.String} object
+     */
     public String getFilename() {
         if (filename != null) {
             return filename;
@@ -52,6 +72,13 @@ public class Location implements Serializable {
     private final int positionInLine;
     private final String filename;
 
+    /**
+     * <p>Constructor for Location.</p>
+     *
+     * @param line a int
+     * @param positionInLine a int
+     * @param filename a {@link java.lang.String} object
+     */
     public Location(int line, int positionInLine, String filename) {
         super();
         this.line = line;

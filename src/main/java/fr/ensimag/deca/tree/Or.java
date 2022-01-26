@@ -9,27 +9,38 @@ import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
+ * Operator "||"
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Or extends AbstractOpBool {
 
+    /**
+     * <p>Constructor for Or.</p>
+     *
+     * @param leftOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param rightOperand a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     */
     public Or(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected String getOperatorName() {
         return "||";
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeBoolean(boolean b, Label E, DecacCompiler compiler) {
         Not expr = new Not(new And(new Not(getLeftOperand()), new Not(getRightOperand())));
         expr.codeBoolean(b, E, compiler);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);

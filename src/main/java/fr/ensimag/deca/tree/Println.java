@@ -4,12 +4,17 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
 
 /**
+ * Println operation
+ *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class Println extends AbstractPrint {
 
     /**
+     * <p>Constructor for Println.</p>
+     *
      * @param arguments arguments passed to the print(...) statement.
      * @param printHex if true, then float should be displayed as hexadecimal (printlnx)
      */
@@ -17,6 +22,7 @@ public class Println extends AbstractPrint {
         super(printHex, arguments);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);

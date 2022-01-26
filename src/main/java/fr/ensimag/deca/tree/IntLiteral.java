@@ -20,18 +20,30 @@ import java.io.PrintStream;
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class IntLiteral extends AbstractExpr {
+    /**
+     * <p>Getter for the field <code>value</code>.</p>
+     *
+     * @return a int
+     */
     public int getValue() {
         return value;
     }
 
     private int value;
 
+    /**
+     * <p>Constructor for IntLiteral.</p>
+     *
+     * @param value a int
+     */
     public IntLiteral(int value) {
         this.value = value;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -46,21 +58,25 @@ public class IntLiteral extends AbstractExpr {
         return "Int (" + getValue() + ")";
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(Integer.toString(value));
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         // leaf node => nothing to do
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Data data = compiler.getData();
@@ -69,6 +85,7 @@ public class IntLiteral extends AbstractExpr {
         data.setLastUsedRegister(freeRegister);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected DVal getDVal() {
         return new ImmediateInteger(value);

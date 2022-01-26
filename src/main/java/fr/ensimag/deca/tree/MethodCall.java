@@ -23,18 +23,32 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.instructions.SUBSP;
 
+/**
+ * Call of a method
+ *
+ * @author oscarmaggiori
+ * @version $Id: $Id
+ */
 public class MethodCall extends AbstractExpr {
 
     private AbstractExpr obj;
     private AbstractIdentifier meth;
     private ListExpr param;
 
+    /**
+     * <p>Constructor for MethodCall.</p>
+     *
+     * @param expr a {@link fr.ensimag.deca.tree.AbstractExpr} object
+     * @param method a {@link fr.ensimag.deca.tree.AbstractIdentifier} object
+     * @param listExpr a {@link fr.ensimag.deca.tree.ListExpr} object
+     */
     public MethodCall(AbstractExpr expr, AbstractIdentifier method, ListExpr listExpr){
         this.obj = expr;
         this.meth = method;
         this.param = listExpr;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
@@ -61,6 +75,7 @@ public class MethodCall extends AbstractExpr {
         return methodDef.getType();
     }
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         obj.decompile(s);
@@ -71,6 +86,7 @@ public class MethodCall extends AbstractExpr {
         s.print(")");
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         obj.prettyPrint(s, prefix,false);
@@ -78,6 +94,7 @@ public class MethodCall extends AbstractExpr {
         param.prettyPrint(s, prefix, true);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         obj.iter(f);
@@ -88,6 +105,7 @@ public class MethodCall extends AbstractExpr {
         
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Data data = compiler.getData();
@@ -130,6 +148,7 @@ public class MethodCall extends AbstractExpr {
         data.setLastUsedRegister(Register.R0);
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenSelect(DecacCompiler compiler) {
         codeGenInst(compiler);

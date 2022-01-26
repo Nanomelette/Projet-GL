@@ -5,25 +5,28 @@ import java.util.Map;
 
 /**
  * Manage unique symbols.
- * 
+ *
  * A Symbol contains the same information as a String, but the SymbolTable
  * ensures the uniqueness of a Symbol for a given String value. Therefore,
  * Symbol comparison can be done by comparing references, and the hashCode()
  * method of Symbols can be used to define efficient HashMap (no string
  * comparison or hashing required).
- * 
+ *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
-
 public class SymbolTable {
     private Map<String, Symbol> map = new HashMap<String, Symbol>();
 
     /**
      * Create or reuse a symbol.
-     * 
+     *
      * If a symbol already exists with the same name in this table, then return
      * this Symbol. Otherwise, create a new Symbol and add it to the table.
+     *
+     * @param name a {@link java.lang.String} object
+     * @return a {@link fr.ensimag.deca.tools.SymbolTable.Symbol} object
      */
     public Symbol create(String name) {
         // Symbol value = new Symbol(name);
@@ -37,6 +40,11 @@ public class SymbolTable {
         return newsymbol;
     }
 
+    /**
+     * <p>Getter for the field <code>map</code>.</p>
+     *
+     * @return a {@link java.util.Map} object
+     */
     public Map<String, Symbol> getMap(){
         return this.map;
     }

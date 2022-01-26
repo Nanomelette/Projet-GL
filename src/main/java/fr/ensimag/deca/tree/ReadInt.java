@@ -21,12 +21,15 @@ import java.io.PrintStream;
 
 
 /**
+ * Operator ReadInt()
  *
  * @author gl20
  * @date 01/01/2022
+ * @version $Id: $Id
  */
 public class ReadInt extends AbstractReadExpr {
 
+    /** {@inheritDoc} */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -36,21 +39,25 @@ public class ReadInt extends AbstractReadExpr {
     }
 
 
+    /** {@inheritDoc} */
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("readInt()");
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void iterChildren(TreeFunction f) {
         // leaf node => nothing to do
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         Data data = compiler.getData();
