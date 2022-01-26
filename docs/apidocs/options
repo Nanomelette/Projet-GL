@@ -1,0 +1,25 @@
+-classpath
+'/Users/oscarmaggiori/.m2/repository/org/antlr/antlr4-runtime/4.9.3/antlr4-runtime-4.9.3.jar:/Users/oscarmaggiori/.m2/repository/log4j/log4j/1.2.13/log4j-1.2.13.jar:/Users/oscarmaggiori/.m2/repository/commons-lang/commons-lang/2.6/commons-lang-2.6.jar:/Users/oscarmaggiori/.m2/repository/org/mockito/mockito-core/4.1.0/mockito-core-4.1.0.jar:/Users/oscarmaggiori/.m2/repository/net/bytebuddy/byte-buddy/1.12.1/byte-buddy-1.12.1.jar:/Users/oscarmaggiori/.m2/repository/net/bytebuddy/byte-buddy-agent/1.12.1/byte-buddy-agent-1.12.1.jar'
+-encoding
+'UTF-8'
+-private
+-sourcepath
+'/Users/oscarmaggiori/ensimag/GL/Projet_GL/gl20/src/main/java:/Users/oscarmaggiori/ensimag/GL/Projet_GL/gl20/target/generated-sources/antlr4'
+-author
+-bottom
+'Copyright &#169; 2022 <a href="http://ensimag.grenoble-inp.fr/">Ensimag</a>. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/oscarmaggiori/ensimag/GL/Projet_GL/gl20/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Deca Compiler 0.0.1-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' '/Users/oscarmaggiori/ensimag/GL/Projet_GL/gl20/target/javadoc-bundle-options'
+-nohelp
+-use
+-version
+-windowtitle
+'Deca Compiler 0.0.1-SNAPSHOT API'
