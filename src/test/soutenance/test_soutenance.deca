@@ -1,17 +1,25 @@
 class Equipe {
     int numeroEquipe;
-    Etudiant etudiant0;
-    Etudiant etudiant1;
-    Etudiant etudiant2;
-    Etudiant etudiant3;
-    Etudiant etudiant4;
+    Ingenieur ingenieur0;
+    Ingenieur ingenieur1;
+    Ingenieur ingenieur2;
+    Ingenieur ingenieur3;
+    Ingenieur ingenieur4;
 
-    void setEtudiant(Etudiant e0, Etudiant e1, Etudiant e2, Etudiant e3, Etudiant e4) {
-        etudiant0 = e0;
-        etudiant1 = e1;
-        etudiant2 = e2;
-        etudiant3 = e3;
-        etudiant4 = e4;
+    Client client0;
+    Client client1;
+
+    void setIngenieur(Ingenieur e0, Ingenieur e1, Ingenieur e2, Ingenieur e3, Ingenieur e4) {
+        ingenieur0 = e0;
+        ingenieur1 = e1;
+        ingenieur2 = e2;
+        ingenieur3 = e3;
+        ingenieur4 = e4;
+    }
+
+    void setClients(Client c1, Client c2) {
+        client0 = c1;
+        client1 = c2;
     }
 
     void setNumeroEquipe(int i) {
@@ -20,30 +28,55 @@ class Equipe {
 
     void enumereEquipe() {
         int k = 0;
-        Etudiant etudiant;
+        Ingenieur ingenieur;
+        println("Les membres de l'équipe sont :");
         while (k < 5) {
-            etudiant = getEtudiantI(k);
-            etudiant.printFirstName();
+            ingenieur = getIngenieurI(k);
+            ingenieur.printFirstName();
             print(" ");
-            etudiant.printName();
+            ingenieur.printName();
             println();
             k = k + 1;
         }
     }
 
-    Etudiant getEtudiantI(int i) {
+    void enumereClients() {
+        int k = 0;
+        Client client;
+        println("Les clients de ce compilateur sont :");
+        while (k < 2) {
+            client = getClient(k);
+            client.printFirstName();
+            print(" ");
+            client.printName();
+            println();
+            k = k + 1;
+        }
+    }
+
+    Ingenieur getIngenieurI(int i) {
         if (i == 0) {
-            return etudiant0;
+            return ingenieur0;
         } else if (i == 1) {
-            return etudiant1;
+            return ingenieur1;
         } else if (i == 2) {
-            return etudiant2;
+            return ingenieur2;
         } else if (i == 3) {
-            return etudiant3;
+            return ingenieur3;
         } else if (i == 4) {
-            return etudiant4;
+            return ingenieur4;
         } else {
-            print("Il n'y a que 5 étudiants dans une équipe !");
+            print("Il n'y a que 5 ingénieurs dans une équipe !");
+        }
+    }
+
+    Client getClient(int i) {
+        if (i==0) {
+            return client0;
+        } else if (i==1) {
+            return client1;
+        } else {
+            print("Il n'y a que 2 clients pour une équipe !");
         }
     }
 
@@ -51,10 +84,10 @@ class Equipe {
         int nbImag = 0;
         int nbPhelma = 0;
         int k = 0;
-        Etudiant etudiant;
+        Ingenieur ingenieur;
         while (k < 5) {
-            etudiant = getEtudiantI(k);
-            if (etudiant.getNumeroEcole() == 1) {
+            ingenieur = getIngenieurI(k);
+            if (ingenieur.getNumeroEcole() == 1) {
                 nbImag = nbImag + 1;
             } else {
                 nbPhelma = nbPhelma + 1;
@@ -65,7 +98,7 @@ class Equipe {
     }
 }
 
-class Etudiant {
+class Ingenieur {
     int identifant;
     int numeroEcole; // 1 : imag // 0 : phelma
 
@@ -86,8 +119,8 @@ class Etudiant {
     }
 }
 
-class Arthur extends Etudiant {
-    int numeroEtudiant;
+class Arthur extends Ingenieur {
+    int numeroIngenieur;
     int numeroEcole = 1;
 
     void printName() {
@@ -99,8 +132,8 @@ class Arthur extends Etudiant {
     }
 }
 
-class Oscar extends Etudiant {
-    int numeroEtudiant;
+class Oscar extends Ingenieur {
+    int numeroIngenieur;
     int numeroEcole = 1;
 
     void printName() {
@@ -112,8 +145,8 @@ class Oscar extends Etudiant {
     }
 }
 
-class Thomas extends Etudiant {
-    int numeroEtudiant;
+class Thomas extends Ingenieur {
+    int numeroIngenieur;
     int numeroEcole = 1;
 
     void printName() {
@@ -125,8 +158,8 @@ class Thomas extends Etudiant {
     }
 }
 
-class Arnaud extends Etudiant {
-    int numeroEtudiant;
+class Arnaud extends Ingenieur {
+    int numeroIngenieur;
     int numeroEcole = 0;
 
     void printName() {
@@ -138,8 +171,8 @@ class Arnaud extends Etudiant {
     }
 }
 
-class Antoine extends Etudiant {
-    int numeroEtudiant;
+class Antoine extends Ingenieur {
+    int numeroIngenieur;
     int numeroEcole = 0;
 
     void printName() {
@@ -152,14 +185,14 @@ class Antoine extends Etudiant {
 }
 
 class Client extends Equipe {
-    boolean scheme = true;
+    int scheme = 1;
 
     void setTechnique() {
-        scheme = false;
+        scheme = 0;
     }
 
     void printName() {
-        if (scheme) {
+        if (scheme==1) {
             print("Bertrand");
         } else {
             print("Mathias");
@@ -167,7 +200,7 @@ class Client extends Equipe {
     }
 
     void printFirstName() {
-        if (scheme) {
+        if (scheme==1) {
             print("Ramparison");
         } else {
             print("Barnoud");
@@ -177,16 +210,20 @@ class Client extends Equipe {
 
 {
     Equipe gl20 = new Equipe();
-
     Arthur e0 = new Arthur();
     Oscar e1 = new Oscar();
     Thomas e2 = new Thomas();
     Arnaud e3 = new Arnaud();
     Antoine e4 = new Antoine();
 
+    Client c1 = new Client();
+    Client c2 = new Client();
+    c2.setTechnique();
+    gl20.setClients(c1, c2);
+
     gl20.setNumeroEquipe(20);
-    gl20.setEtudiant(e0, e1, e2, e3, e4);
-    
+    gl20.setIngenieur(e0, e1, e2, e3, e4);
     gl20.enumereEquipe();
     gl20.repartitionEcole();
+    gl20.enumereClients();
 }
