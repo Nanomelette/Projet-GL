@@ -46,11 +46,32 @@ class Equipe {
             print("Il n'y a que 5 étudiants dans une équipe !");
         }
     }
+
+    void repartitionEcole() {
+        int nbImag = 0;
+        int nbPhelma = 0;
+        int k = 0;
+        Etudiant etudiant;
+        while (k < 5) {
+            etudiant = getEtudiantI(k);
+            if (etudiant.getNumeroEcole() == 1) {
+                nbImag = nbImag + 1;
+            } else {
+                nbPhelma = nbPhelma + 1;
+            }
+            k = k + 1;
+        }
+        println("Dans l'équipe GL", numeroEquipe, ", il y a ", nbImag, " étudiants de l'Ensimag et ", nbPhelma, " étudiants de Phelma.");
+    }
 }
 
 class Etudiant {
     int identifant;
     int numeroEcole; // 1 : imag // 0 : phelma
+
+    int getNumeroEcole() {
+        return numeroEcole;
+    }
 
     void setIdentifiant(int i) {
         identifant = i;
@@ -67,6 +88,7 @@ class Etudiant {
 
 class Arthur extends Etudiant {
     int numeroEtudiant;
+    int numeroEcole = 1;
 
     void printName() {
         print("Arthur");
@@ -79,6 +101,7 @@ class Arthur extends Etudiant {
 
 class Oscar extends Etudiant {
     int numeroEtudiant;
+    int numeroEcole = 1;
 
     void printName() {
         print("Oscar");
@@ -91,6 +114,7 @@ class Oscar extends Etudiant {
 
 class Thomas extends Etudiant {
     int numeroEtudiant;
+    int numeroEcole = 1;
 
     void printName() {
         print("Thomas");
@@ -103,6 +127,7 @@ class Thomas extends Etudiant {
 
 class Arnaud extends Etudiant {
     int numeroEtudiant;
+    int numeroEcole = 0;
 
     void printName() {
         print("Arnaud");
@@ -115,6 +140,7 @@ class Arnaud extends Etudiant {
 
 class Antoine extends Etudiant {
     int numeroEtudiant;
+    int numeroEcole = 0;
 
     void printName() {
         print("Antoine");
@@ -139,4 +165,5 @@ class Professeurs extends Equipe {
     gl20.setNumeroEquipe(20);
     gl20.setEtudiant(e0, e1, e2, e3, e4);
     gl20.enumereEquipe();
+    gl20.repartitionEcole();
 }
