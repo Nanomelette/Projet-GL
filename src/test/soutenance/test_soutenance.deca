@@ -1,0 +1,142 @@
+class Equipe {
+    int numeroEquipe;
+    Etudiant etudiant0;
+    Etudiant etudiant1;
+    Etudiant etudiant2;
+    Etudiant etudiant3;
+    Etudiant etudiant4;
+
+    void setEtudiant(Etudiant e0, Etudiant e1, Etudiant e2, Etudiant e3, Etudiant e4) {
+        etudiant0 = e0;
+        etudiant1 = e1;
+        etudiant2 = e2;
+        etudiant3 = e3;
+        etudiant4 = e4;
+    }
+
+    void setNumeroEquipe(int i) {
+        numeroEquipe = i;
+    }
+
+    void enumereEquipe() {
+        int k = 0;
+        Etudiant etudiant;
+        while (k < 5) {
+            etudiant = getEtudiantI(k);
+            etudiant.printFirstName();
+            print(" ");
+            etudiant.printName();
+            println();
+            k = k + 1;
+        }
+    }
+
+    Etudiant getEtudiantI(int i) {
+        if (i == 0) {
+            return etudiant0;
+        } else if (i == 1) {
+            return etudiant1;
+        } else if (i == 2) {
+            return etudiant2;
+        } else if (i == 3) {
+            return etudiant3;
+        } else if (i == 4) {
+            return etudiant4;
+        } else {
+            print("Il n'y a que 5 étudiants dans une équipe !");
+        }
+    }
+}
+
+class Etudiant {
+    int identifant;
+    int numeroEcole; // 1 : imag // 0 : phelma
+
+    void setIdentifiant(int i) {
+        identifant = i;
+    }
+
+    void printName() {
+        // Abstract
+    }
+
+    void printFirstName() {
+        // Abstract
+    }
+}
+
+class Arthur extends Etudiant {
+    int numeroEtudiant;
+
+    void printName() {
+        print("Arthur");
+    }
+
+    void printFirstName() {
+        print("Hagenburg");
+    }
+}
+
+class Oscar extends Etudiant {
+    int numeroEtudiant;
+
+    void printName() {
+        print("Oscar");
+    }
+
+    void printFirstName() {
+        print("Maggiori");
+    }
+}
+
+class Thomas extends Etudiant {
+    int numeroEtudiant;
+
+    void printName() {
+        print("Thomas");
+    }
+
+    void printFirstName() {
+        print("Martineau");
+    }
+}
+
+class Arnaud extends Etudiant {
+    int numeroEtudiant;
+
+    void printName() {
+        print("Arnaud");
+    }
+
+    void printFirstName() {
+        print("Gariel");
+    }
+}
+
+class Antoine extends Etudiant {
+    int numeroEtudiant;
+
+    void printName() {
+        print("Antoine");
+    }
+
+    void printFirstName() {
+        print("Kuhnast");
+    }
+}
+
+class Professeurs extends Equipe {
+
+}
+
+{
+    Equipe gl20 = new Equipe();
+    Arthur e0 = new Arthur();
+    Oscar e1 = new Oscar();
+    Thomas e2 = new Thomas();
+    Arnaud e3 = new Arnaud();
+    Antoine e4 = new Antoine();
+    gl20.setNumeroEquipe(20);
+    gl20.setEtudiant(e0, e1, e2, e3, e4);
+    gl20.enumereEquipe();
+}
