@@ -151,19 +151,42 @@ class Antoine extends Etudiant {
     }
 }
 
-class Professeurs extends Equipe {
+class Client extends Equipe {
+    boolean scheme = true;
 
+    void setTechnique() {
+        scheme = false;
+    }
+
+    void printName() {
+        if (scheme) {
+            print("Bertrand");
+        } else {
+            print("Mathias");
+        }
+    }
+
+    void printFirstName() {
+        if (scheme) {
+            print("Ramparison");
+        } else {
+            print("Barnoud");
+        }
+    }
 }
 
 {
     Equipe gl20 = new Equipe();
+
     Arthur e0 = new Arthur();
     Oscar e1 = new Oscar();
     Thomas e2 = new Thomas();
     Arnaud e3 = new Arnaud();
     Antoine e4 = new Antoine();
+
     gl20.setNumeroEquipe(20);
     gl20.setEtudiant(e0, e1, e2, e3, e4);
+    
     gl20.enumereEquipe();
     gl20.repartitionEcole();
 }
